@@ -184,6 +184,22 @@ Privacy reminder:
 
 All timeline search, filters, tag dropdowns, and sort results are scoped to the logged-in user. Deleted memories are excluded. Admin users do not browse other users' private memories in this phase.
 
+## Mobile-first UI Status
+
+Phase 6.5 mobile-first UI polish is completed.
+
+- MemoLens now prioritizes phone-sized screens first while keeping desktop layouts usable.
+- The mobile navbar is less crowded and gives account actions more tap space.
+- Timeline search keeps the keyword field visible and moves the longer filter controls into a collapsible filter area.
+- Selected filters remain visible after applying filters.
+- Timeline cards stack naturally on mobile, with larger image covers.
+- Create and Edit Memory forms use larger touch targets and clearer upload spacing.
+- Existing image delete buttons are easier to tap on phones.
+- Memory details and galleries scale better on narrow screens.
+- Footer and content spacing were adjusted so mobile content is not crowded or overlapped.
+
+This phase only changes Razor views and CSS. It does not change database schema, authentication behavior, memory CRUD logic, image upload validation, ownership/privacy checks, or search/filter results.
+
 ## Feeling List
 
 Memory feelings are stored as strings from this fixed list:
@@ -219,6 +235,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - User-scoped memory CRUD added.
 - Memory image upload and gallery added.
 - Timeline search and filters added.
+- Mobile-first UI polish added.
 - No albums CRUD yet.
 - No AI or social features.
 - No admin dashboard yet.

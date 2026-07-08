@@ -2,6 +2,14 @@
 
 @{
     ViewData["Title"] = "Timeline";
+    var advancedFilterOpen = Model.Filter.HasAnyFilter &&
+        (!string.IsNullOrWhiteSpace(Model.Filter.Feeling) ||
+        Model.Filter.TagId.HasValue ||
+        Model.Filter.FromDate.HasValue ||
+        Model.Filter.ToDate.HasValue ||
+        Model.Filter.Month.HasValue ||
+        Model.Filter.Year.HasValue ||
+        !string.Equals(Model.Filter.SortOrder, "newest", StringComparison.OrdinalIgnoreCase));
     var monthNames = new[]
     {
         "Thang 1",
@@ -46,9 +54,9 @@ else
         <div class="memory-filter-heading">
             <div>
                 <p class="kicker">Tim lai ky uc</p>
-                <h2>Loc timeline cua rieng ban</h2>
+                <h2>Tim kiem &amp; bo loc</h2>
             </div>
-            <p>Tim theo tieu de, cau chuyen, dia diem hoac the. Bo loc chi ap dung cho ky uc cua tai khoan hien tai.</p>
+            <p>Tim nhanh truoc, mo bo loc nang cao khi ban can loc theo cam giac, the, ngay thang.</p>
         </div>
 
         @if (Model.ValidationMessages.Any())
@@ -61,82 +69,126 @@ else
             </div>
         }
 
+        @if (Model.Filter.HasAnyFilter)
+        {
+            <div class="active-filter-strip" aria-label="Current filters">
+                <span>Dang loc timeline cua ban</span>
+                @if (!string.IsNullOrWhiteSpace(Model.Filter.Search))
+                {
+                    <strong>Tu khoa: @Model.Filter.Search</strong>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Filter.Feeling))
+                {
+                    <strong>Cam giac: @Model.Filter.Feeling</strong>
+                }
+                @if (Model.Filter.TagId.HasValue)
+                {
+                    var selectedTag = Model.AvailableTags.FirstOrDefault(tag => tag.Id == Model.Filter.TagId.Value);
+                    <strong>The: @(selectedTag?.Name ?? Model.Filter.TagId.Value.ToString())</strong>
+                }
+                @if (Model.Filter.FromDate.HasValue || Model.Filter.ToDate.HasValue)
+                {
+                    <strong>Khoang ngay</strong>
+                }
+                else if (Model.Filter.Year.HasValue)
+                {
+                    <strong>@(Model.Filter.Month.HasValue ? $"Thang {Model.Filter.Month}/{Model.Filter.Year}" : $"Nam {Model.Filter.Year}")</strong>
+                }
+            </div>
+        }
+
         <form asp-action="Index" method="get" class="memory-filter-form">
-            <div class="filter-field filter-field-wide">
-                <label for="search" class="form-label">Tim kiem</label>
-                <input id="search" name="search" class="form-control" value="@Model.Filter.Search" placeholder="Dalat, gia dinh, chuyen di..." />
-            </div>
-
-            <div class="filter-field">
-                <label for="feeling" class="form-label">Cam giac</label>
-                <select id="feeling" name="feeling" class="form-select">
-                    <option value="">Tat ca cam giac</option>
-                    @foreach (var feeling in Model.FeelingOptions)
+            <div class="memory-filter-primary">
+                <div class="filter-field">
+                    <label for="search" class="form-label">Tim kiem</label>
+                    <input id="search" name="search" class="form-control" value="@Model.Filter.Search" placeholder="Dalat, gia dinh, chuyen di..." />
+                </div>
+                <div class="memory-filter-primary-actions">
+                    <button type="submit" class="btn btn-primary">Tim</button>
+                    <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#advancedMemoryFilters" aria-expanded="@(advancedFilterOpen.ToString().ToLowerInvariant())" aria-controls="advancedMemoryFilters">
+                        Bo loc
+                    </button>
+                    @if (Model.Filter.HasAnyFilter)
                     {
-                        <option value="@feeling" selected="@(Model.Filter.Feeling == feeling)">@feeling</option>
+                        <a class="btn btn-link" asp-action="Index">Xoa</a>
                     }
-                </select>
+                </div>
             </div>
 
-            <div class="filter-field">
-                <label for="tagId" class="form-label">The</label>
-                <select id="tagId" name="tagId" class="form-select">
-                    <option value="">Tat ca the</option>
-                    @foreach (var tag in Model.AvailableTags)
-                    {
-                        <option value="@tag.Id" selected="@(Model.Filter.TagId == tag.Id)">@tag.Name</option>
-                    }
-                </select>
-            </div>
+            <div class="collapse memory-filter-collapse @(advancedFilterOpen ? "show" : "")" id="advancedMemoryFilters">
+                <div class="memory-filter-grid">
+                    <div class="filter-field">
+                        <label for="feeling" class="form-label">Cam giac</label>
+                        <select id="feeling" name="feeling" class="form-select">
+                            <option value="">Tat ca cam giac</option>
+                            @foreach (var feeling in Model.FeelingOptions)
+                            {
+                                <option value="@feeling" selected="@(Model.Filter.Feeling == feeling)">@feeling</option>
+                            }
+                        </select>
+                    </div>
 
-            <div class="filter-field">
-                <label for="fromDate" class="form-label">Tu ngay</label>
-                <input id="fromDate" name="fromDate" class="form-control" type="date" value="@Model.Filter.FromDate?.ToString("yyyy-MM-dd")" />
-            </div>
+                    <div class="filter-field">
+                        <label for="tagId" class="form-label">The</label>
+                        <select id="tagId" name="tagId" class="form-select">
+                            <option value="">Tat ca the</option>
+                            @foreach (var tag in Model.AvailableTags)
+                            {
+                                <option value="@tag.Id" selected="@(Model.Filter.TagId == tag.Id)">@tag.Name</option>
+                            }
+                        </select>
+                    </div>
 
-            <div class="filter-field">
-                <label for="toDate" class="form-label">Den ngay</label>
-                <input id="toDate" name="toDate" class="form-control" type="date" value="@Model.Filter.ToDate?.ToString("yyyy-MM-dd")" />
-            </div>
+                    <div class="filter-field">
+                        <label for="fromDate" class="form-label">Tu ngay</label>
+                        <input id="fromDate" name="fromDate" class="form-control" type="date" value="@Model.Filter.FromDate?.ToString("yyyy-MM-dd")" />
+                    </div>
 
-            <div class="filter-field">
-                <label for="month" class="form-label">Thang</label>
-                <select id="month" name="month" class="form-select">
-                    <option value="">Tat ca thang</option>
-                    @for (var month = 1; month <= 12; month++)
-                    {
-                        <option value="@month" selected="@(Model.Filter.Month == month)">@monthNames[month - 1]</option>
-                    }
-                </select>
-                <div class="form-text">Chon nam neu muon loc theo thang.</div>
-            </div>
+                    <div class="filter-field">
+                        <label for="toDate" class="form-label">Den ngay</label>
+                        <input id="toDate" name="toDate" class="form-control" type="date" value="@Model.Filter.ToDate?.ToString("yyyy-MM-dd")" />
+                    </div>
 
-            <div class="filter-field">
-                <label for="year" class="form-label">Nam</label>
-                <select id="year" name="year" class="form-select">
-                    <option value="">Tat ca nam</option>
-                    @foreach (var year in Model.AvailableYears)
-                    {
-                        <option value="@year" selected="@(Model.Filter.Year == year)">@year</option>
-                    }
-                    @if (Model.Filter.Year.HasValue && !Model.AvailableYears.Contains(Model.Filter.Year.Value))
-                    {
-                        <option value="@Model.Filter.Year" selected="selected">@Model.Filter.Year</option>
-                    }
-                </select>
-            </div>
+                    <div class="filter-field">
+                        <label for="month" class="form-label">Thang</label>
+                        <select id="month" name="month" class="form-select">
+                            <option value="">Tat ca thang</option>
+                            @for (var month = 1; month <= 12; month++)
+                            {
+                                <option value="@month" selected="@(Model.Filter.Month == month)">@monthNames[month - 1]</option>
+                            }
+                        </select>
+                        <div class="form-text">Chon nam neu muon loc theo thang.</div>
+                    </div>
 
-            <div class="filter-field">
-                <label for="sortOrder" class="form-label">Sap xep</label>
-                <select id="sortOrder" name="sortOrder" class="form-select">
-                    <option value="newest" selected="@(Model.Filter.SortOrder == "newest")">Moi nhat truoc</option>
-                    <option value="oldest" selected="@(Model.Filter.SortOrder == "oldest")">Cu nhat truoc</option>
-                </select>
-            </div>
+                    <div class="filter-field">
+                        <label for="year" class="form-label">Nam</label>
+                        <select id="year" name="year" class="form-select">
+                            <option value="">Tat ca nam</option>
+                            @foreach (var year in Model.AvailableYears)
+                            {
+                                <option value="@year" selected="@(Model.Filter.Year == year)">@year</option>
+                            }
+                            @if (Model.Filter.Year.HasValue && !Model.AvailableYears.Contains(Model.Filter.Year.Value))
+                            {
+                                <option value="@Model.Filter.Year" selected="selected">@Model.Filter.Year</option>
+                            }
+                        </select>
+                    </div>
 
-            <div class="memory-filter-actions">
-                <button type="submit" class="btn btn-primary">Ap dung</button>
-                <a class="btn btn-outline-secondary" asp-action="Index">Xoa bo loc</a>
+                    <div class="filter-field">
+                        <label for="sortOrder" class="form-label">Sap xep</label>
+                        <select id="sortOrder" name="sortOrder" class="form-select">
+                            <option value="newest" selected="@(Model.Filter.SortOrder == "newest")">Moi nhat truoc</option>
+                            <option value="oldest" selected="@(Model.Filter.SortOrder == "oldest")">Cu nhat truoc</option>
+                        </select>
+                    </div>
+
+                    <div class="memory-filter-actions">
+                        <button type="submit" class="btn btn-primary">Ap dung</button>
+                        <a class="btn btn-outline-secondary" asp-action="Index">Xoa bo loc</a>
+                    </div>
+                </div>
             </div>
         </form>
     </section>
