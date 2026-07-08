@@ -1,0 +1,42 @@
+## Ignore Visual Studio temporary files, build results, and .NET user state.
+
+# Build results
+[Bb]in/
+[Oo]bj/
+out/
+
+# Visual Studio
+.vs/
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# NuGet
+*.nupkg
+packages/
+project.lock.json
+project.assets.json
+artifacts/
+
+# ASP.NET local files
+appsettings.Local.json
+appsettings.*.local.json
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Uploads generated during local development
+wwwroot/uploads/

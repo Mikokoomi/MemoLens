@@ -1,0 +1,58 @@
+@{
+    ViewData["Title"] = "Home";
+}
+
+<section class="home-hero">
+    <div class="row align-items-center g-5">
+        <div class="col-lg-7">
+            <p class="eyebrow">Private photo journal</p>
+            <h1 class="display-5 fw-semibold">Keep the stories behind your favorite memories.</h1>
+            <p class="lead text-muted mt-3">
+                MemoLens is a calm, private space for photos, notes, moods, dates, places, and albums.
+                It is designed for personal reflection, not public attention.
+            </p>
+            <div class="d-flex flex-wrap gap-3 mt-4">
+                <a class="btn btn-primary btn-lg" asp-controller="Home" asp-action="CreateMemory">Plan a Memory</a>
+                <a class="btn btn-outline-secondary btn-lg" asp-controller="Home" asp-action="Timeline">View Timeline</a>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="memory-preview">
+                <p class="preview-date">Today</p>
+                <h2>A quiet morning worth remembering</h2>
+                <p>
+                    Add a photo, a small story, a mood, and the place it happened.
+                    Later, this becomes more than storage: it becomes a personal timeline.
+                </p>
+                <div class="preview-tags">
+                    <span>peaceful</span>
+                    <span>family</span>
+                    <span>home</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-spacing">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="feature-panel">
+                <h2>Stories first</h2>
+                <p>Write the note, mood, location, and context that make each photo meaningful.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-panel">
+                <h2>Private by default</h2>
+                <p>Your memories are for you. No public feed, no likes, no comments, no followers.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-panel">
+                <h2>Easy to grow</h2>
+                <p>The project starts simple with ASP.NET Core MVC, Bootstrap, and clear beginner-friendly structure.</p>
+            </div>
+        </div>
+    </div>
+</section>
