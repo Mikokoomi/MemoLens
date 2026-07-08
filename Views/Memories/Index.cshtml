@@ -1,7 +1,22 @@
-@model IReadOnlyList<MemoLens.Models.Memories.MemoryListItemViewModel>
+@model MemoLens.Models.Memories.MemoryIndexViewModel
 
 @{
     ViewData["Title"] = "Timeline";
+    var monthNames = new[]
+    {
+        "Thang 1",
+        "Thang 2",
+        "Thang 3",
+        "Thang 4",
+        "Thang 5",
+        "Thang 6",
+        "Thang 7",
+        "Thang 8",
+        "Thang 9",
+        "Thang 10",
+        "Thang 11",
+        "Thang 12"
+    };
 }
 
 <section class="memory-page-header">
@@ -13,7 +28,7 @@
     <a class="btn btn-primary" asp-action="Create">Create Memory</a>
 </section>
 
-@if (!Model.Any())
+@if (!Model.HasMemories)
 {
     <section class="memory-empty-state">
         <p class="kicker">No memories yet</p>
@@ -27,50 +42,161 @@
 }
 else
 {
-    <section class="memory-list">
-        @foreach (var memory in Model)
+    <section class="memory-filter-panel">
+        <div class="memory-filter-heading">
+            <div>
+                <p class="kicker">Tim lai ky uc</p>
+                <h2>Loc timeline cua rieng ban</h2>
+            </div>
+            <p>Tim theo tieu de, cau chuyen, dia diem hoac the. Bo loc chi ap dung cho ky uc cua tai khoan hien tai.</p>
+        </div>
+
+        @if (Model.ValidationMessages.Any())
         {
-            <article class="memory-card">
-                @if (string.IsNullOrWhiteSpace(memory.CoverImagePath))
+            <div class="memory-filter-alert" role="alert">
+                @foreach (var message in Model.ValidationMessages)
                 {
-                    <div class="memory-card-photo-placeholder">
-                        <span>No photo yet</span>
-                    </div>
+                    <p>@message</p>
                 }
-                else
-                {
-                    <a class="memory-card-cover" asp-action="Details" asp-route-id="@memory.Id">
-                        <img src="@memory.CoverImagePath" alt="@memory.Title" />
-                    </a>
-                }
-                <div class="memory-card-body">
-                    <div class="memory-card-meta">
-                        <span>@memory.MemoryDate.ToString("dd MMM yyyy")</span>
-                        <span>@memory.Feeling</span>
-                    </div>
-                    <h2>
-                        <a asp-action="Details" asp-route-id="@memory.Id">@memory.Title</a>
-                    </h2>
-                    @if (!string.IsNullOrWhiteSpace(memory.Location))
+            </div>
+        }
+
+        <form asp-action="Index" method="get" class="memory-filter-form">
+            <div class="filter-field filter-field-wide">
+                <label for="search" class="form-label">Tim kiem</label>
+                <input id="search" name="search" class="form-control" value="@Model.Filter.Search" placeholder="Dalat, gia dinh, chuyen di..." />
+            </div>
+
+            <div class="filter-field">
+                <label for="feeling" class="form-label">Cam giac</label>
+                <select id="feeling" name="feeling" class="form-select">
+                    <option value="">Tat ca cam giac</option>
+                    @foreach (var feeling in Model.FeelingOptions)
                     {
-                        <p class="memory-location">@memory.Location</p>
+                        <option value="@feeling" selected="@(Model.Filter.Feeling == feeling)">@feeling</option>
                     }
-                    <p class="memory-preview-text">
-                        @(string.IsNullOrWhiteSpace(memory.Story)
-                            ? "No story added yet."
-                            : memory.Story.Length > 180 ? $"{memory.Story[..180]}..." : memory.Story)
-                    </p>
-                    @if (memory.Tags.Any())
+                </select>
+            </div>
+
+            <div class="filter-field">
+                <label for="tagId" class="form-label">The</label>
+                <select id="tagId" name="tagId" class="form-select">
+                    <option value="">Tat ca the</option>
+                    @foreach (var tag in Model.AvailableTags)
                     {
-                        <div class="tag-row">
-                            @foreach (var tag in memory.Tags)
-                            {
-                                <span>@tag</span>
-                            }
+                        <option value="@tag.Id" selected="@(Model.Filter.TagId == tag.Id)">@tag.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="filter-field">
+                <label for="fromDate" class="form-label">Tu ngay</label>
+                <input id="fromDate" name="fromDate" class="form-control" type="date" value="@Model.Filter.FromDate?.ToString("yyyy-MM-dd")" />
+            </div>
+
+            <div class="filter-field">
+                <label for="toDate" class="form-label">Den ngay</label>
+                <input id="toDate" name="toDate" class="form-control" type="date" value="@Model.Filter.ToDate?.ToString("yyyy-MM-dd")" />
+            </div>
+
+            <div class="filter-field">
+                <label for="month" class="form-label">Thang</label>
+                <select id="month" name="month" class="form-select">
+                    <option value="">Tat ca thang</option>
+                    @for (var month = 1; month <= 12; month++)
+                    {
+                        <option value="@month" selected="@(Model.Filter.Month == month)">@monthNames[month - 1]</option>
+                    }
+                </select>
+                <div class="form-text">Chon nam neu muon loc theo thang.</div>
+            </div>
+
+            <div class="filter-field">
+                <label for="year" class="form-label">Nam</label>
+                <select id="year" name="year" class="form-select">
+                    <option value="">Tat ca nam</option>
+                    @foreach (var year in Model.AvailableYears)
+                    {
+                        <option value="@year" selected="@(Model.Filter.Year == year)">@year</option>
+                    }
+                    @if (Model.Filter.Year.HasValue && !Model.AvailableYears.Contains(Model.Filter.Year.Value))
+                    {
+                        <option value="@Model.Filter.Year" selected="selected">@Model.Filter.Year</option>
+                    }
+                </select>
+            </div>
+
+            <div class="filter-field">
+                <label for="sortOrder" class="form-label">Sap xep</label>
+                <select id="sortOrder" name="sortOrder" class="form-select">
+                    <option value="newest" selected="@(Model.Filter.SortOrder == "newest")">Moi nhat truoc</option>
+                    <option value="oldest" selected="@(Model.Filter.SortOrder == "oldest")">Cu nhat truoc</option>
+                </select>
+            </div>
+
+            <div class="memory-filter-actions">
+                <button type="submit" class="btn btn-primary">Ap dung</button>
+                <a class="btn btn-outline-secondary" asp-action="Index">Xoa bo loc</a>
+            </div>
+        </form>
+    </section>
+
+    @if (!Model.HasResults)
+    {
+        <section class="memory-empty-state memory-filter-empty">
+            <p class="kicker">Khong co ket qua</p>
+            <h2>Khong tim thay ky niem phu hop.</h2>
+            <p>Thu doi bo loc hoac tim kiem bang tu khoa khac.</p>
+            <a class="btn btn-primary" asp-action="Index">Xoa bo loc</a>
+        </section>
+    }
+    else
+    {
+        <section class="memory-list">
+            @foreach (var memory in Model.Memories)
+            {
+                <article class="memory-card">
+                    @if (string.IsNullOrWhiteSpace(memory.CoverImagePath))
+                    {
+                        <div class="memory-card-photo-placeholder">
+                            <span>No photo yet</span>
                         </div>
                     }
-                </div>
-            </article>
-        }
-    </section>
+                    else
+                    {
+                        <a class="memory-card-cover" asp-action="Details" asp-route-id="@memory.Id">
+                            <img src="@memory.CoverImagePath" alt="@memory.Title" />
+                        </a>
+                    }
+                    <div class="memory-card-body">
+                        <div class="memory-card-meta">
+                            <span>@memory.MemoryDate.ToString("dd MMM yyyy")</span>
+                            <span>@memory.Feeling</span>
+                        </div>
+                        <h2>
+                            <a asp-action="Details" asp-route-id="@memory.Id">@memory.Title</a>
+                        </h2>
+                        @if (!string.IsNullOrWhiteSpace(memory.Location))
+                        {
+                            <p class="memory-location">@memory.Location</p>
+                        }
+                        <p class="memory-preview-text">
+                            @(string.IsNullOrWhiteSpace(memory.Story)
+                                ? "No story added yet."
+                                : memory.Story.Length > 180 ? $"{memory.Story[..180]}..." : memory.Story)
+                        </p>
+                        @if (memory.Tags.Any())
+                        {
+                            <div class="tag-row">
+                                @foreach (var tag in memory.Tags)
+                                {
+                                    <span>@tag</span>
+                                }
+                            </div>
+                        }
+                    </div>
+                </article>
+            }
+        </section>
+    }
 }

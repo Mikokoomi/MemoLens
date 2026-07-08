@@ -26,7 +26,15 @@ public class MemoriesController : Controller
         _userManager = userManager;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(
+        string? search,
+        string? feeling,
+        int? tagId,
+        DateTime? fromDate,
+        DateTime? toDate,
+        int? month,
+        int? year,
+        string? sortOrder)
     {
         var userId = _userManager.GetUserId(User);
 
@@ -35,14 +43,60 @@ public class MemoriesController : Controller
             return Challenge();
         }
 
-        var memories = await _context.Memories
+        var filter = new MemoryFilterViewModel
+        {
+            Search = CleanOptionalText(search),
+            Feeling = CleanOptionalText(feeling),
+            TagId = tagId,
+            FromDate = fromDate?.Date,
+            ToDate = toDate?.Date,
+            Month = month,
+            Year = year,
+            SortOrder = string.Equals(sortOrder, "oldest", StringComparison.OrdinalIgnoreCase) ? "oldest" : "newest"
+        };
+
+        var validationMessages = new List<string>();
+        var baseQuery = _context.Memories
             .AsNoTracking()
-            .Include(memory => memory.Images)
-            .Include(memory => memory.MemoryTags)
-                .ThenInclude(memoryTag => memoryTag.Tag)
-            .Where(memory => memory.UserId == userId && !memory.IsDeleted)
-            .OrderByDescending(memory => memory.MemoryDate)
-            .ThenByDescending(memory => memory.CreatedAt)
+            .Where(memory => memory.UserId == userId && !memory.IsDeleted);
+
+        var totalMemoryCount = await baseQuery.CountAsync();
+        var availableTags = await GetAvailableTagsAsync(userId);
+        var availableYears = await baseQuery
+            .Select(memory => memory.MemoryDate.Year)
+            .Distinct()
+            .OrderByDescending(memoryYear => memoryYear)
+            .ToListAsync();
+
+        var query = baseQuery;
+
+        if (!string.IsNullOrWhiteSpace(filter.Search))
+        {
+            var keyword = filter.Search.Trim();
+
+            query = query.Where(memory =>
+                memory.Title.Contains(keyword) ||
+                (memory.Story != null && memory.Story.Contains(keyword)) ||
+                (memory.Location != null && memory.Location.Contains(keyword)) ||
+                memory.MemoryTags.Any(memoryTag => memoryTag.Tag.Name.Contains(keyword)));
+        }
+
+        if (!string.IsNullOrWhiteSpace(filter.Feeling))
+        {
+            query = query.Where(memory => memory.Feeling == filter.Feeling);
+        }
+
+        if (filter.TagId.HasValue)
+        {
+            query = query.Where(memory => memory.MemoryTags.Any(memoryTag => memoryTag.TagId == filter.TagId.Value));
+        }
+
+        query = ApplyDateFilters(query, filter, validationMessages);
+        query = string.Equals(filter.SortOrder, "oldest", StringComparison.OrdinalIgnoreCase)
+            ? query.OrderBy(memory => memory.MemoryDate).ThenBy(memory => memory.CreatedAt)
+            : query.OrderByDescending(memory => memory.MemoryDate).ThenByDescending(memory => memory.CreatedAt);
+
+        var memories = await query
             .Select(memory => new MemoryListItemViewModel
             {
                 Id = memory.Id,
@@ -62,7 +116,15 @@ public class MemoriesController : Controller
             })
             .ToListAsync();
 
-        return View(memories);
+        return View(new MemoryIndexViewModel
+        {
+            Filter = filter,
+            Memories = memories,
+            AvailableTags = availableTags,
+            AvailableYears = availableYears,
+            ValidationMessages = validationMessages,
+            TotalMemoryCount = totalMemoryCount
+        });
     }
 
     public async Task<IActionResult> Details(int id)
@@ -257,6 +319,68 @@ public class MemoriesController : Controller
         await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Index));
+    }
+
+    private async Task<IReadOnlyList<MemoryTagFilterOption>> GetAvailableTagsAsync(string userId)
+    {
+        return await _context.MemoryTags
+            .AsNoTracking()
+            .Where(memoryTag => memoryTag.Memory.UserId == userId && !memoryTag.Memory.IsDeleted)
+            .Select(memoryTag => new MemoryTagFilterOption
+            {
+                Id = memoryTag.Tag.Id,
+                Name = memoryTag.Tag.Name
+            })
+            .Distinct()
+            .OrderBy(tag => tag.Name)
+            .ToListAsync();
+    }
+
+    private static IQueryable<Memory> ApplyDateFilters(
+        IQueryable<Memory> query,
+        MemoryFilterViewModel filter,
+        ICollection<string> validationMessages)
+    {
+        var hasDateRange = filter.FromDate.HasValue || filter.ToDate.HasValue;
+
+        if (hasDateRange)
+        {
+            if (filter.FromDate.HasValue && filter.ToDate.HasValue && filter.FromDate.Value > filter.ToDate.Value)
+            {
+                validationMessages.Add("Tu ngay khong duoc lon hon den ngay. Vui long chon lai khoang thoi gian.");
+                return query.Where(memory => false);
+            }
+
+            if (filter.FromDate.HasValue)
+            {
+                query = query.Where(memory => memory.MemoryDate >= filter.FromDate.Value);
+            }
+
+            if (filter.ToDate.HasValue)
+            {
+                query = query.Where(memory => memory.MemoryDate <= filter.ToDate.Value);
+            }
+
+            return query;
+        }
+
+        if (filter.Month.HasValue && !filter.Year.HasValue)
+        {
+            validationMessages.Add("Vui long chon nam khi loc theo thang. Bo loc thang dang duoc bo qua.");
+            return query;
+        }
+
+        if (filter.Year.HasValue)
+        {
+            query = query.Where(memory => memory.MemoryDate.Year == filter.Year.Value);
+
+            if (filter.Month.HasValue)
+            {
+                query = query.Where(memory => memory.MemoryDate.Month == filter.Month.Value);
+            }
+        }
+
+        return query;
     }
 
     private async Task<Memory?> FindOwnedMemoryAsync(int id, bool asTracking = true)

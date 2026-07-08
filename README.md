@@ -146,6 +146,44 @@ Privacy note for MVP:
 
 For local development and school demo simplicity, uploaded images are stored under `wwwroot/uploads`, which means files can be served as static files if someone knows the URL. A production version should move images outside `wwwroot` or serve them through an authorized controller so every image request checks the logged-in user's permission.
 
+## Timeline Search and Filters
+
+Phase 6 timeline search and filters are completed.
+
+Search checks the current user's non-deleted memories across:
+
+- Title
+- Story / Note
+- Location
+- Tags
+
+Filter options:
+
+- One feeling at a time from the fixed Feeling list.
+- One tag from tags used by the current user's non-deleted memories.
+- Custom date range with FromDate and ToDate.
+- Month + Year.
+- Year only.
+
+Date filter behavior:
+
+- FromDate filters memories where `MemoryDate >= FromDate`.
+- ToDate filters memories where `MemoryDate <= ToDate`.
+- If FromDate/ToDate and Month/Year are both provided, the custom date range is used first and Month/Year is ignored.
+- Month requires Year. If Month is selected without Year, MemoLens shows a gentle message and ignores the month filter.
+- Year only filters the whole selected year.
+- If FromDate is after ToDate, MemoLens shows a validation message and returns no filtered results.
+
+Sort behavior:
+
+- Default sort is newest first.
+- Users can choose newest first or oldest first.
+- Sorting uses `MemoryDate` first, then `CreatedAt`.
+
+Privacy reminder:
+
+All timeline search, filters, tag dropdowns, and sort results are scoped to the logged-in user. Deleted memories are excluded. Admin users do not browse other users' private memories in this phase.
+
 ## Feeling List
 
 Memory feelings are stored as strings from this fixed list:
@@ -180,6 +218,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - Admin/User role seeding added.
 - User-scoped memory CRUD added.
 - Memory image upload and gallery added.
+- Timeline search and filters added.
 - No albums CRUD yet.
 - No AI or social features.
 - No admin dashboard yet.

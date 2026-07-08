@@ -524,6 +524,7 @@ a:hover {
 }
 
 .memory-empty-state,
+.memory-filter-panel,
 .memory-form-panel,
 .memory-detail-main,
 .memory-side-panel {
@@ -537,6 +538,79 @@ a:hover {
   margin: 0 auto;
   max-width: 780px;
   padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+.memory-filter-panel {
+  margin: 0 auto 1.5rem;
+  max-width: 1080px;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+.memory-filter-heading {
+  align-items: end;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 0.7fr) minmax(260px, 0.5fr);
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+}
+
+.memory-filter-heading h2 {
+  font-size: clamp(1.55rem, 3vw, 2.1rem);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+  margin-bottom: 0;
+}
+
+.memory-filter-heading p {
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+.memory-filter-form {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.filter-field {
+  min-width: 0;
+}
+
+.filter-field-wide {
+  grid-column: span 2;
+}
+
+.memory-filter-actions {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  grid-column: span 2;
+}
+
+.memory-filter-alert {
+  background: #fff8ed;
+  border: 1px solid #ead9bc;
+  border-radius: 10px;
+  color: #76572a;
+  margin-bottom: 1rem;
+  padding: 0.9rem 1rem;
+}
+
+.memory-filter-alert p {
+  margin-bottom: 0.35rem;
+}
+
+.memory-filter-alert p:last-child {
+  margin-bottom: 0;
+}
+
+.memory-filter-empty {
+  margin-top: 1.5rem;
 }
 
 .memory-list {
@@ -853,6 +927,16 @@ a:hover {
 
   .memory-card {
     grid-template-columns: 1fr;
+  }
+
+  .memory-filter-heading,
+  .memory-filter-form {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-field-wide,
+  .memory-filter-actions {
+    grid-column: auto;
   }
 
   .memory-facts {
