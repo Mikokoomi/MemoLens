@@ -100,7 +100,8 @@ a:hover {
 
 .memory-preview,
 .feature-panel,
-.content-panel {
+.content-panel,
+.auth-panel {
   background: #ffffff;
   border: 1px solid #eadfd4;
   border-radius: 8px;
@@ -153,6 +154,28 @@ a:hover {
 
 .content-panel {
   padding: 2rem;
+}
+
+.auth-panel {
+  margin: 0 auto 4rem;
+  max-width: 520px;
+  padding: 2rem;
+}
+
+.account-label {
+  color: #6d5b4c;
+  font-size: 0.95rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.form-control,
+.form-check-input {
+  border-color: #d8c8b8;
+}
+
+.form-control:focus {
+  border-color: #9a6845;
 }
 
 .placeholder-note {

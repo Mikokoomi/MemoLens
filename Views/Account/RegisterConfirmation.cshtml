@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "Check your confirmation link";
+    var email = ViewData["Email"] as string;
+}
+
+<section class="content-panel">
+    <p class="eyebrow">Almost ready</p>
+    <h1 class="fw-semibold">Confirm your email before logging in.</h1>
+    <p class="lead text-muted">
+        The development email sender logged a confirmation link for @(email ?? "your account").
+        Check the app console or debug output, open that link, then return to login.
+    </p>
+    <a class="btn btn-outline-secondary" asp-action="Login">Go to Login</a>
+</section>

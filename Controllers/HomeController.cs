@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using MemoLens.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MemoLens.Controllers;
@@ -23,16 +24,19 @@ public class HomeController : Controller
         return View();
     }
 
+    [Authorize]
     public IActionResult Timeline()
     {
         return View();
     }
 
+    [Authorize]
     public IActionResult Albums()
     {
         return View();
     }
 
+    [Authorize]
     public IActionResult CreateMemory()
     {
         return View();
