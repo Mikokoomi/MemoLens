@@ -2,32 +2,38 @@
     ViewData["Title"] = "Privacy";
 }
 
-<section class="content-panel">
-    <p class="eyebrow">Privacy direction</p>
-    <h1 class="fw-semibold">Memories are private by default.</h1>
-    <p class="lead text-muted">
-        MemoLens is being built as a personal memory diary. The product direction is private-first:
-        users should only see their own memories after signing in.
-    </p>
+<section class="content-panel content-panel-wide">
+    <div class="content-intro">
+        <p class="kicker">Privacy promise</p>
+        <h1>Memories are private by default.</h1>
+        <p>
+            MemoLens is being built as a personal memory diary. The product direction is simple:
+            a user should only see their own memories after signing in.
+        </p>
+    </div>
 
-    <div class="row g-4 mt-3">
+    <div class="row g-4 mt-2">
         <div class="col-md-6">
-            <h2>What this means</h2>
-            <ul class="calm-list">
-                <li>No public feed.</li>
-                <li>No likes or comments.</li>
-                <li>No followers or public profiles.</li>
-                <li>Optional private sharing can be considered later, but it is not part of Phase 1.</li>
-            </ul>
+            <div class="quiet-box">
+                <h2>What stays out</h2>
+                <ul class="calm-list">
+                    <li>No public feed.</li>
+                    <li>No likes or comments.</li>
+                    <li>No followers or public profiles.</li>
+                    <li>No explore or trending page.</li>
+                </ul>
+            </div>
         </div>
         <div class="col-md-6">
-            <h2>Future privacy goals</h2>
-            <ul class="calm-list">
-                <li>Require login before viewing memories.</li>
-                <li>Let users edit and delete their own memories.</li>
-                <li>Store image files in uploads and keep only image paths in the database.</li>
-                <li>Support export or account deletion in a future phase.</li>
-            </ul>
+            <div class="quiet-box">
+                <h2>What comes later</h2>
+                <ul class="calm-list">
+                    <li>Require login before viewing memories.</li>
+                    <li>Let users edit and delete their own memories.</li>
+                    <li>Store image files in uploads and keep only image paths in the database.</li>
+                    <li>Support export or account deletion in a future phase.</li>
+                </ul>
+            </div>
         </div>
     </div>
 </section>

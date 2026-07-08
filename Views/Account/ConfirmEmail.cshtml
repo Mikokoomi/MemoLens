@@ -4,19 +4,19 @@
     ViewData["Title"] = "Email confirmation";
 }
 
-<section class="content-panel">
+<section class="content-panel status-panel">
     @if (Model)
     {
-        <p class="eyebrow">Confirmed</p>
-        <h1 class="fw-semibold">Your email is confirmed.</h1>
-        <p class="lead text-muted">You can now log in and open your private MemoLens timeline.</p>
+        <p class="kicker">Confirmed</p>
+        <h1>Your email is confirmed.</h1>
+        <p>You can now log in and open your private MemoLens timeline.</p>
         <a class="btn btn-primary" asp-action="Login">Login</a>
     }
     else
     {
-        <p class="eyebrow">Confirmation failed</p>
-        <h1 class="fw-semibold">We could not confirm this email link.</h1>
-        <p class="lead text-muted">The link may be missing, expired, or already used. Register again or ask for a new confirmation flow later.</p>
+        <p class="kicker">Confirmation failed</p>
+        <h1>We could not confirm this email link.</h1>
+        <p>The link may be missing, expired, or already used. Register again or ask for a new confirmation flow later.</p>
         <a class="btn btn-outline-secondary" asp-action="Register">Back to Register</a>
     }
 </section>

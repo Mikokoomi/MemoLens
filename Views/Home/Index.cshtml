@@ -5,29 +5,33 @@
 <section class="home-hero">
     <div class="row align-items-center g-5">
         <div class="col-lg-7">
-            <p class="eyebrow">Private photo journal</p>
-            <h1 class="display-5 fw-semibold">Keep the stories behind your favorite memories.</h1>
-            <p class="lead text-muted mt-3">
-                MemoLens is a calm, private space for photos, notes, moods, dates, places, and albums.
-                It is designed for personal reflection, not public attention.
+            <p class="kicker">Private photo journal</p>
+            <h1 class="hero-title">A quiet place for the memories behind your photos.</h1>
+            <p class="hero-copy">
+                MemoLens helps you keep personal photos with notes, moods, dates, places, and albums.
+                It is built for reflection, not public attention.
             </p>
             <div class="d-flex flex-wrap gap-3 mt-4">
                 <a class="btn btn-primary btn-lg" asp-controller="Home" asp-action="CreateMemory">Plan a Memory</a>
-                <a class="btn btn-outline-secondary btn-lg" asp-controller="Home" asp-action="Timeline">View Timeline</a>
+                <a class="btn btn-outline-secondary btn-lg" asp-controller="Home" asp-action="Privacy">Read Privacy Promise</a>
             </div>
         </div>
         <div class="col-lg-5">
             <div class="memory-preview">
-                <p class="preview-date">Today</p>
+                <div class="preview-topline">
+                    <span>Private draft</span>
+                    <span>Today</span>
+                </div>
                 <h2>A quiet morning worth remembering</h2>
                 <p>
-                    Add a photo, a small story, a mood, and the place it happened.
-                    Later, this becomes more than storage: it becomes a personal timeline.
+                    A photo becomes easier to return to when it carries the small details:
+                    what happened, where it was, and how it felt.
                 </p>
-                <div class="preview-tags">
+                <div class="preview-divider"></div>
+                <div class="preview-meta">
                     <span>peaceful</span>
-                    <span>family</span>
                     <span>home</span>
+                    <span>family</span>
                 </div>
             </div>
         </div>
@@ -35,23 +39,31 @@
 </section>
 
 <section class="section-spacing">
+    <div class="section-heading">
+        <h2>Designed for personal memory keeping.</h2>
+        <p>Simple surfaces, clear privacy boundaries, and a structure that is easy to explain in a school project.</p>
+    </div>
+
     <div class="row g-4">
         <div class="col-md-4">
             <div class="feature-panel">
-                <h2>Stories first</h2>
-                <p>Write the note, mood, location, and context that make each photo meaningful.</p>
+                <span class="feature-number">01</span>
+                <h3>Stories first</h3>
+                <p>Save the note, mood, location, and context that make each photo meaningful.</p>
             </div>
         </div>
         <div class="col-md-4">
             <div class="feature-panel">
-                <h2>Private by default</h2>
-                <p>Your memories are for you. No public feed, no likes, no comments, no followers.</p>
+                <span class="feature-number">02</span>
+                <h3>Private by default</h3>
+                <p>Your memories are for you. No feed, no likes, no comments, no followers.</p>
             </div>
         </div>
         <div class="col-md-4">
             <div class="feature-panel">
-                <h2>Easy to grow</h2>
-                <p>The project starts simple with ASP.NET Core MVC, Bootstrap, and clear beginner-friendly structure.</p>
+                <span class="feature-number">03</span>
+                <h3>Built to grow</h3>
+                <p>ASP.NET Core MVC, Bootstrap, Identity, and SQL Server keep the project practical and teachable.</p>
             </div>
         </div>
     </div>

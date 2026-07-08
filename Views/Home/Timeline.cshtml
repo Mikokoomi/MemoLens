@@ -2,15 +2,28 @@
     ViewData["Title"] = "Timeline";
 }
 
-<section class="content-panel">
-    <p class="eyebrow">Placeholder</p>
-    <h1 class="fw-semibold">Your private timeline will live here.</h1>
-    <p class="lead text-muted">
-        This page is reserved for the future memory timeline. In later phases it will show the
-        signed-in user's memories by date with mood, place, and photo preview.
-    </p>
+<section class="placeholder-shell">
+    <div class="placeholder-main">
+        <p class="kicker">Private timeline</p>
+        <h1>Your memories will appear in a calm timeline.</h1>
+        <p>
+            This protected page is ready for the future memory list. Later it will show the signed-in user's
+            moments by date, with mood, place, and a gentle photo preview.
+        </p>
+    </div>
 
-    <div class="placeholder-note">
-        Phase 1 only: no database, authentication, image upload, or real memory data has been implemented yet.
+    <div class="placeholder-card">
+        <div class="timeline-line"></div>
+        <div class="timeline-item">
+            <span>Memory date</span>
+            <strong>Title and mood preview</strong>
+        </div>
+        <div class="timeline-item muted">
+            <span>Location</span>
+            <strong>Story excerpt</strong>
+        </div>
+        <p class="placeholder-note">
+            Placeholder only. Memory CRUD, image upload, and real data are intentionally not implemented in this task.
+        </p>
     </div>
 </section>

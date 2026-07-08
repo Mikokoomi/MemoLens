@@ -4,46 +4,48 @@
     ViewData["Title"] = "Register";
 }
 
-<section class="auth-panel">
-    <p class="eyebrow">Create private space</p>
-    <h1 class="fw-semibold">Start your MemoLens journal.</h1>
-    <p class="text-muted">Your account protects future memories behind a confirmed email and password.</p>
+<section class="auth-wrap">
+    <div class="auth-panel">
+        <p class="kicker">Create private space</p>
+        <h1>Start your MemoLens journal.</h1>
+        <p class="auth-copy">Your account is protected by ASP.NET Core Identity and email confirmation.</p>
 
-    <form asp-action="Register" method="post" class="mt-4">
-        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <form asp-action="Register" method="post" class="auth-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger validation-summary mb-3"></div>
 
-        <div class="mb-3">
-            <label asp-for="Email" class="form-label"></label>
-            <input asp-for="Email" class="form-control" autocomplete="email" />
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" autocomplete="email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
 
-        <div class="mb-3">
-            <label asp-for="DisplayName" class="form-label"></label>
-            <input asp-for="DisplayName" class="form-control" autocomplete="name" />
-            <span asp-validation-for="DisplayName" class="text-danger"></span>
-        </div>
+            <div class="mb-3">
+                <label asp-for="DisplayName" class="form-label"></label>
+                <input asp-for="DisplayName" class="form-control" autocomplete="name" />
+                <span asp-validation-for="DisplayName" class="text-danger"></span>
+            </div>
 
-        <div class="mb-3">
-            <label asp-for="Password" class="form-label"></label>
-            <input asp-for="Password" class="form-control" autocomplete="new-password" />
-            <span asp-validation-for="Password" class="text-danger"></span>
-            <div class="form-text">Use at least 8 characters with letters and numbers.</div>
-        </div>
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control" autocomplete="new-password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+                <div class="form-text">At least 8 characters, with letters and numbers.</div>
+            </div>
 
-        <div class="mb-4">
-            <label asp-for="ConfirmPassword" class="form-label"></label>
-            <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" />
-            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-        </div>
+            <div class="mb-4">
+                <label asp-for="ConfirmPassword" class="form-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
 
-        <button type="submit" class="btn btn-primary w-100">Register</button>
-    </form>
+            <button type="submit" class="btn btn-primary w-100">Register</button>
+        </form>
 
-    <p class="mt-4 mb-0 text-muted">
-        Already have an account?
-        <a asp-action="Login">Login</a>
-    </p>
+        <p class="auth-switch">
+            Already have an account?
+            <a asp-action="Login">Login</a>
+        </p>
+    </div>
 </section>
 
 @section Scripts {
