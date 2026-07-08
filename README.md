@@ -7,8 +7,9 @@ MemoLens is not a social network. It has no public feed, likes, comments, follow
 ## Tech Stack
 
 - ASP.NET Core MVC
-- SQL Server, planned for later phases
-- Entity Framework Core, planned for later phases
+- SQL Server
+- Entity Framework Core
+- ASP.NET Core Identity-ready user model
 - Bootstrap
 - GitHub
 
@@ -31,16 +32,43 @@ If the HTTPS development certificate is not trusted yet, run:
 dotnet dev-certs https --trust
 ```
 
+## Database Setup Notes
+
+The SQL Server connection string is stored in `appsettings.json` under:
+
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=MemoLensDb;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True"
+}
+```
+
+The default connection uses SQL Server LocalDB so the project stays beginner-friendly for local development.
+
+To create or update the local database after migrations exist, run:
+
+```bash
+dotnet tool restore
+dotnet tool run dotnet-ef database update
+```
+
+To add a new migration later, run:
+
+```bash
+dotnet tool run dotnet-ef migrations add MigrationName
+```
+
 ## Current Status
 
-Phase 1 setup is completed:
+Phase 2 database/models setup is completed:
 
-- ASP.NET Core MVC project created.
-- Bootstrap layout added.
-- Home and Privacy pages added.
-- Placeholder pages added for Timeline, Albums, and Create Memory.
-- No login/register yet.
-- No database yet.
+- Entity Framework Core SQL Server packages added.
+- ASP.NET Core Identity EntityFrameworkCore package added.
+- `ApplicationDbContext` added.
+- `ApplicationUser` inherits from IdentityUser for future Identity support.
+- Domain models added for memories, images, tags, albums, and join tables.
+- Initial migration added.
+- No login/register UI yet.
+- No CRUD controllers or views yet.
 - No image upload yet.
 - No AI or social features.
 
