@@ -14,6 +14,8 @@ public class MemoryDetailsViewModel
 
     public string? Location { get; set; }
 
+    public IReadOnlyList<MemoryImageViewModel> Images { get; set; } = [];
+
     public IReadOnlyList<string> Tags { get; set; } = [];
 
     public DateTime CreatedAt { get; set; }

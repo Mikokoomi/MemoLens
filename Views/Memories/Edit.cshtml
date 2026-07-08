@@ -8,12 +8,12 @@
     <div class="memory-form-intro">
         <p class="kicker">Edit memory</p>
         <h1>Refine the story without changing its privacy.</h1>
-        <p>Update the text details for this memory. Image upload remains planned for Phase 5.</p>
+        <p>Update the text details, add more photos, or remove photos that no longer belong here.</p>
     </div>
 
-    <form asp-action="Edit" asp-route-id="@Model.Id" method="post" class="memory-form-panel">
+    <form asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data" class="memory-form-panel">
         <input asp-for="Id" type="hidden" />
-        <div asp-validation-summary="ModelOnly" class="text-danger validation-summary mb-3"></div>
+        <div asp-validation-summary="All" class="text-danger validation-summary mb-3"></div>
 
         <div class="mb-3">
             <label asp-for="Title" class="form-label"></label>
@@ -54,9 +54,16 @@
 
         <div class="mb-4">
             <label asp-for="TagsText" class="form-label"></label>
-            <input asp-for="TagsText" class="form-control" placeholder="thực tập, gia đình, cà phê" />
+            <input asp-for="TagsText" class="form-control" placeholder="thuc tap, gia dinh, ca phe" />
             <span asp-validation-for="TagsText" class="text-danger"></span>
             <div class="form-text">Separate tags with commas.</div>
+        </div>
+
+        <div class="mb-4 memory-upload-box">
+            <label asp-for="NewImages" class="form-label"></label>
+            <input asp-for="NewImages" class="form-control" type="file" multiple accept=".jpg,.jpeg,.png,.webp" />
+            <span asp-validation-for="NewImages" class="text-danger"></span>
+            <div class="form-text">Toi da 10 anh, moi anh toi da 5MB. Ho tro JPG, PNG, WEBP.</div>
         </div>
 
         <div class="d-flex flex-wrap gap-2">
@@ -64,6 +71,31 @@
             <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.Id">Cancel</a>
         </div>
     </form>
+
+    <aside class="memory-form-panel">
+        <p class="kicker">Photos</p>
+        <h2 class="memory-panel-title">Existing photos</h2>
+        @if (!Model.ExistingImages.Any())
+        {
+            <div class="memory-card-photo-placeholder large">
+                <span>No photos have been added yet.</span>
+            </div>
+        }
+        else
+        {
+            <div class="edit-image-grid">
+                @foreach (var image in Model.ExistingImages)
+                {
+                    <article class="edit-image-card">
+                        <img src="@image.ImagePath" alt="@image.OriginalFileName" />
+                        <form asp-action="DeleteImage" asp-route-id="@Model.Id" asp-route-imageId="@image.Id" method="post">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Delete photo</button>
+                        </form>
+                    </article>
+                }
+            </div>
+        }
+    </aside>
 </section>
 
 @section Scripts {

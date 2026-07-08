@@ -14,5 +14,7 @@ public class MemoryListItemViewModel
 
     public string? Location { get; set; }
 
+    public string? CoverImagePath { get; set; }
+
     public IReadOnlyList<string> Tags { get; set; } = [];
 }

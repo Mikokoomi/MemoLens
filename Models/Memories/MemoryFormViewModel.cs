@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace MemoLens.Models.Memories;
 
@@ -28,6 +29,11 @@ public class MemoryFormViewModel
 
     [Display(Name = "Tags")]
     public string? TagsText { get; set; }
+
+    [Display(Name = "Photos")]
+    public List<IFormFile> NewImages { get; set; } = [];
+
+    public IReadOnlyList<MemoryImageViewModel> ExistingImages { get; set; } = [];
 
     public IReadOnlyList<string> FeelingOptions => MemoryFeelingOptions.All;
 }

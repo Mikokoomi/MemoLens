@@ -99,9 +99,9 @@ IdentitySeed__AdminPassword
 
 If those values are missing, MemoLens only seeds the roles.
 
-## Memory CRUD Status
+## Memory CRUD and Image Upload Status
 
-Phase 4 memory CRUD is completed:
+Phase 4 memory CRUD is completed, and Phase 5 image upload is completed:
 
 - Logged-in users can create, view, edit, and delete their own text-based memories.
 - Timeline uses `MemoriesController.Index`.
@@ -110,7 +110,41 @@ Phase 4 memory CRUD is completed:
 - Admin users do not browse other users' private memories in this phase.
 - Delete is a soft delete using `IsDeleted` and `DeletedAt`.
 - Deleted memories disappear from the normal timeline.
-- Image upload is not implemented yet and is planned for Phase 5.
+- Create Memory supports uploading photos.
+- Edit Memory supports adding more photos and deleting individual photos.
+- Detail pages show a simple private gallery.
+- Timeline shows the first uploaded image as the memory cover when available.
+
+## Image Upload Rules
+
+MemoLens stores image files on disk and stores only image paths in the database. It does not store binary image data in SQL Server.
+
+Allowed image formats:
+
+- `.jpg`
+- `.jpeg`
+- `.png`
+- `.webp`
+
+Limits:
+
+- Maximum 10 images per memory.
+- Maximum 5MB per image.
+- SVG, GIF, HEIC, executable files, and unknown file types are blocked.
+- Saved file names use generated GUID values, not the original file names.
+- The original file name is kept only as metadata in `MemoryImages.OriginalFileName`.
+
+Upload folder behavior:
+
+```text
+wwwroot/uploads/memories/{userId}/{memoryId}/{generated-file-name}
+```
+
+Individual image delete removes both the `MemoryImage` database record and the physical file if it exists. Soft deleting a memory hides it from the normal timeline but does not delete image files yet.
+
+Privacy note for MVP:
+
+For local development and school demo simplicity, uploaded images are stored under `wwwroot/uploads`, which means files can be served as static files if someone knows the URL. A production version should move images outside `wwwroot` or serve them through an authorized controller so every image request checks the logged-in user's permission.
 
 ## Feeling List
 
@@ -145,7 +179,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - Custom Register/Login/Confirm Email/Logout flow added.
 - Admin/User role seeding added.
 - User-scoped memory CRUD added.
-- No image upload yet.
+- Memory image upload and gallery added.
 - No albums CRUD yet.
 - No AI or social features.
 - No admin dashboard yet.

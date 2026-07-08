@@ -40,14 +40,29 @@
         }
 
         <p class="memory-time-note">
-            Created @Model.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm") · Updated @Model.UpdatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")
+            Created @Model.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm") &middot; Updated @Model.UpdatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")
         </p>
     </div>
 
     <aside class="memory-side-panel">
-        <div class="memory-card-photo-placeholder large">
-            <span>Photos will be added in Phase 5</span>
-        </div>
+        <p class="kicker">Photo gallery</p>
+        @if (!Model.Images.Any())
+        {
+            <div class="memory-card-photo-placeholder large">
+                <span>No photos have been added to this memory yet.</span>
+            </div>
+        }
+        else
+        {
+            <div class="memory-gallery">
+                @foreach (var image in Model.Images)
+                {
+                    <figure>
+                        <img src="@image.ImagePath" alt="@image.OriginalFileName" />
+                    </figure>
+                }
+            </div>
+        }
         <div class="d-grid gap-2">
             <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit Memory</a>
             <a class="btn btn-outline-secondary" asp-action="Delete" asp-route-id="@Model.Id">Delete Memory</a>

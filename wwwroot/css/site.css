@@ -582,6 +582,21 @@ a:hover {
   min-height: 220px;
 }
 
+.memory-card-cover {
+  border-radius: 10px;
+  display: block;
+  min-height: 132px;
+  overflow: hidden;
+}
+
+.memory-card-cover img {
+  display: block;
+  height: 100%;
+  min-height: 132px;
+  object-fit: cover;
+  width: 100%;
+}
+
 .memory-card-meta {
   color: var(--muted);
   display: flex;
@@ -718,6 +733,59 @@ a:hover {
   resize: vertical;
 }
 
+.memory-form-shell > aside.memory-form-panel {
+  grid-column: 2;
+}
+
+.memory-panel-title {
+  font-size: 1.25rem;
+  font-weight: 730;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.memory-upload-box {
+  background: var(--surface-soft);
+  border: 1px dashed #c7cdbd;
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.memory-gallery,
+.edit-image-grid {
+  display: grid;
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.memory-gallery figure,
+.edit-image-card {
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin: 0;
+  overflow: hidden;
+}
+
+.memory-gallery img,
+.edit-image-card img {
+  display: block;
+  height: 220px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.edit-image-card {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.6rem;
+}
+
+.edit-image-card img {
+  border-radius: 8px;
+  height: 150px;
+}
+
 .form-select {
   background-color: var(--surface-soft);
   border-color: #cfd3c8;
@@ -777,6 +845,10 @@ a:hover {
   .memory-form-shell,
   .memory-detail {
     grid-template-columns: 1fr;
+  }
+
+  .memory-form-shell > aside.memory-form-panel {
+    grid-column: auto;
   }
 
   .memory-card {

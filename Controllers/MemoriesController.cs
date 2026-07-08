@@ -1,6 +1,7 @@
 using MemoLens.Data;
 using MemoLens.Models;
 using MemoLens.Models.Memories;
+using MemoLens.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,11 +13,16 @@ namespace MemoLens.Controllers;
 public class MemoriesController : Controller
 {
     private readonly ApplicationDbContext _context;
+    private readonly IImageStorageService _imageStorageService;
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public MemoriesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+    public MemoriesController(
+        ApplicationDbContext context,
+        IImageStorageService imageStorageService,
+        UserManager<ApplicationUser> userManager)
     {
         _context = context;
+        _imageStorageService = imageStorageService;
         _userManager = userManager;
     }
 
@@ -31,6 +37,7 @@ public class MemoriesController : Controller
 
         var memories = await _context.Memories
             .AsNoTracking()
+            .Include(memory => memory.Images)
             .Include(memory => memory.MemoryTags)
                 .ThenInclude(memoryTag => memoryTag.Tag)
             .Where(memory => memory.UserId == userId && !memory.IsDeleted)
@@ -44,6 +51,10 @@ public class MemoriesController : Controller
                 Feeling = memory.Feeling,
                 MemoryDate = memory.MemoryDate,
                 Location = memory.Location,
+                CoverImagePath = memory.Images
+                    .OrderBy(image => image.UploadedAt)
+                    .Select(image => image.ImagePath)
+                    .FirstOrDefault(),
                 Tags = memory.MemoryTags
                     .OrderBy(memoryTag => memoryTag.Tag.Name)
                     .Select(memoryTag => memoryTag.Tag.Name)
@@ -75,6 +86,8 @@ public class MemoriesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(MemoryFormViewModel model)
     {
+        ValidateImageUpload(model.NewImages, existingImageCount: 0);
+
         if (!ModelState.IsValid)
         {
             return View(model);
@@ -105,6 +118,9 @@ public class MemoriesController : Controller
         _context.Memories.Add(memory);
         await _context.SaveChangesAsync();
 
+        await AddImagesAsync(memory, model.NewImages, userId);
+        await _context.SaveChangesAsync();
+
         return RedirectToAction(nameof(Details), new { id = memory.Id });
     }
 
@@ -125,6 +141,7 @@ public class MemoriesController : Controller
             Feeling = memory.Feeling,
             MemoryDate = memory.MemoryDate,
             Location = memory.Location,
+            ExistingImages = ToImageViewModels(memory.Images),
             TagsText = string.Join(", ", memory.MemoryTags
                 .OrderBy(memoryTag => memoryTag.Tag.Name)
                 .Select(memoryTag => memoryTag.Tag.Name))
@@ -140,16 +157,19 @@ public class MemoriesController : Controller
             return NotFound();
         }
 
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
-
         var memory = await FindOwnedMemoryAsync(id);
 
         if (memory is null)
         {
             return NotFound();
+        }
+
+        ValidateImageUpload(model.NewImages, memory.Images.Count);
+
+        if (!ModelState.IsValid)
+        {
+            model.ExistingImages = ToImageViewModels(memory.Images);
+            return View(model);
         }
 
         memory.Title = model.Title.Trim();
@@ -162,9 +182,49 @@ public class MemoriesController : Controller
         _context.MemoryTags.RemoveRange(memory.MemoryTags);
         memory.MemoryTags.Clear();
         await ApplyTagsAsync(memory, model.TagsText);
+        await AddImagesAsync(memory, model.NewImages, memory.UserId);
         await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Details), new { id = memory.Id });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteImage(int id, int imageId, string? returnTo)
+    {
+        var userId = _userManager.GetUserId(User);
+
+        if (userId is null)
+        {
+            return Challenge();
+        }
+
+        var image = await _context.MemoryImages
+            .Include(memoryImage => memoryImage.Memory)
+            .FirstOrDefaultAsync(memoryImage =>
+                memoryImage.Id == imageId &&
+                memoryImage.MemoryId == id &&
+                memoryImage.Memory.UserId == userId &&
+                !memoryImage.Memory.IsDeleted);
+
+        if (image is null)
+        {
+            return NotFound();
+        }
+
+        var imagePath = image.ImagePath;
+
+        _context.MemoryImages.Remove(image);
+        await _context.SaveChangesAsync();
+
+        _imageStorageService.DeleteImageFile(imagePath);
+
+        if (string.Equals(returnTo, "details", StringComparison.OrdinalIgnoreCase))
+        {
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        return RedirectToAction(nameof(Edit), new { id });
     }
 
     public async Task<IActionResult> Delete(int id)
@@ -209,6 +269,7 @@ public class MemoriesController : Controller
         }
 
         var query = _context.Memories
+            .Include(memory => memory.Images)
             .Include(memory => memory.MemoryTags)
                 .ThenInclude(memoryTag => memoryTag.Tag)
             .Where(memory => memory.Id == id && memory.UserId == userId && !memory.IsDeleted);
@@ -260,6 +321,52 @@ public class MemoriesController : Controller
         return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
     }
 
+    private void ValidateImageUpload(IReadOnlyCollection<IFormFile> newImages, int existingImageCount)
+    {
+        var realNewImages = newImages.Where(image => image.Length > 0).ToList();
+
+        if (existingImageCount + realNewImages.Count > _imageStorageService.MaxImagesPerMemory)
+        {
+            ModelState.AddModelError(nameof(MemoryFormViewModel.NewImages), "Moi ky uc chi duoc luu toi da 10 anh.");
+        }
+
+        foreach (var error in _imageStorageService.ValidateImages(realNewImages))
+        {
+            ModelState.AddModelError(nameof(MemoryFormViewModel.NewImages), error);
+        }
+    }
+
+    private async Task AddImagesAsync(Memory memory, IReadOnlyCollection<IFormFile> newImages, string userId)
+    {
+        foreach (var image in newImages.Where(image => image.Length > 0))
+        {
+            var savedImage = await _imageStorageService.SaveImageAsync(image, userId, memory.Id);
+
+            memory.Images.Add(new MemoryImage
+            {
+                MemoryId = memory.Id,
+                ImagePath = savedImage.ImagePath,
+                OriginalFileName = savedImage.OriginalFileName,
+                UploadedAt = DateTime.UtcNow
+            });
+        }
+    }
+
+    private static IReadOnlyList<MemoryImageViewModel> ToImageViewModels(IEnumerable<MemoryImage> images)
+    {
+        return images
+            .OrderBy(image => image.UploadedAt)
+            .Select(image => new MemoryImageViewModel
+            {
+                Id = image.Id,
+                ImagePath = image.ImagePath,
+                OriginalFileName = image.OriginalFileName,
+                UploadedAt = image.UploadedAt,
+                Caption = image.Caption
+            })
+            .ToList();
+    }
+
     private static MemoryDetailsViewModel ToDetailsViewModel(Memory memory)
     {
         return new MemoryDetailsViewModel
@@ -270,6 +377,7 @@ public class MemoriesController : Controller
             Feeling = memory.Feeling,
             MemoryDate = memory.MemoryDate,
             Location = memory.Location,
+            Images = ToImageViewModels(memory.Images),
             Tags = memory.MemoryTags
                 .OrderBy(memoryTag => memoryTag.Tag.Name)
                 .Select(memoryTag => memoryTag.Tag.Name)
