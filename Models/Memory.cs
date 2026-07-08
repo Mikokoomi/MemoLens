@@ -12,25 +12,28 @@ public class Memory
     public ApplicationUser User { get; set; } = null!;
 
     [Required]
-    [MaxLength(150)]
+    [MaxLength(120)]
     public string Title { get; set; } = string.Empty;
 
-    [Required]
-    public string Story { get; set; } = string.Empty;
+    [MaxLength(4000)]
+    public string? Story { get; set; }
 
     [Required]
     [MaxLength(50)]
-    public string Mood { get; set; } = string.Empty;
+    public string Feeling { get; set; } = string.Empty;
 
     public DateTime MemoryDate { get; set; }
 
-    [Required]
     [MaxLength(200)]
-    public string Location { get; set; } = string.Empty;
+    public string? Location { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    public bool IsDeleted { get; set; }
+
+    public DateTime? DeletedAt { get; set; }
 
     public ICollection<MemoryImage> Images { get; set; } = new List<MemoryImage>();
 

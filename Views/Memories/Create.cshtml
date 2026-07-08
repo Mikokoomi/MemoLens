@@ -1,0 +1,71 @@
+@model MemoLens.Models.Memories.MemoryFormViewModel
+
+@{
+    ViewData["Title"] = "Create Memory";
+}
+
+<section class="memory-form-shell">
+    <div class="memory-form-intro">
+        <p class="kicker">Create memory</p>
+        <h1>Capture the meaning first.</h1>
+        <p>Text-based memories come before photo upload. Add the story, feeling, date, location, and tags now.</p>
+    </div>
+
+    <form asp-action="Create" method="post" class="memory-form-panel">
+        <div asp-validation-summary="ModelOnly" class="text-danger validation-summary mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Story" class="form-label"></label>
+            <textarea asp-for="Story" class="form-control" rows="7"></textarea>
+            <span asp-validation-for="Story" class="text-danger"></span>
+            <div class="form-text">Optional, but this is where the memory becomes personal.</div>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label asp-for="Feeling" class="form-label"></label>
+                <select asp-for="Feeling" class="form-select">
+                    <option value="">Choose a feeling</option>
+                    @foreach (var feeling in Model.FeelingOptions)
+                    {
+                        <option value="@feeling">@feeling</option>
+                    }
+                </select>
+                <span asp-validation-for="Feeling" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="MemoryDate" class="form-label"></label>
+                <input asp-for="MemoryDate" class="form-control" type="date" />
+                <span asp-validation-for="MemoryDate" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="mb-3 mt-3">
+            <label asp-for="Location" class="form-label"></label>
+            <input asp-for="Location" class="form-control" />
+            <span asp-validation-for="Location" class="text-danger"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="TagsText" class="form-label"></label>
+            <input asp-for="TagsText" class="form-control" placeholder="thực tập, gia đình, cà phê" />
+            <span asp-validation-for="TagsText" class="text-danger"></span>
+            <div class="form-text">Separate tags with commas.</div>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+            <button type="submit" class="btn btn-primary">Save Memory</button>
+            <a class="btn btn-outline-secondary" asp-action="Index">Cancel</a>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

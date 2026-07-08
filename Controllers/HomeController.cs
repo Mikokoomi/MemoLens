@@ -27,7 +27,7 @@ public class HomeController : Controller
     [Authorize]
     public IActionResult Timeline()
     {
-        return View();
+        return RedirectToAction("Index", "Memories");
     }
 
     [Authorize]
@@ -39,7 +39,7 @@ public class HomeController : Controller
     [Authorize]
     public IActionResult CreateMemory()
     {
-        return View();
+        return RedirectToAction("Create", "Memories");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

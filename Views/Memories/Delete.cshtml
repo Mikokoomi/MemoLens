@@ -1,0 +1,30 @@
+@model MemoLens.Models.Memories.MemoryDetailsViewModel
+
+@{
+    ViewData["Title"] = "Delete Memory";
+}
+
+<section class="content-panel status-panel">
+    <p class="kicker">Soft delete</p>
+    <h1>Remove this memory from your timeline?</h1>
+    <p>
+        This will hide <strong>@Model.Title</strong> from your normal timeline.
+        The row stays in the database for now and is marked as deleted.
+    </p>
+
+    <dl class="memory-facts compact">
+        <div>
+            <dt>Feeling</dt>
+            <dd>@Model.Feeling</dd>
+        </div>
+        <div>
+            <dt>Date</dt>
+            <dd>@Model.MemoryDate.ToString("dd MMM yyyy")</dd>
+        </div>
+    </dl>
+
+    <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-flex flex-wrap gap-2 mt-4">
+        <button type="submit" class="btn btn-primary">Delete from Timeline</button>
+        <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.Id">Cancel</a>
+    </form>
+</section>

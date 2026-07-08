@@ -1,0 +1,18 @@
+namespace MemoLens.Models.Memories;
+
+public class MemoryListItemViewModel
+{
+    public int Id { get; set; }
+
+    public string Title { get; set; } = string.Empty;
+
+    public string? Story { get; set; }
+
+    public string Feeling { get; set; } = string.Empty;
+
+    public DateTime MemoryDate { get; set; }
+
+    public string? Location { get; set; }
+
+    public IReadOnlyList<string> Tags { get; set; } = [];
+}

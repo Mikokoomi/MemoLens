@@ -1,6 +1,6 @@
 # MemoLens
 
-MemoLens is a private photo journal and memory storytelling web app. It helps users save personal memories with photos, notes, moods, dates, places, tags, and albums.
+MemoLens is a private photo journal and memory storytelling web app. It helps users save personal memories with photos, notes, feelings, dates, places, tags, and albums.
 
 MemoLens is not a social network. It has no public feed, likes, comments, followers, public profiles, or explore page.
 
@@ -64,8 +64,6 @@ dotnet tool run dotnet-ef migrations add MigrationName
 
 ## Authentication Status
 
-Phase 3 authentication setup is completed:
-
 - ASP.NET Core Identity is configured.
 - Login uses email and password.
 - Email confirmation is required before login.
@@ -73,9 +71,7 @@ Phase 3 authentication setup is completed:
 - Login supports Remember Me.
 - Successful login redirects to the private Timeline page.
 - Logout redirects to Home.
-- Timeline, Albums, and Create Memory are protected with authorization.
 - Home and Privacy remain public.
-- No new Phase 3 migration was needed because `InitialCreate` already includes the ASP.NET Core Identity tables.
 
 ## Email Confirmation in Development
 
@@ -103,18 +99,54 @@ IdentitySeed__AdminPassword
 
 If those values are missing, MemoLens only seeds the roles.
 
-## Current Status
+## Memory CRUD Status
 
-Phase 3 authentication is completed:
+Phase 4 memory CRUD is completed:
+
+- Logged-in users can create, view, edit, and delete their own text-based memories.
+- Timeline uses `MemoriesController.Index`.
+- Create Memory uses `MemoriesController.Create`.
+- Memory queries are scoped to the current logged-in user.
+- Admin users do not browse other users' private memories in this phase.
+- Delete is a soft delete using `IsDeleted` and `DeletedAt`.
+- Deleted memories disappear from the normal timeline.
+- Image upload is not implemented yet and is planned for Phase 5.
+
+## Feeling List
+
+Memory feelings are stored as strings from this fixed list:
+
+- Bình yên
+- Vui vẻ
+- Buồn
+- Nhớ
+- Lo lắng
+- Mệt mỏi
+- Khó chịu
+- Lẫn lộn
+- Khác
+
+## Tag Notes
+
+Create and Edit forms accept comma-separated tags, for example:
+
+```text
+thực tập, gia đình, cà phê
+```
+
+MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, and creates new tags when needed. Tags are displayed on the timeline and memory detail page.
+
+## Current Status
 
 - Documentation created.
 - ASP.NET Core MVC project created.
-- EF Core database models and InitialCreate migration added.
+- EF Core database models and migrations added.
 - Identity authentication configured.
 - Custom Register/Login/Confirm Email/Logout flow added.
 - Admin/User role seeding added.
-- No memory CRUD yet.
+- User-scoped memory CRUD added.
 - No image upload yet.
+- No albums CRUD yet.
 - No AI or social features.
 - No admin dashboard yet.
 

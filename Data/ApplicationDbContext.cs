@@ -39,13 +39,13 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         builder.Entity<Memory>(entity =>
         {
             entity.Property(memory => memory.Title)
-                .HasMaxLength(150)
+                .HasMaxLength(120)
                 .IsRequired();
 
             entity.Property(memory => memory.Story)
-                .IsRequired();
+                .HasMaxLength(4000);
 
-            entity.Property(memory => memory.Mood)
+            entity.Property(memory => memory.Feeling)
                 .HasMaxLength(50)
                 .IsRequired();
 
@@ -54,8 +54,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 .IsRequired();
 
             entity.Property(memory => memory.Location)
-                .HasMaxLength(200)
-                .IsRequired();
+                .HasMaxLength(200);
 
             entity.Property(memory => memory.CreatedAt)
                 .IsRequired();
@@ -63,9 +62,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(memory => memory.UpdatedAt)
                 .IsRequired();
 
+            entity.Property(memory => memory.IsDeleted)
+                .IsRequired();
+
             entity.HasIndex(memory => memory.UserId);
             entity.HasIndex(memory => memory.MemoryDate);
-            entity.HasIndex(memory => memory.Mood);
+            entity.HasIndex(memory => memory.Feeling);
 
             entity.HasOne(memory => memory.User)
                 .WithMany(user => user.Memories)

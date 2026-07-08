@@ -1,0 +1,67 @@
+@model IReadOnlyList<MemoLens.Models.Memories.MemoryListItemViewModel>
+
+@{
+    ViewData["Title"] = "Timeline";
+}
+
+<section class="memory-page-header">
+    <div>
+        <p class="kicker">Private timeline</p>
+        <h1>Your memory timeline</h1>
+        <p>Only your confirmed account can see these memories. Photos will be added in Phase 5.</p>
+    </div>
+    <a class="btn btn-primary" asp-action="Create">Create Memory</a>
+</section>
+
+@if (!Model.Any())
+{
+    <section class="memory-empty-state">
+        <p class="kicker">No memories yet</p>
+        <h2>Start with one small moment.</h2>
+        <p>
+            Add a title, story, feeling, date, location, and tags. Keep it simple for now,
+            then add photos in the next phase.
+        </p>
+        <a class="btn btn-primary" asp-action="Create">Create your first memory</a>
+    </section>
+}
+else
+{
+    <section class="memory-list">
+        @foreach (var memory in Model)
+        {
+            <article class="memory-card">
+                <div class="memory-card-photo-placeholder">
+                    <span>Photos in Phase 5</span>
+                </div>
+                <div class="memory-card-body">
+                    <div class="memory-card-meta">
+                        <span>@memory.MemoryDate.ToString("dd MMM yyyy")</span>
+                        <span>@memory.Feeling</span>
+                    </div>
+                    <h2>
+                        <a asp-action="Details" asp-route-id="@memory.Id">@memory.Title</a>
+                    </h2>
+                    @if (!string.IsNullOrWhiteSpace(memory.Location))
+                    {
+                        <p class="memory-location">@memory.Location</p>
+                    }
+                    <p class="memory-preview-text">
+                        @(string.IsNullOrWhiteSpace(memory.Story)
+                            ? "No story added yet."
+                            : memory.Story.Length > 180 ? $"{memory.Story[..180]}..." : memory.Story)
+                    </p>
+                    @if (memory.Tags.Any())
+                    {
+                        <div class="tag-row">
+                            @foreach (var tag in memory.Tags)
+                            {
+                                <span>@tag</span>
+                            }
+                        </div>
+                    }
+                </div>
+            </article>
+        }
+    </section>
+}
