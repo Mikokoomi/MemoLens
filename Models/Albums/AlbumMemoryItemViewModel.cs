@@ -14,7 +14,7 @@ public class AlbumMemoryItemViewModel
 
     public string? Location { get; set; }
 
-    public string? CoverImagePath { get; set; }
+    public int? CoverImageId { get; set; }
 
     public DateTime? AddedAt { get; set; }
 }

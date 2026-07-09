@@ -331,7 +331,7 @@ public class AlbumsController : Controller
             Id = album.Id,
             Title = album.Title,
             Description = album.Description,
-            CoverImagePath = GetAutomaticCoverImagePath(visibleMemories),
+            CoverImageId = GetAutomaticCoverImageId(visibleMemories),
             MemoryCount = visibleMemories.Count,
             CreatedAt = album.CreatedAt,
             UpdatedAt = album.UpdatedAt
@@ -347,7 +347,7 @@ public class AlbumsController : Controller
             Id = album.Id,
             Title = album.Title,
             Description = album.Description,
-            CoverImagePath = GetAutomaticCoverImagePath(visibleMemories),
+            CoverImageId = GetAutomaticCoverImageId(visibleMemories),
             CreatedAt = album.CreatedAt,
             UpdatedAt = album.UpdatedAt,
             Memories = visibleMemories
@@ -364,11 +364,11 @@ public class AlbumsController : Controller
             .ThenBy(albumMemory => albumMemory.Memory.MemoryDate);
     }
 
-    private static string? GetAutomaticCoverImagePath(IEnumerable<AlbumMemory> albumMemories)
+    private static int? GetAutomaticCoverImageId(IEnumerable<AlbumMemory> albumMemories)
     {
         return albumMemories
             .SelectMany(albumMemory => albumMemory.Memory.Images.OrderBy(image => image.UploadedAt))
-            .Select(image => image.ImagePath)
+            .Select(image => (int?)image.Id)
             .FirstOrDefault();
     }
 
@@ -382,9 +382,9 @@ public class AlbumsController : Controller
             Feeling = memory.Feeling,
             MemoryDate = memory.MemoryDate,
             Location = memory.Location,
-            CoverImagePath = memory.Images
+            CoverImageId = memory.Images
                 .OrderBy(image => image.UploadedAt)
-                .Select(image => image.ImagePath)
+                .Select(image => (int?)image.Id)
                 .FirstOrDefault(),
             AddedAt = addedAt
         };

@@ -15,4 +15,8 @@ public interface IImageStorageService
     Task<ImageUploadResult> SaveImageAsync(IFormFile file, string userId, int memoryId);
 
     void DeleteImageFile(string imagePath);
+
+    string? ResolveImagePath(string imagePath);
+
+    string GetContentType(string imagePath);
 }

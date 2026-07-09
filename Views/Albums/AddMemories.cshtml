@@ -39,13 +39,13 @@ else
                 <label class="album-select-card" for="@checkboxId">
                     <input id="@checkboxId" name="SelectedMemoryIds" type="checkbox" value="@memory.Id" checked="@Model.SelectedMemoryIds.Contains(memory.Id)" />
                     <span class="album-select-visual">
-                        @if (string.IsNullOrWhiteSpace(memory.CoverImagePath))
+                        @if (!memory.CoverImageId.HasValue)
                         {
                             <span class="memory-card-photo-placeholder">Chua co anh</span>
                         }
                         else
                         {
-                            <img src="@memory.CoverImagePath" alt="@memory.Title" />
+                            <img src="@Url.Action("MemoryImage", "Images", new { id = memory.CoverImageId })" alt="@memory.Title" onerror="this.hidden=true; this.parentElement.classList.add('image-missing');" />
                         }
                     </span>
                     <span class="album-select-copy">

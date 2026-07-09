@@ -33,7 +33,7 @@
 
     <aside class="memory-side-panel">
         <p class="kicker">Anh bia tu dong</p>
-        @if (string.IsNullOrWhiteSpace(Model.CoverImagePath))
+        @if (!Model.CoverImageId.HasValue)
         {
             <div class="memory-card-photo-placeholder large">
                 <span>MemoLens se dung anh dau tien tu ky niem dau tien trong bo suu tap.</span>
@@ -42,7 +42,7 @@
         else
         {
             <figure class="album-cover-preview">
-                <img src="@Model.CoverImagePath" alt="Anh bia cua bo suu tap @Model.Title" />
+                <img src="@Url.Action("MemoryImage", "Images", new { id = Model.CoverImageId })" alt="Anh bia cua bo suu tap @Model.Title" onerror="this.hidden=true; this.parentElement.classList.add('image-missing');" />
             </figure>
         }
     </aside>
@@ -63,7 +63,7 @@ else
         @foreach (var memory in Model.Memories)
         {
             <article class="memory-card">
-                @if (string.IsNullOrWhiteSpace(memory.CoverImagePath))
+                @if (!memory.CoverImageId.HasValue)
                 {
                     <div class="memory-card-photo-placeholder">
                         <span>Chua co anh</span>
@@ -72,7 +72,7 @@ else
                 else
                 {
                     <a class="memory-card-cover" asp-controller="Memories" asp-action="Details" asp-route-id="@memory.Id">
-                        <img src="@memory.CoverImagePath" alt="@memory.Title" />
+                        <img src="@Url.Action("MemoryImage", "Images", new { id = memory.CoverImageId })" alt="@memory.Title" onerror="this.hidden=true; this.parentElement.classList.add('image-missing');" />
                     </a>
                 }
 

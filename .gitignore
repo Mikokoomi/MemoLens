@@ -40,3 +40,4 @@ Thumbs.db
 
 # Uploads generated during local development
 wwwroot/uploads/
+App_Data/uploads/

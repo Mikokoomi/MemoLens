@@ -4,6 +4,7 @@ namespace MemoLens.Services;
 
 public class LocalImageStorageService : IImageStorageService
 {
+    private const string PrivateRoot = "App_Data";
     private const string UploadRoot = "uploads";
     private const string MemoryFolder = "memories";
     private readonly IWebHostEnvironment _environment;
@@ -66,7 +67,8 @@ public class LocalImageStorageService : IImageStorageService
 
         return new ImageUploadResult
         {
-            ImagePath = $"/{UploadRoot}/{MemoryFolder}/{userFolder}/{memoryId}/{safeFileName}",
+            ImagePath = Path.Combine(UploadRoot, MemoryFolder, userFolder, memoryId.ToString(), safeFileName)
+                .Replace('\\', '/'),
             OriginalFileName = Path.GetFileName(file.FileName)
         };
     }
@@ -78,24 +80,66 @@ public class LocalImageStorageService : IImageStorageService
             return;
         }
 
-        var uploadsRoot = GetUploadRootPath();
-        var trimmedPath = imagePath.TrimStart('/', '\\');
-        var fullPath = Path.GetFullPath(Path.Combine(GetWebRootPath(), trimmedPath));
+        var fullPath = ResolveImagePath(imagePath) ?? ResolveLegacyPublicImagePath(imagePath);
 
-        if (!fullPath.StartsWith(uploadsRoot, StringComparison.OrdinalIgnoreCase))
-        {
-            return;
-        }
-
-        if (File.Exists(fullPath))
+        if (fullPath is not null && File.Exists(fullPath))
         {
             File.Delete(fullPath);
         }
     }
 
+    public string? ResolveImagePath(string imagePath)
+    {
+        if (string.IsNullOrWhiteSpace(imagePath))
+        {
+            return null;
+        }
+
+        var trimmedPath = imagePath.TrimStart('/', '\\');
+        var fullPath = Path.GetFullPath(Path.Combine(GetPrivateRootPath(), trimmedPath));
+        var privateRootPath = GetPrivateRootPath();
+
+        if (!IsPathInsideRoot(fullPath, privateRootPath))
+        {
+            return null;
+        }
+
+        return fullPath;
+    }
+
+    public string GetContentType(string imagePath)
+    {
+        return Path.GetExtension(imagePath).ToLowerInvariant() switch
+        {
+            ".jpg" or ".jpeg" => "image/jpeg",
+            ".png" => "image/png",
+            ".webp" => "image/webp",
+            _ => "application/octet-stream"
+        };
+    }
+
     private string GetUploadRootPath()
     {
-        return Path.GetFullPath(Path.Combine(GetWebRootPath(), UploadRoot));
+        return Path.GetFullPath(Path.Combine(GetPrivateRootPath(), UploadRoot));
+    }
+
+    private string GetPrivateRootPath()
+    {
+        return Path.GetFullPath(Path.Combine(_environment.ContentRootPath, PrivateRoot));
+    }
+
+    private string? ResolveLegacyPublicImagePath(string imagePath)
+    {
+        var trimmedPath = imagePath.TrimStart('/', '\\');
+        var fullPath = Path.GetFullPath(Path.Combine(GetWebRootPath(), trimmedPath));
+        var legacyUploadRootPath = Path.GetFullPath(Path.Combine(GetWebRootPath(), UploadRoot));
+
+        if (!IsPathInsideRoot(fullPath, legacyUploadRootPath))
+        {
+            return null;
+        }
+
+        return fullPath;
     }
 
     private string GetWebRootPath()
@@ -109,5 +153,13 @@ public class LocalImageStorageService : IImageStorageService
         var safeChars = value.Select(character => invalidChars.Contains(character) ? '-' : character).ToArray();
 
         return new string(safeChars);
+    }
+
+    private static bool IsPathInsideRoot(string fullPath, string rootPath)
+    {
+        var normalizedRoot = Path.TrimEndingDirectorySeparator(rootPath) + Path.DirectorySeparatorChar;
+        var normalizedPath = Path.GetFullPath(fullPath);
+
+        return normalizedPath.StartsWith(normalizedRoot, StringComparison.OrdinalIgnoreCase);
     }
 }

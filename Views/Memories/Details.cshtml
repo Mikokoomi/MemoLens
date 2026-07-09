@@ -58,7 +58,7 @@
                 @foreach (var image in Model.Images)
                 {
                     <figure>
-                        <img src="@image.ImagePath" alt="@image.OriginalFileName" />
+                        <img src="@Url.Action("MemoryImage", "Images", new { id = image.Id })" alt="@image.OriginalFileName" onerror="this.hidden=true; this.parentElement.classList.add('image-missing');" />
                     </figure>
                 }
             </div>

@@ -29,13 +29,13 @@ else
         {
             <article class="album-card">
                 <a class="album-cover" asp-action="Details" asp-route-id="@album.Id" aria-label="Mo bo suu tap @album.Title">
-                    @if (string.IsNullOrWhiteSpace(album.CoverImagePath))
+                    @if (!album.CoverImageId.HasValue)
                     {
                         <span>Chua co anh bia</span>
                     }
                     else
                     {
-                        <img src="@album.CoverImagePath" alt="Anh bia cua bo suu tap @album.Title" />
+                        <img src="@Url.Action("MemoryImage", "Images", new { id = album.CoverImageId })" alt="Anh bia cua bo suu tap @album.Title" onerror="this.hidden=true; this.parentElement.classList.add('image-missing');" />
                     }
                 </a>
                 <div class="album-card-body">

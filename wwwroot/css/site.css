@@ -742,6 +742,25 @@ a:hover {
   width: 100%;
 }
 
+.image-missing {
+  align-items: center;
+  background:
+    linear-gradient(135deg, rgba(102, 114, 92, 0.08), rgba(102, 114, 92, 0.02)),
+    var(--surface-soft);
+  color: var(--muted);
+  display: flex;
+  justify-content: center;
+  min-height: 160px;
+  text-align: center;
+}
+
+.image-missing::after {
+  content: "Anh khong con ton tai";
+  display: block;
+  font-size: 0.9rem;
+  padding: 1rem;
+}
+
 .album-card-body {
   padding: 1rem;
 }

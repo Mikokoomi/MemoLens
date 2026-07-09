@@ -87,7 +87,7 @@
                 @foreach (var image in Model.ExistingImages)
                 {
                     <article class="edit-image-card">
-                        <img src="@image.ImagePath" alt="@image.OriginalFileName" />
+                        <img src="@Url.Action("MemoryImage", "Images", new { id = image.Id })" alt="@image.OriginalFileName" onerror="this.hidden=true; this.parentElement.classList.add('image-missing');" />
                         <form asp-action="DeleteImage" asp-route-id="@Model.Id" asp-route-imageId="@image.Id" method="post">
                             <button type="submit" class="btn btn-outline-danger">Delete photo</button>
                         </form>

@@ -117,7 +117,7 @@ Phase 4 memory CRUD is completed, and Phase 5 image upload is completed:
 
 ## Image Upload Rules
 
-MemoLens stores image files on disk and stores only image paths in the database. It does not store binary image data in SQL Server.
+MemoLens stores image files on disk and stores only private relative image paths in the database. It does not store binary image data in SQL Server.
 
 Allowed image formats:
 
@@ -137,14 +137,39 @@ Limits:
 Upload folder behavior:
 
 ```text
-wwwroot/uploads/memories/{userId}/{memoryId}/{generated-file-name}
+App_Data/uploads/memories/{userId}/{memoryId}/{generated-file-name}
 ```
 
-Individual image delete removes both the `MemoryImage` database record and the physical file if it exists. Soft deleting a memory hides it from the normal timeline but does not delete image files yet.
+`App_Data/uploads` is outside `wwwroot`, and MemoLens does not enable static file serving or directory browsing for this private folder.
 
-Privacy note for MVP:
+## Private Image Serving
 
-For local development and school demo simplicity, uploaded images are stored under `wwwroot/uploads`, which means files can be served as static files if someone knows the URL. A production version should move images outside `wwwroot` or serve them through an authorized controller so every image request checks the logged-in user's permission.
+Phase 8 private image storage and authorized image serving is completed.
+
+- Newly uploaded memory images are saved outside `wwwroot` under `App_Data/uploads`.
+- Image files are served through `ImagesController.MemoryImage(int id)`.
+- The image endpoint requires authentication.
+- The endpoint checks that the `MemoryImage` belongs to the current logged-in user's non-deleted memory.
+- Unauthorized users, other users, missing files, and soft-deleted memories receive `NotFound`.
+- Admin users do not browse other users' private images in this phase.
+- Views use the authorized image endpoint instead of direct `ImagePath` URLs.
+- Individual image delete removes both the `MemoryImage` database record and the physical private file if it exists.
+- Soft deleting a memory hides it from the normal timeline but does not delete image files.
+
+Why this changed:
+
+Earlier development uploads used `wwwroot/uploads`, which meant a file could be served directly if someone knew the URL. Phase 8 fixes that privacy issue for new uploads by storing files outside static web root and serving them only after ownership checks.
+
+Backward compatibility note:
+
+Existing development records may still point to old `wwwroot/uploads` paths. Phase 8 does not include a complex old-file migration helper. Old dev uploads may need to be re-uploaded. Missing old files are handled safely by returning `NotFound` from the image endpoint and showing a placeholder instead of crashing the page.
+
+Current image limitations:
+
+- No thumbnails yet.
+- No image resizing or compression yet.
+- Local private storage only.
+- No cloud storage yet.
 
 ## Timeline Search and Filters
 
@@ -256,6 +281,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - Timeline search and filters added.
 - Mobile-first UI polish added.
 - Private album CRUD added.
+- Private image storage and authorized image serving added.
 - No AI or social features.
 - No admin dashboard yet.
 

@@ -105,9 +105,9 @@ public class MemoriesController : Controller
                 Feeling = memory.Feeling,
                 MemoryDate = memory.MemoryDate,
                 Location = memory.Location,
-                CoverImagePath = memory.Images
+                CoverImageId = memory.Images
                     .OrderBy(image => image.UploadedAt)
-                    .Select(image => image.ImagePath)
+                    .Select(image => (int?)image.Id)
                     .FirstOrDefault(),
                 Tags = memory.MemoryTags
                     .OrderBy(memoryTag => memoryTag.Tag.Name)

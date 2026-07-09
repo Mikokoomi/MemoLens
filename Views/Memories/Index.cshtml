@@ -208,7 +208,7 @@ else
             @foreach (var memory in Model.Memories)
             {
                 <article class="memory-card">
-                    @if (string.IsNullOrWhiteSpace(memory.CoverImagePath))
+                    @if (!memory.CoverImageId.HasValue)
                     {
                         <div class="memory-card-photo-placeholder">
                             <span>No photo yet</span>
@@ -217,7 +217,7 @@ else
                     else
                     {
                         <a class="memory-card-cover" asp-action="Details" asp-route-id="@memory.Id">
-                            <img src="@memory.CoverImagePath" alt="@memory.Title" />
+                            <img src="@Url.Action("MemoryImage", "Images", new { id = memory.CoverImageId })" alt="@memory.Title" onerror="this.hidden=true; this.parentElement.classList.add('image-missing');" />
                         </a>
                     }
                     <div class="memory-card-body">
