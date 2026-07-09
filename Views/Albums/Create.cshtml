@@ -1,0 +1,39 @@
+@model MemoLens.Models.Albums.AlbumFormViewModel
+
+@{
+    ViewData["Title"] = "Tao bo suu tap";
+}
+
+<section class="memory-form-shell">
+    <div class="memory-form-intro">
+        <p class="kicker">Tao bo suu tap</p>
+        <h1>Dat ten cho mot nhom ky niem rieng cua ban.</h1>
+        <p>Bo suu tap giup gom nhung ky niem co cung chu de. Anh bia se duoc MemoLens chon tu dong tu ky niem ben trong.</p>
+    </div>
+
+    <form asp-action="Create" method="post" class="memory-form-panel">
+        <div asp-validation-summary="ModelOnly" class="text-danger validation-summary mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label">Ten bo suu tap</label>
+            <input asp-for="Title" class="form-control" placeholder="Vi du: Mua he nam nay" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="Description" class="form-label">Mo ta</label>
+            <textarea asp-for="Description" class="form-control" rows="5" placeholder="Ghi chu ngan ve chu de, thoi gian, hoac cam xuc cua bo suu tap."></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+            <div class="form-text">Khong bat buoc. Toi da 500 ky tu.</div>
+        </div>
+
+        <div class="memory-action-row">
+            <button type="submit" class="btn btn-primary">Tao bo suu tap</button>
+            <a class="btn btn-outline-secondary" asp-action="Index">Huy</a>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

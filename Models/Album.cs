@@ -25,5 +25,9 @@ public class Album
 
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
+    public bool IsDeleted { get; set; }
+
+    public DateTime? DeletedAt { get; set; }
+
     public ICollection<AlbumMemory> AlbumMemories { get; set; } = new List<AlbumMemory>();
 }

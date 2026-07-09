@@ -1,0 +1,65 @@
+@model MemoLens.Models.Albums.AlbumAddMemoriesViewModel
+
+@{
+    ViewData["Title"] = "Them ky niem";
+}
+
+<section class="memory-page-header">
+    <div>
+        <p class="kicker">Them ky niem</p>
+        <h1>Chon ky niem cho bo suu tap @Model.AlbumTitle.</h1>
+        <p>Chi nhung ky niem rieng tu cua tai khoan ban va chua nam trong bo suu tap nay moi hien thi o day.</p>
+    </div>
+    <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.AlbumId">Quay lai bo suu tap</a>
+</section>
+
+@if (!Model.AvailableMemories.Any())
+{
+    <section class="memory-empty-state">
+        <p class="kicker">Khong co ky niem de them</p>
+        <h2>Tat ca ky niem hien co da nam trong bo suu tap nay, hoac ban chua co ky niem nao.</h2>
+        <p>Hay tao them ky niem trong Timeline neu ban muon mo rong bo suu tap.</p>
+        <div class="memory-action-row">
+            <a class="btn btn-primary" asp-controller="Memories" asp-action="Create">Tao ky niem</a>
+            <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.AlbumId">Quay lai bo suu tap</a>
+        </div>
+    </section>
+}
+else
+{
+    <form asp-action="AddMemories" asp-route-id="@Model.AlbumId" method="post" class="album-add-form">
+        <input asp-for="AlbumId" type="hidden" />
+        <div asp-validation-summary="ModelOnly" class="text-danger validation-summary mb-3"></div>
+        <span asp-validation-for="SelectedMemoryIds" class="text-danger d-block mb-3"></span>
+
+        <section class="album-select-grid" aria-label="Chon ky niem">
+            @foreach (var memory in Model.AvailableMemories)
+            {
+                var checkboxId = $"memory-{memory.Id}";
+                <label class="album-select-card" for="@checkboxId">
+                    <input id="@checkboxId" name="SelectedMemoryIds" type="checkbox" value="@memory.Id" checked="@Model.SelectedMemoryIds.Contains(memory.Id)" />
+                    <span class="album-select-visual">
+                        @if (string.IsNullOrWhiteSpace(memory.CoverImagePath))
+                        {
+                            <span class="memory-card-photo-placeholder">Chua co anh</span>
+                        }
+                        else
+                        {
+                            <img src="@memory.CoverImagePath" alt="@memory.Title" />
+                        }
+                    </span>
+                    <span class="album-select-copy">
+                        <strong>@memory.Title</strong>
+                        <span>@memory.MemoryDate.ToString("dd/MM/yyyy") · @memory.Feeling</span>
+                        <span>@(string.IsNullOrWhiteSpace(memory.Location) ? "Chua them dia diem" : memory.Location)</span>
+                    </span>
+                </label>
+            }
+        </section>
+
+        <div class="memory-action-row album-sticky-actions">
+            <button type="submit" class="btn btn-primary">Them ky niem</button>
+            <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.AlbumId">Huy</a>
+        </div>
+    </form>
+}

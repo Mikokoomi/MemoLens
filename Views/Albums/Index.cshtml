@@ -1,0 +1,56 @@
+@model IReadOnlyList<MemoLens.Models.Albums.AlbumListItemViewModel>
+
+@{
+    ViewData["Title"] = "Bo suu tap";
+}
+
+<section class="memory-page-header">
+    <div>
+        <p class="kicker">Bo suu tap rieng tu</p>
+        <h1>Gom nhung ky niem cung mot cau chuyen.</h1>
+        <p>Moi bo suu tap chi hien thi trong tai khoan cua ban. Khong co chia se cong khai hay trang kham pha.</p>
+    </div>
+    <a class="btn btn-primary" asp-action="Create">Tao bo suu tap</a>
+</section>
+
+@if (!Model.Any())
+{
+    <section class="memory-empty-state">
+        <p class="kicker">Chua co bo suu tap</p>
+        <h2>Bat dau bang mot chu de nho.</h2>
+        <p>Tao bo suu tap cho mot chuyen di, mot nam hoc, gia dinh, ban be, hoac bat ky khoang thoi gian nao ban muon giu lai.</p>
+        <a class="btn btn-primary" asp-action="Create">Tao bo suu tap dau tien</a>
+    </section>
+}
+else
+{
+    <section class="album-grid" aria-label="Danh sach bo suu tap">
+        @foreach (var album in Model)
+        {
+            <article class="album-card">
+                <a class="album-cover" asp-action="Details" asp-route-id="@album.Id" aria-label="Mo bo suu tap @album.Title">
+                    @if (string.IsNullOrWhiteSpace(album.CoverImagePath))
+                    {
+                        <span>Chua co anh bia</span>
+                    }
+                    else
+                    {
+                        <img src="@album.CoverImagePath" alt="Anh bia cua bo suu tap @album.Title" />
+                    }
+                </a>
+                <div class="album-card-body">
+                    <div class="album-card-meta">
+                        <span>@album.MemoryCount ky niem</span>
+                        <span>Cap nhat @album.UpdatedAt.ToLocalTime().ToString("dd/MM/yyyy")</span>
+                    </div>
+                    <h2><a asp-action="Details" asp-route-id="@album.Id">@album.Title</a></h2>
+                    <p>@(string.IsNullOrWhiteSpace(album.Description) ? "Chua co mo ta. Ban co the them mo ta de nho ro chu de cua bo suu tap nay." : album.Description)</p>
+                    <div class="album-card-actions">
+                        <a class="btn btn-primary" asp-action="Details" asp-route-id="@album.Id">Mo bo suu tap</a>
+                        <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@album.Id">Sua</a>
+                    </div>
+                </div>
+            </article>
+        }
+    </section>
+}

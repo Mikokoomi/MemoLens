@@ -684,6 +684,189 @@ a:hover {
   max-width: 1080px;
 }
 
+.album-grid,
+.album-select-grid {
+  display: grid;
+  gap: 1rem;
+  margin: 0 auto;
+  max-width: 1080px;
+}
+
+.album-grid {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.album-card,
+.album-select-card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.album-card:hover,
+.album-select-card:hover {
+  border-color: #bdc5b3;
+  transform: translateY(-2px);
+}
+
+.album-cover,
+.album-cover-preview,
+.album-select-visual {
+  align-items: center;
+  background:
+    linear-gradient(135deg, rgba(102, 114, 92, 0.09), rgba(102, 114, 92, 0.02)),
+    var(--surface-soft);
+  color: var(--muted);
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  min-height: 190px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.album-cover {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.album-cover img,
+.album-cover-preview img,
+.album-select-visual img {
+  display: block;
+  height: 100%;
+  min-height: 190px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.album-card-body {
+  padding: 1rem;
+}
+
+.album-card-meta {
+  color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.86rem;
+  gap: 0.65rem;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.album-card h2 {
+  font-size: 1.35rem;
+  font-weight: 740;
+  letter-spacing: -0.03em;
+  line-height: 1.14;
+}
+
+.album-card h2 a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.album-card p,
+.album-description {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.album-card-actions {
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 1rem;
+}
+
+.album-detail {
+  align-items: start;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  margin: 0 auto 2rem;
+  max-width: 1100px;
+}
+
+.album-memory-list {
+  margin-top: 1.5rem;
+}
+
+.album-remove-form {
+  margin-top: 1rem;
+}
+
+.album-remove-form .btn {
+  width: 100%;
+}
+
+.album-add-form {
+  margin: 0 auto;
+  max-width: 1080px;
+}
+
+.album-select-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.album-select-card {
+  cursor: pointer;
+  display: grid;
+  gap: 0;
+  position: relative;
+}
+
+.album-select-card input {
+  height: 1.35rem;
+  left: 0.85rem;
+  position: absolute;
+  top: 0.85rem;
+  width: 1.35rem;
+  z-index: 2;
+}
+
+.album-select-card:has(input:checked) {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 0.16rem rgba(102, 114, 92, 0.2);
+}
+
+.album-select-visual {
+  min-height: 160px;
+}
+
+.album-select-visual img {
+  min-height: 160px;
+}
+
+.album-select-copy {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem;
+}
+
+.album-select-copy strong {
+  color: var(--ink);
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.album-select-copy span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.album-sticky-actions {
+  background: rgba(246, 245, 239, 0.94);
+  border-top: 1px solid var(--line);
+  bottom: 0;
+  margin-top: 1.25rem;
+  padding: 1rem 0;
+  position: sticky;
+  z-index: 5;
+}
+
 .memory-card {
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid var(--line);
@@ -1023,7 +1206,8 @@ a:hover {
 
   .memory-page-header,
   .memory-form-shell,
-  .memory-detail {
+  .memory-detail,
+  .album-detail {
     grid-template-columns: 1fr;
   }
 
@@ -1055,8 +1239,13 @@ a:hover {
 
   .memory-filter-primary-actions .btn,
   .memory-filter-actions .btn,
+  .album-card-actions .btn,
   .memory-action-row .btn {
     width: 100%;
+  }
+
+  .album-card-actions {
+    grid-template-columns: 1fr;
   }
 
   .memory-facts {
@@ -1104,6 +1293,8 @@ a:hover {
   .mini-album,
   .future-form,
   .quiet-box,
+  .album-card,
+  .album-select-card,
   .memory-empty-state,
   .memory-filter-panel,
   .memory-form-panel,
@@ -1173,6 +1364,29 @@ a:hover {
   .memory-card {
     gap: 0.9rem;
     padding: 0.75rem;
+  }
+
+  .album-grid,
+  .album-select-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .album-cover,
+  .album-cover img,
+  .album-cover-preview,
+  .album-cover-preview img {
+    min-height: 220px;
+  }
+
+  .album-card-body,
+  .album-select-copy {
+    padding: 0.9rem;
+  }
+
+  .album-sticky-actions {
+    margin-left: -0.25rem;
+    margin-right: -0.25rem;
+    padding: 0.85rem 0.25rem;
   }
 
   .memory-card-cover,

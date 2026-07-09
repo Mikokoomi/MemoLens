@@ -184,6 +184,25 @@ Privacy reminder:
 
 All timeline search, filters, tag dropdowns, and sort results are scoped to the logged-in user. Deleted memories are excluded. Admin users do not browse other users' private memories in this phase.
 
+## Private Albums
+
+Phase 7 private album management is completed.
+
+- Logged-in confirmed users can create, view, edit, and delete their own albums.
+- Albums are private by default and every album query is scoped to the current logged-in user.
+- Admin users do not browse other users' private albums or memories in this phase.
+- Albums use a many-to-many relationship with memories, so one memory can belong to multiple albums.
+- Users add memories from the Album Details flow.
+- Add Memories only shows the current user's non-deleted memories that are not already in the album.
+- Removing a memory from an album only removes the album relationship. It does not delete the memory or its images.
+- Deleting an album is a soft delete using `IsDeleted` and `DeletedAt`.
+- Deleted albums disappear from the normal Albums list.
+- Deleted memories are not shown in album details or Add Memories options.
+- Album cover images are automatic: MemoLens uses the first image from the first non-deleted memory in the album. If no image exists, the UI shows a calm placeholder.
+- There is no separate Tags management page in this phase.
+
+Phase 7 keeps the Phase 6.5 mobile-first direction. Album pages use responsive cards instead of tables, with one column on phones and wider grids on desktop.
+
 ## Mobile-first UI Status
 
 Phase 6.5 mobile-first UI polish is completed.
@@ -236,7 +255,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - Memory image upload and gallery added.
 - Timeline search and filters added.
 - Mobile-first UI polish added.
-- No albums CRUD yet.
+- Private album CRUD added.
 - No AI or social features.
 - No admin dashboard yet.
 

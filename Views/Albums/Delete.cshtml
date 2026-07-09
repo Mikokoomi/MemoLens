@@ -1,0 +1,34 @@
+@model MemoLens.Models.Albums.AlbumDetailsViewModel
+
+@{
+    ViewData["Title"] = "Xoa bo suu tap";
+}
+
+<section class="content-panel status-panel">
+    <p class="kicker">Xoa bo suu tap</p>
+    <h1>An bo suu tap nay khoi danh sach cua ban?</h1>
+    <p>
+        Ban sap xoa <strong>@Model.Title</strong>. Thao tac nay khong xoa ky niem goc, khong xoa anh,
+        va chi danh dau bo suu tap la da xoa.
+    </p>
+
+    <dl class="memory-facts compact">
+        <div>
+            <dt>Ky niem ben trong</dt>
+            <dd>@Model.Memories.Count</dd>
+        </div>
+        <div>
+            <dt>Cap nhat</dt>
+            <dd>@Model.UpdatedAt.ToLocalTime().ToString("dd/MM/yyyy")</dd>
+        </div>
+    </dl>
+
+    <div class="memory-filter-alert">
+        <p>Thao tac nay khong xoa ky niem goc. Cac ky niem van nam trong Timeline cua ban.</p>
+    </div>
+
+    <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="memory-action-row mt-4">
+        <button type="submit" class="btn btn-primary">Xoa bo suu tap</button>
+        <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.Id">Huy</a>
+    </form>
+</section>

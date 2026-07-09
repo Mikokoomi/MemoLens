@@ -140,7 +140,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(album => album.UpdatedAt)
                 .IsRequired();
 
+            entity.Property(album => album.IsDeleted)
+                .IsRequired();
+
             entity.HasIndex(album => album.UserId);
+            entity.HasIndex(album => album.UpdatedAt);
 
             entity.HasOne(album => album.User)
                 .WithMany(user => user.Albums)

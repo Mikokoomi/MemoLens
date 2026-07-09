@@ -33,7 +33,7 @@ public class HomeController : Controller
     [Authorize]
     public IActionResult Albums()
     {
-        return View();
+        return RedirectToAction("Index", "Albums");
     }
 
     [Authorize]
