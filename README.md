@@ -171,6 +171,23 @@ Current image limitations:
 - Local private storage only.
 - No cloud storage yet.
 
+## Trash and Restore
+
+Phase 9 trash and restore is completed.
+
+- Logged-in confirmed users can open a private Trash page for their own deleted memories and albums.
+- Trash only shows items where `IsDeleted` is true and `UserId` matches the current logged-in user.
+- Users can restore a deleted memory or album from Trash.
+- Restoring sets `IsDeleted` back to false, clears `DeletedAt`, and updates `UpdatedAt`.
+- No permanent delete is implemented in this phase.
+- Soft-deleted memories remain hidden from the normal timeline until restored.
+- Soft-deleted albums remain hidden from the normal Albums list until restored.
+- Restoring an album keeps its existing album-memory relationships.
+- Restoring an album does not automatically restore any deleted memories inside it.
+- The private image endpoint behavior is unchanged: images from soft-deleted memories still return `NotFound` until the memory is restored.
+- Admin users do not browse or restore other users' deleted memories or albums in this phase.
+- Trash uses mobile-first cards instead of tables so it stays usable on phones.
+
 ## Timeline Search and Filters
 
 Phase 6 timeline search and filters are completed.
@@ -282,6 +299,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - Mobile-first UI polish added.
 - Private album CRUD added.
 - Private image storage and authorized image serving added.
+- Trash and restore for memories/albums added.
 - No AI or social features.
 - No admin dashboard yet.
 

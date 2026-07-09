@@ -1,0 +1,115 @@
+@model MemoLens.Models.Trash.TrashIndexViewModel
+
+@{
+    ViewData["Title"] = "Thung rac";
+}
+
+<section class="memory-page-header">
+    <div>
+        <p class="kicker">Khoi phuc rieng tu</p>
+        <h1>Thung rac</h1>
+        <p>Cac ky niem va bo suu tap da xoa se xuat hien tai day de ban co the khoi phuc khi can.</p>
+    </div>
+    <div class="memory-action-row">
+        <a class="btn btn-outline-secondary" asp-controller="Memories" asp-action="Index">Timeline</a>
+        <a class="btn btn-outline-secondary" asp-controller="Albums" asp-action="Index">Bo suu tap</a>
+    </div>
+</section>
+
+@if (TempData["TrashMessage"] is string message)
+{
+    <div class="trash-message" role="status">@message</div>
+}
+
+@if (Model.IsEmpty)
+{
+    <section class="memory-empty-state">
+        <p class="kicker">Dang trong</p>
+        <h2>Thung rac dang trong.</h2>
+        <p>Nhung gi ban xoa se xuat hien o day de co the khoi phuc. MemoLens khong xoa vinh vien trong giai doan nay.</p>
+    </section>
+}
+else
+{
+    <section class="trash-section" aria-labelledby="deleted-memories-title">
+        <div class="trash-section-heading">
+            <p class="kicker">Ky niem da xoa</p>
+            <h2 id="deleted-memories-title">Ky niem da xoa</h2>
+        </div>
+
+        @if (!Model.DeletedMemories.Any())
+        {
+            <div class="trash-empty-note">Khong co ky niem nao trong thung rac.</div>
+        }
+        else
+        {
+            <div class="trash-grid">
+                @foreach (var memory in Model.DeletedMemories)
+                {
+                    <article class="trash-card">
+                        <div class="trash-card-placeholder">
+                            <span>Khong hien thi anh trong thung rac</span>
+                        </div>
+                        <div class="trash-card-body">
+                            <div class="trash-meta">
+                                <span>@memory.Feeling</span>
+                                <span>@memory.MemoryDate.ToString("dd/MM/yyyy")</span>
+                            </div>
+                            <h3>@memory.Title</h3>
+                            @if (!string.IsNullOrWhiteSpace(memory.Location))
+                            {
+                                <p class="memory-location">@memory.Location</p>
+                            }
+                            <p class="memory-preview-text">
+                                @(string.IsNullOrWhiteSpace(memory.Story)
+                                    ? "Chua co cau chuyen cho ky niem nay."
+                                    : memory.Story.Length > 150 ? $"{memory.Story[..150]}..." : memory.Story)
+                            </p>
+                            <p class="trash-deleted-at">Da xoa: @(memory.DeletedAt?.ToLocalTime().ToString("dd/MM/yyyy HH:mm") ?? "Khong ro thoi gian")</p>
+                            <form asp-action="RestoreMemory" asp-route-id="@memory.Id" method="post">
+                                <button type="submit" class="btn btn-primary w-100">Khoi phuc ky niem</button>
+                            </form>
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+    </section>
+
+    <section class="trash-section" aria-labelledby="deleted-albums-title">
+        <div class="trash-section-heading">
+            <p class="kicker">Bo suu tap da xoa</p>
+            <h2 id="deleted-albums-title">Bo suu tap da xoa</h2>
+        </div>
+
+        @if (!Model.DeletedAlbums.Any())
+        {
+            <div class="trash-empty-note">Khong co bo suu tap nao trong thung rac.</div>
+        }
+        else
+        {
+            <div class="trash-grid">
+                @foreach (var album in Model.DeletedAlbums)
+                {
+                    <article class="trash-card">
+                        <div class="trash-card-placeholder">
+                            <span>Bo suu tap rieng tu</span>
+                        </div>
+                        <div class="trash-card-body">
+                            <h3>@album.Title</h3>
+                            <p class="memory-preview-text">
+                                @(string.IsNullOrWhiteSpace(album.Description)
+                                    ? "Chua co mo ta cho bo suu tap nay."
+                                    : album.Description.Length > 180 ? $"{album.Description[..180]}..." : album.Description)
+                            </p>
+                            <p class="trash-deleted-at">Da xoa: @(album.DeletedAt?.ToLocalTime().ToString("dd/MM/yyyy HH:mm") ?? "Khong ro thoi gian")</p>
+                            <form asp-action="RestoreAlbum" asp-route-id="@album.Id" method="post">
+                                <button type="submit" class="btn btn-primary w-100">Khoi phuc bo suu tap</button>
+                            </form>
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+    </section>
+}
