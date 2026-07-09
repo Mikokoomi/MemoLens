@@ -54,6 +54,9 @@
                                 <span class="navbar-text account-label">@displayName</span>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Settings" asp-action="Index">Cai dat</a>
+                            </li>
+                            <li class="nav-item">
                                 <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline nav-action-form">
                                     <button type="submit" class="btn btn-sm btn-outline-secondary">Logout</button>
                                 </form>

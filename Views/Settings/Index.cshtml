@@ -1,0 +1,77 @@
+@model MemoLens.Models.Settings.SettingsIndexViewModel
+
+@{
+    ViewData["Title"] = "Cai dat";
+    var displayName = string.IsNullOrWhiteSpace(Model.DisplayName) ? Model.Email : Model.DisplayName;
+}
+
+<section class="settings-hero">
+    <div>
+        <p class="kicker">Cai dat rieng tu</p>
+        <h1>Cai dat</h1>
+        <p>Quan ly thong tin tai khoan va nhung ghi chu quyen rieng tu cua khong gian ky niem ca nhan.</p>
+    </div>
+    <div class="memory-action-row">
+        <a class="btn btn-primary" asp-action="EditProfile">Sua ten hien thi</a>
+        <a class="btn btn-outline-secondary" asp-action="ChangePassword">Doi mat khau</a>
+    </div>
+</section>
+
+@if (TempData["SettingsMessage"] is string message)
+{
+    <div class="settings-message" role="status">@message</div>
+}
+
+<section class="settings-grid">
+    <article class="settings-card settings-card-primary">
+        <p class="kicker">Thong tin tai khoan</p>
+        <h2>@displayName</h2>
+        <dl class="settings-facts">
+            <div>
+                <dt>Ten hien thi</dt>
+                <dd>@(string.IsNullOrWhiteSpace(Model.DisplayName) ? "Chua dat ten hien thi" : Model.DisplayName)</dd>
+            </div>
+            <div>
+                <dt>Email</dt>
+                <dd>@Model.Email</dd>
+            </div>
+            <div>
+                <dt>Trang thai email</dt>
+                <dd>
+                    <span class="settings-status @(Model.EmailConfirmed ? "confirmed" : "unconfirmed")">
+                        @(Model.EmailConfirmed ? "Da xac thuc" : "Chua xac thuc")
+                    </span>
+                </dd>
+            </div>
+            <div>
+                <dt>Ngay tao tai khoan</dt>
+                <dd>@Model.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy")</dd>
+            </div>
+        </dl>
+        <div class="settings-actions">
+            <a class="btn btn-primary" asp-action="EditProfile">Sua ten hien thi</a>
+            <a class="btn btn-outline-secondary" asp-action="ChangePassword">Doi mat khau</a>
+        </div>
+    </article>
+
+    <aside class="settings-card settings-privacy-card">
+        <p class="kicker">Ghi chu quyen rieng tu</p>
+        <h2>Ky niem cua ban chi thuoc ve ban.</h2>
+        <ul class="settings-note-list">
+            <li>Ky niem, bo suu tap, anh va thung rac cua ban chi hien thi voi tai khoan cua ban.</li>
+            <li>Anh duoc luu ngoai <code>wwwroot</code> va chi duoc xem thong qua endpoint co kiem tra dang nhap va quyen so huu.</li>
+            <li>MemoLens hien chua ho tro chia se cong khai.</li>
+            <li>Export data va xoa tai khoan se duoc bo sung o phase sau.</li>
+        </ul>
+    </aside>
+</section>
+
+<section class="settings-limits">
+    <p class="kicker">Chua co trong phase nay</p>
+    <div class="settings-limit-grid">
+        <div>Khong doi email</div>
+        <div>Khong forgot password</div>
+        <div>Khong export data</div>
+        <div>Khong xoa tai khoan</div>
+    </div>
+</section>

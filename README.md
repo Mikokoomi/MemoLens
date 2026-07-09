@@ -188,6 +188,28 @@ Phase 9 trash and restore is completed.
 - Admin users do not browse or restore other users' deleted memories or albums in this phase.
 - Trash uses mobile-first cards instead of tables so it stays usable on phones.
 
+## Settings and Privacy
+
+Phase 10 settings and privacy is completed.
+
+- Logged-in confirmed users can open a private Settings page.
+- Settings shows the current user's display name, email, email confirmation status, and account creation date.
+- Users can edit only their own display name.
+- Display name is optional. If it is empty, the UI falls back to the user's email.
+- Users can change their password after entering the current password.
+- Password changes use ASP.NET Core Identity through `UserManager.ChangePasswordAsync`.
+- After profile or password changes, MemoLens refreshes the current sign-in session.
+- Settings includes privacy notes explaining that memories, albums, images, and trash are private to the current account.
+- The Settings link is only shown to logged-in users.
+
+Current Settings limitations:
+
+- No email change.
+- No forgot password or password reset email flow.
+- No export data.
+- No delete account.
+- No admin settings panel.
+
 ## Timeline Search and Filters
 
 Phase 6 timeline search and filters are completed.
@@ -300,6 +322,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - Private album CRUD added.
 - Private image storage and authorized image serving added.
 - Trash and restore for memories/albums added.
+- Settings and privacy pages added.
 - No AI or social features.
 - No admin dashboard yet.
 

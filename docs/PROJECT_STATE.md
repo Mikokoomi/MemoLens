@@ -45,6 +45,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 7: Private album management.
 - Phase 8: Private image storage and authorized image serving.
 - Phase 9: Trash/Restore for memories and albums.
+- Phase 10: Settings & Privacy.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -96,7 +97,6 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 
 ## 9. Phase tiếp theo được đề xuất
 
-- Phase 10: Settings & Privacy.
 - Phase 11: MVP QA / Hardening.
 - Sau MVP: permanent delete, export data, thumbnails/compression.
 
@@ -117,3 +117,25 @@ Khi task liên quan đến database, Codex cũng cần đọc `docs/DATABASE_DES
 Khi task liên quan đến UI, Codex cũng cần đọc `docs/UI_SCREENS.md` và dùng Taste Skill guidance nếu còn phù hợp.
 
 Mọi thay đổi phải giữ nguyên định hướng private-first, beginner-friendly, không social features, không AI trong MVP hiện tại, và không thay đổi kiến trúc lớn nếu chưa hỏi trước.
+
+## 11. Cap nhat Phase 10: Settings & Privacy
+
+Phase 10 da hoan thanh.
+
+Tinh nang da co:
+
+- User dang dang nhap co the xem trang Settings rieng tu.
+- Settings hien thi ten hien thi, email, trang thai xac thuc email va ngay tao tai khoan.
+- User co the sua `DisplayName` cua chinh minh.
+- User co the doi mat khau bang `UserManager.ChangePasswordAsync`.
+- Doi mat khau yeu cau mat khau hien tai va tuan theo password validators cua ASP.NET Core Identity.
+- Sau khi sua profile hoac doi mat khau, MemoLens refresh sign-in session.
+- Trang Settings co ghi chu quyen rieng tu cho memories, albums, images va trash.
+
+Gioi han van con:
+
+- Chua co doi email.
+- Chua co forgot password/password reset email flow.
+- Chua co export data.
+- Chua co xoa tai khoan.
+- Chua co admin settings panel.
