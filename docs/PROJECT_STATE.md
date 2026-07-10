@@ -58,6 +58,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 15A: Email Infrastructure and Confirmation Testing.
 - Phase 15B: MVC Forgot and Reset Password.
 - Phase 15C: API Email Confirmation and Resend Confirmation.
+- Phase 15D: API Forgot and Reset Password.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -78,6 +79,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Health endpoint `GET /api/v1/health`.
 - Swagger/OpenAPI trong môi trường Development.
 - Core API auth endpoints cho register, login, refresh, logout và account/me.
+- API confirm/resend email confirmation và API forgot/reset password.
 
 ## 6. Quy tắc riêng tư quan trọng
 
@@ -101,8 +103,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 ## 8. Giới hạn hiện tại
 
 - Chưa có permanent delete.
-- MVC đã có forgot/reset password; API forgot/reset vẫn chưa có.
-- Chưa có account settings page.
+- MVC và API đều đã có forgot/reset password.
 - Chưa có export data.
 - Chưa có thumbnails hoặc image compression.
 - Chưa có cloud storage.
@@ -110,7 +111,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Chưa có public sharing.
 - Chưa có trang quản lý tag riêng.
 - Chưa có admin dashboard.
-- Đã có core JWT bearer auth API và API confirm/resend email; API forgot/reset vẫn chưa có.
+- Đã có core JWT bearer auth API, API confirm/resend email và API forgot/reset password.
 - Chưa có memory CRUD API.
 - Chưa có album CRUD API.
 - Chưa có image upload API.
@@ -118,6 +119,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 
 ## 9. Phase tiếp theo được đề xuất
 
+- Phase 16: Automated Tests Foundation.
 - Sau MVP: permanent delete, export data, thumbnails/compression.
 
 ## 10. Hướng dẫn cho Codex trong các task sau
@@ -495,7 +497,6 @@ Không thay đổi:
 
 Giới hạn còn lại:
 
-- API confirm/resend email đã được thêm ở Phase 15C; API forgot/reset password vẫn chưa có.
 - Chưa có rate limiting cho forgot password.
 - Chưa có production SMTP credential/provider thật.
 
@@ -529,6 +530,40 @@ Không thay đổi:
 
 Giới hạn còn lại:
 
-- Chưa có API forgot/reset password.
 - Chưa có rate limiting cho resend confirmation.
 - Chưa có production SMTP credential/provider thật.
+
+## 25. Cập nhật Phase 15D: API Forgot and Reset Password
+
+Phase 15D đã hoàn thành.
+
+Endpoint đã implement:
+
+- `POST /api/v1/auth/forgot-password`
+- `POST /api/v1/auth/reset-password`
+
+Hành vi bảo mật:
+
+- Forgot password luôn trả response chung, không tiết lộ email có tồn tại hoặc đã xác thực hay không.
+- Lỗi gửi reset email không làm thay đổi response chung và log lỗi không kèm email/token.
+- Chỉ user tồn tại và đã xác thực email mới được tạo Identity password reset token và gửi reset link.
+- Development email sender ghi reset link rõ ràng trong terminal/console; API response không trả token hoặc link.
+- Reset password dùng `UserManager.ResetPasswordAsync` và các password validator hiện có của Identity.
+- Token sai, hết hạn hoặc không phù hợp nhận cùng thông báo lỗi an toàn.
+- Reset thành công không auto-login, không tạo MVC cookie và không cấp access token hoặc refresh token.
+- Toàn bộ API refresh token còn hoạt động của user được revoke trong cùng database transaction với việc reset password.
+- User phải đăng nhập lại bằng mật khẩu mới; access token đã cấp trước đó tự hết hạn theo lifetime hiện có.
+
+Không thay đổi:
+
+- Không thay đổi MVC register/login/logout, email confirmation hoặc forgot/reset password.
+- Không thay đổi database schema và không tạo migration.
+- Không thêm memory, album, image, trash hoặc settings API CRUD.
+- Không thêm Flutter code, AI, social features hoặc public sharing.
+
+Giới hạn còn lại:
+
+- Chưa có rate limiting cho password recovery.
+- Chưa có production email provider được cấu hình bằng credential thật.
+- Chưa có Flutter deep link cho reset password.
+- Chưa có automated integration tests.

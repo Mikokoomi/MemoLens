@@ -64,7 +64,7 @@ Sau khi reset thành công:
 - Các API refresh token chưa revoke của user được revoke.
 - JWT access token đã cấp trước đó không bị lưu hoặc thu hồi trong database; token này tự hết hạn trong tối đa khoảng 15 phút.
 
-API forgot/reset password chưa được triển khai trong Phase 15B.
+API forgot/reset password được triển khai ở Phase 15D và dùng cùng Identity token flow.
 
 ## 5. API xác nhận và gửi lại email xác nhận
 
@@ -85,7 +85,26 @@ Chỉ tài khoản tồn tại nhưng chưa xác nhận mới thực sự tạo 
 
 Trong Development, email gửi lại tiếp tục xuất hiện trong block `[MemoLens Development Email]` với `Confirmation link:`. Link vẫn mở MVC `/Account/ConfirmEmail`, nên luồng web hiện tại không bị thay đổi. Mobile client có thể lấy `userId` và `token` từ deep link/web link theo thiết kế tích hợp sau này.
 
-## 6. Cấu hình Email
+## 6. API forgot và reset password trong Development
+
+Phase 15D bổ sung hai endpoint:
+
+- `POST /api/v1/auth/forgot-password`
+- `POST /api/v1/auth/reset-password`
+
+Forgot password luôn trả thông báo chung sau, bất kể email không tồn tại, chưa xác thực hay đã xác thực:
+
+```text
+Nếu email tồn tại trong hệ thống, MemoLens sẽ gửi hướng dẫn đặt lại mật khẩu.
+```
+
+Chỉ tài khoản tồn tại và đã xác thực email mới thực sự tạo reset token. Trong Development, reset link xuất hiện trong block `[MemoLens Development Email]` với subject `Đặt lại mật khẩu MemoLens` và dòng `Reset password link:`. Token hoặc link không xuất hiện trong API response.
+
+Reset link hiện trỏ tới trang MVC `/Account/ResetPassword` để giữ một luồng email tương thích cho web. Mobile client tương lai có thể lấy `email` và `token` từ deep link rồi gửi chúng tới API reset password; Flutter deep link chưa thuộc Phase 15D.
+
+Reset API không auto-login, không tạo MVC cookie và không cấp access/refresh token. Khi reset thành công, toàn bộ refresh token còn hoạt động của user được revoke trong cùng database transaction; user phải đăng nhập lại bằng mật khẩu mới. Access token đã cấp trước đó tự hết hạn theo lifetime hiện có.
+
+## 7. Cấu hình Email
 
 Model cấu hình là `EmailOptions`, nằm tại `Models/Email/EmailOptions.cs`.
 
@@ -112,7 +131,7 @@ Model cấu hình là `EmailOptions`, nằm tại `Models/Email/EmailOptions.cs`
 
 Không đặt SMTP username, SMTP password, API key hoặc secret thật trong `appsettings.json`, `appsettings.Development.json` hay Git.
 
-## 7. Chuẩn bị Production SMTP
+## 8. Chuẩn bị Production SMTP
 
 Khi sẵn sàng gửi email thật, đặt `Email__Mode=Smtp` và cung cấp các giá trị còn lại qua User Secrets, environment variables hoặc server configuration. Ví dụ tên biến môi trường:
 
@@ -133,7 +152,7 @@ Ngoài Development, MemoLens chỉ dùng SMTP khi `Email:Mode` là `Smtp`. Nếu
 
 Trước private beta, cần kiểm tra SMTP với email provider thật, HTTPS, domain gửi mail, SPF/DKIM/DMARC theo provider, monitoring và chính sách retry phù hợp.
 
-## 8. Quy tắc bảo mật
+## 9. Quy tắc bảo mật
 
 - Không tắt `RequireConfirmedEmail`.
 - Không tự động đặt `EmailConfirmed = true` cho user mới.
@@ -146,11 +165,14 @@ Trước private beta, cần kiểm tra SMTP với email provider thật, HTTPS,
 - Reset password dùng token chuẩn của ASP.NET Core Identity và không auto-login.
 - Resend confirmation luôn dùng response chung, không tiết lộ email có tồn tại hoặc đã xác nhận hay không.
 - API confirm email không auto-login và không cấp JWT/refresh token.
+- API forgot password không trả reset token hoặc reset link và luôn dùng response chung.
+- Lỗi gửi email trong API forgot password được ghi log không kèm email/token và không làm thay đổi response chung.
+- API reset password không cấp token/cookie; reset thành công revoke toàn bộ refresh token còn hoạt động.
 
-## 9. Chưa được triển khai
+## 10. Chưa được triển khai
 
-- API forgot password.
-- API reset password.
 - Rate limiting cho register/login/resend.
+- Rate limiting cho forgot/reset password.
 - Production email provider đã được cấu hình bằng secret thật.
 - Retry queue, delivery tracking hoặc email template provider.
+- Flutter deep link cho confirmation và reset password.

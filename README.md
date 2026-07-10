@@ -209,7 +209,7 @@ Phase 10 settings and privacy is completed.
 Current Settings limitations:
 
 - No email change.
-- No API forgot/reset password endpoints; the MVC flow is available.
+- MVC and API forgot/reset password flows are available.
 - No export data.
 - No delete account.
 - No admin settings panel.
@@ -266,8 +266,6 @@ Current API foundation:
 
 Current API limitations:
 
-- No auth API yet.
-- No JWT or token-based auth yet.
 - No memory CRUD API yet.
 - No album CRUD API yet.
 - No image upload API yet.
@@ -286,7 +284,8 @@ Phase 14A records the authentication design, Phase 14B adds the supporting infra
 - API login requires a confirmed email, returns a 15-minute JWT access token, and stores only the SHA-256 hash of each 30-day refresh token.
 - Refresh rotates the refresh token atomically; logout revokes the supplied refresh token.
 - Resend confirmation always returns a generic response to avoid revealing whether an account exists or is already confirmed.
-- API forgot/reset password endpoints are not implemented yet; MVC forgot/reset password is available.
+- Password recovery is available at `POST /api/v1/auth/forgot-password` and `POST /api/v1/auth/reset-password`.
+- Forgot password always returns a generic response. A successful reset issues no token or cookie, revokes all active API refresh tokens for the user, and requires a new login.
 - The existing MVC web authentication remains cookie-based and unchanged.
 - Development JWT values are placeholders in `appsettings.Development.json`. Production values must come from environment variables or user secrets, especially `Jwt__SecretKey`.
 - Phase 14B.5 aligns the Microsoft ASP.NET Core and EF Core packages, plus the local `dotnet-ef` tool, on `8.0.28`. The NuGet vulnerability audit is clean after this patch.

@@ -99,7 +99,7 @@ Tat ca endpoint du kien dung prefix `/api/v1` va response format trong `docs/API
 
 - **Muc dich:** Dat mat khau moi bang reset token hop le.
 - **Input:** Email, reset token, password moi, confirm password.
-- **Thanh cong:** Mat khau duoc doi theo Identity validators; cac refresh token hien co cua user se duoc revoke trong phase hardening lien quan.
+- **Thanh cong:** Mat khau duoc doi theo Identity validators; tat ca refresh token dang hoat dong cua user bi revoke.
 - **Validation va bao mat:** Khong log password/token; xu ly token hong/het han an toan; response validation theo field.
 
 ### GET /api/v1/account/me
@@ -122,9 +122,9 @@ Du dung cach nao, login van phai bi chan cho den khi email duoc xac thuc. Confir
 
 ## 7. Forgot password va reset password
 
-Forgot password va reset password chua duoc implement trong MVC hien tai, nhung can co truoc private beta. Implementation nen dung token flow cua ASP.NET Core Identity thay vi tu tao password reset token.
+Forgot password va reset password da duoc implement cho ca MVC va API. Hai flow dung token cua ASP.NET Core Identity thay vi tu tao password reset token.
 
-Production can email provider that, email template an toan, HTTPS, rate limiting va response chung de tranh user enumeration. Sau reset password thanh cong, phase sau phai revoke refresh token dang hoat dong cua user.
+API forgot password luon tra response chung de tranh user enumeration. Sau reset thanh cong, MemoLens revoke tat ca refresh token dang hoat dong cua user, khong auto-login va khong cap token hoac MVC cookie. Production van can email provider that, email template an toan, HTTPS va rate limiting.
 
 ## 8. Roles va authorization
 
@@ -174,7 +174,7 @@ Day chi la de xuat thiet ke. Model, migration va database schema chua duoc them.
 1. **Phase 14B (da hoan thanh):** Them refresh token model, migration, JWT configuration va token service infrastructure.
 2. **Phase 14C (da hoan thanh):** Implement API register, login, refresh, logout va account/me.
 3. **Phase 15C (da hoan thanh):** Implement API email confirmation va resend confirmation email.
-4. **Phase 15D:** Implement API forgot password va reset password.
+4. **Phase 15D (da hoan thanh):** Implement API forgot password va reset password.
 5. **Sau do:** Revoke token khi doi mat khau, UI quan ly device sessions, va hardening lockout/rate limiting.
 
 Moi phase can nho, co manual QA, co test ownership/privacy va khong duoc lam hong MVC cookie auth hien co.
@@ -234,7 +234,6 @@ Quy tac da ap dung:
 
 Van chua implement:
 
-- API forgot password va reset password.
 - Device sessions UI, password-change token revocation va rate limiting hardening.
 
 ## 16. Trang thai implementation Phase 15C
@@ -249,6 +248,24 @@ Phase 15C da implement:
 
 Van chua implement:
 
-- API forgot password va reset password.
 - Rate limiting cho register, login, resend confirmation va password recovery.
 - Production email provider da duoc cau hinh bang credential that.
+
+## 17. Trang thai implementation Phase 15D
+
+Phase 15D da implement:
+
+- `POST /api/v1/auth/forgot-password` voi response chung cho email khong ton tai, chua confirmed hoac da confirmed.
+- Chi user ton tai va da confirmed moi duoc tao Identity password reset token va gui reset link.
+- `POST /api/v1/auth/reset-password` dung `UserManager.ResetPasswordAsync` va password validators hien co.
+- Token sai, het han hoac khong phu hop tra thong bao an toan; weak password tra validation error tieng Viet theo field.
+- Reset thanh cong khong auto-login, khong tao MVC cookie va khong cap access/refresh token.
+- Tat ca refresh token dang hoat dong cua user duoc revoke trong cung database transaction voi password reset.
+- Development reset link tuong thich voi trang MVC `/Account/ResetPassword`; Flutter deep link la cong viec tuong lai.
+
+Van chua implement:
+
+- Rate limiting cho password recovery.
+- Production email provider da duoc cau hinh bang credential that.
+- Flutter client va mobile deep link.
+- Automated integration tests.

@@ -24,12 +24,15 @@ public class AuthController : ControllerBase
     private const string InvalidRefreshTokenMessage = "Refresh token không hợp lệ hoặc đã hết hạn.";
     private const string InvalidConfirmationMessage = "Liên kết xác nhận email không hợp lệ hoặc đã hết hạn.";
     private const string ResendConfirmationMessage = "Nếu email hợp lệ và chưa được xác nhận, MemoLens sẽ gửi lại hướng dẫn xác nhận.";
+    private const string ForgotPasswordMessage = "Nếu email tồn tại trong hệ thống, MemoLens sẽ gửi hướng dẫn đặt lại mật khẩu.";
+    private const string InvalidPasswordResetMessage = "Liên kết đặt lại mật khẩu không hợp lệ hoặc đã hết hạn.";
 
     private readonly ApplicationDbContext _dbContext;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ITokenService _tokenService;
     private readonly IEmailSender _emailSender;
+    private readonly ILogger<AuthController> _logger;
     private readonly JwtOptions _jwtOptions;
 
     public AuthController(
@@ -38,6 +41,7 @@ public class AuthController : ControllerBase
         SignInManager<ApplicationUser> signInManager,
         ITokenService tokenService,
         IEmailSender emailSender,
+        ILogger<AuthController> logger,
         IOptions<JwtOptions> jwtOptions)
     {
         _dbContext = dbContext;
@@ -45,6 +49,7 @@ public class AuthController : ControllerBase
         _signInManager = signInManager;
         _tokenService = tokenService;
         _emailSender = emailSender;
+        _logger = logger;
         _jwtOptions = jwtOptions.Value;
     }
 
@@ -95,7 +100,7 @@ public class AuthController : ControllerBase
     public async Task<ActionResult<ApiResponse>> ConfirmEmail(ConfirmEmailRequest request)
     {
         var user = await _userManager.FindByIdAsync(request.UserId.Trim());
-        var decodedToken = DecodeEmailConfirmationToken(request.Token);
+        var decodedToken = DecodeIdentityToken(request.Token);
 
         if (user is null ||
             decodedToken is null ||
@@ -134,6 +139,88 @@ public class AuthController : ControllerBase
         {
             Success = true,
             Message = ResendConfirmationMessage
+        });
+    }
+
+    [HttpPost("forgot-password")]
+    [AllowAnonymous]
+    public async Task<ActionResult<ApiResponse>> ForgotPassword(ForgotPasswordRequest request)
+    {
+        var user = await _userManager.FindByEmailAsync(request.Email.Trim());
+
+        if (user is not null && await _userManager.IsEmailConfirmedAsync(user))
+        {
+            try
+            {
+                await SendPasswordResetEmailAsync(user);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(
+                    exception,
+                    "Không thể gửi email đặt lại mật khẩu cho yêu cầu API.");
+            }
+        }
+
+        return Ok(new ApiResponse
+        {
+            Success = true,
+            Message = ForgotPasswordMessage
+        });
+    }
+
+    [HttpPost("reset-password")]
+    [AllowAnonymous]
+    public async Task<ActionResult<ApiResponse>> ResetPassword(ResetPasswordRequest request)
+    {
+        var user = await _userManager.FindByEmailAsync(request.Email.Trim());
+        var decodedToken = DecodeIdentityToken(request.Token);
+
+        if (user is null ||
+            decodedToken is null ||
+            !await _userManager.IsEmailConfirmedAsync(user))
+        {
+            return InvalidPasswordReset();
+        }
+
+        await using var transaction = await _dbContext.Database.BeginTransactionAsync(
+            HttpContext.RequestAborted);
+
+        try
+        {
+            var result = await _userManager.ResetPasswordAsync(user, decodedToken, request.Password);
+
+            if (!result.Succeeded)
+            {
+                await transaction.RollbackAsync(HttpContext.RequestAborted);
+
+                if (result.Errors.Any(error => error.Code == "InvalidToken"))
+                {
+                    return InvalidPasswordReset();
+                }
+
+                return BadRequest(CreatePasswordResetValidationResponse(result));
+            }
+
+            var now = DateTime.UtcNow;
+            await _dbContext.UserRefreshTokens
+                .Where(token => token.UserId == user.Id && token.RevokedAt == null)
+                .ExecuteUpdateAsync(
+                    updates => updates.SetProperty(token => token.RevokedAt, now),
+                    HttpContext.RequestAborted);
+
+            await transaction.CommitAsync(HttpContext.RequestAborted);
+        }
+        catch
+        {
+            await transaction.RollbackAsync(CancellationToken.None);
+            throw;
+        }
+
+        return Ok(new ApiResponse
+        {
+            Success = true,
+            Message = "Đặt lại mật khẩu thành công. Vui lòng đăng nhập lại."
         });
     }
 
@@ -348,6 +435,15 @@ public class AuthController : ControllerBase
         });
     }
 
+    private BadRequestObjectResult InvalidPasswordReset()
+    {
+        return BadRequest(new ApiResponse
+        {
+            Success = false,
+            Message = InvalidPasswordResetMessage
+        });
+    }
+
     private async Task<AuthResponse> CreateAuthResponseAsync(
         ApplicationUser user,
         string accessToken,
@@ -394,7 +490,31 @@ public class AuthController : ControllerBase
             message);
     }
 
-    private static string? DecodeEmailConfirmationToken(string encodedToken)
+    private async Task SendPasswordResetEmailAsync(ApplicationUser user)
+    {
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+        var resetLink = Url.Action(
+            "ResetPassword",
+            "Account",
+            new { email = user.Email, token = encodedToken },
+            Request.Scheme);
+
+        if (string.IsNullOrWhiteSpace(resetLink))
+        {
+            throw new InvalidOperationException("Không thể tạo link đặt lại mật khẩu.");
+        }
+
+        var safeLink = HtmlEncoder.Default.Encode(resetLink);
+        var message = $"Đặt lại mật khẩu MemoLens bằng cách mở link này: <a href=\"{safeLink}\">đặt lại mật khẩu</a><br />{safeLink}";
+
+        await _emailSender.SendEmailAsync(
+            user.Email ?? string.Empty,
+            "Đặt lại mật khẩu MemoLens",
+            message);
+    }
+
+    private static string? DecodeIdentityToken(string encodedToken)
     {
         try
         {
@@ -404,6 +524,27 @@ public class AuthController : ControllerBase
         {
             return null;
         }
+    }
+
+    private ApiValidationErrorResponse CreatePasswordResetValidationResponse(IdentityResult result)
+    {
+        var passwordErrors = result.Errors
+            .Where(error => error.Code.StartsWith("Password", StringComparison.Ordinal))
+            .Select(GetIdentityErrorMessage)
+            .Distinct()
+            .ToArray();
+
+        return new ApiValidationErrorResponse
+        {
+            Success = false,
+            Message = "Mật khẩu mới chưa đáp ứng yêu cầu bảo mật.",
+            Errors = new Dictionary<string, string[]>
+            {
+                ["password"] = passwordErrors.Length > 0
+                    ? passwordErrors
+                    : ["Mật khẩu mới chưa đáp ứng yêu cầu bảo mật."]
+            }
+        };
     }
 
     private ApiValidationErrorResponse CreateIdentityValidationResponse(IdentityResult result)
