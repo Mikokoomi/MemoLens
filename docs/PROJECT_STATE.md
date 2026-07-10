@@ -69,6 +69,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 17A: UI/UX Redesign Direction.
 - Phase 17B: Design System Tokens and Base CSS.
 - Phase 17C: Home and Auth UI Redesign.
+- Phase 17D: Timeline and Memory Card Redesign.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -135,7 +136,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 16B.7: Permanent Delete Design/Implementation.
 - Phase 16F: Image Upload and Storage Tests.
 - Phase 16G: Database Cleanup Tests.
-- Phase 17D: Timeline and Memory Card redesign.
+- Phase 17E: Memory Details and Gallery redesign.
 - Sau MVP: permanent delete, export data, thumbnails/compression.
 
 ## 10. Hướng dẫn cho Codex trong các task sau
@@ -733,4 +734,21 @@ Phase 17C đã hoàn thành cho Home và các trang auth/status liên quan.
 Không thay đổi:
 
 - Không thay đổi controller, auth logic, API behavior, database schema hoặc migrations.
+- Không thêm API endpoint, Flutter code, AI, social feature hoặc public sharing.
+
+## 36. Cập nhật Phase 17D: Timeline and Memory Card Redesign
+
+Phase 17D đã hoàn thành cho Timeline và cách hiển thị memory card.
+
+- Timeline được làm lại theo hướng duyệt lại ký ức cá nhân, không giống bảng quản lý record.
+- Header Timeline có CTA `Tạo kỷ niệm` rõ hơn và ghi nhận số kỷ niệm đã lưu.
+- Search/filter panel được làm mềm hơn, vẫn giữ search dễ thấy và advanced filters dạng collapse.
+- Memory cards được scope trong `memory-grid`, ảnh cover nổi bật hơn, fallback khi chưa có ảnh ấm hơn, meta ngày/cảm xúc/tag/story dễ đọc hơn.
+- Card có link hành động rõ tới Details, Edit và Delete nhưng không thay đổi route hoặc controller.
+- Empty state khi chưa có kỷ niệm hoặc không có kết quả được làm ấm và hữu ích hơn.
+
+Không thay đổi:
+
+- Không thay đổi search/filter query behavior, controller logic, form POST behavior, auth logic, API behavior, database schema hoặc migrations.
+- Không redesign sâu Memory Details, Create/Edit, Albums, Trash hoặc Settings trong phase này.
 - Không thêm API endpoint, Flutter code, AI, social feature hoặc public sharing.

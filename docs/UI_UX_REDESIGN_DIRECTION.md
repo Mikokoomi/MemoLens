@@ -238,6 +238,7 @@ Các component sau nên được định nghĩa dần trong Razor partials hoặ
    - Trạng thái: đã implement trong Phase 17C cho Home và các trang auth/status. Chưa redesign Timeline, Memories, Albums, Trash hoặc Settings.
 3. **Phase 17D: Timeline and Memory Card redesign**
    - Tập trung timeline, filter, active filters, MemoryCard và empty state.
+   - Trạng thái: đã implement trong Phase 17D cho Timeline, search/filter panel, memory grid/card và empty states. Chưa redesign sâu Memory Details, Create/Edit, Albums, Trash hoặc Settings.
 4. **Phase 17E: Memory Details and Gallery redesign**
    - Làm rõ story/photo-first detail, gallery, edit/delete/back actions.
 5. **Phase 17F: Albums/Trash/Settings redesign**
