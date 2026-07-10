@@ -4,11 +4,24 @@
     ViewData["Title"] = "Đăng ký";
 }
 
-<section class="auth-wrap">
-    <div class="auth-panel">
-        <p class="kicker">Tạo không gian riêng</p>
-        <h1>Bắt đầu nhật ký MemoLens của bạn.</h1>
-        <p class="auth-copy">Tài khoản được bảo vệ bằng ASP.NET Core Identity và xác thực email.</p>
+<section class="auth-shell">
+    <div class="auth-intro">
+        <p class="kicker">Bắt đầu riêng tư</p>
+        <h1>Tạo một nơi yên tĩnh cho ảnh và câu chuyện của bạn.</h1>
+        <p>
+            Tài khoản MemoLens giúp bạn lưu ký ức theo timeline và album cá nhân. Email cần được xác thực trước khi đăng nhập.
+        </p>
+        <div class="trust-note">
+            <strong>Bạn sở hữu ký ức của mình.</strong>
+            <span>Ảnh và câu chuyện được giữ riêng theo tài khoản trong MVP hiện tại.</span>
+        </div>
+    </div>
+
+    <div class="auth-card">
+        <div class="auth-card-heading">
+            <p class="kicker">Đăng ký</p>
+            <h2>Tạo tài khoản MemoLens</h2>
+        </div>
 
         <form asp-action="Register" method="post" class="auth-form">
             <div asp-validation-summary="ModelOnly" class="text-danger validation-summary mb-3"></div>
@@ -38,7 +51,7 @@
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Đăng ký</button>
+            <button type="submit" class="btn btn-primary w-100">Tạo tài khoản</button>
         </form>
 
         <p class="auth-switch">

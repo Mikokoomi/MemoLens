@@ -2,11 +2,13 @@
     ViewData["Title"] = "Không có quyền truy cập";
 }
 
-<section class="content-panel status-panel">
-    <p class="kicker">Khu vực riêng tư</p>
-    <h1>Không gian kỷ niệm này được bảo vệ.</h1>
-    <p>
-        Vui lòng đăng nhập bằng đúng tài khoản để xem các trang riêng tư của MemoLens.
-    </p>
-    <a class="btn btn-primary" asp-action="Login">Đăng nhập</a>
+<section class="auth-status-shell">
+    <div class="status-card">
+        <p class="kicker">Khu vực riêng tư</p>
+        <h1>Không gian ký ức này được bảo vệ.</h1>
+        <p>
+            Vui lòng đăng nhập bằng đúng tài khoản để xem các trang riêng tư của MemoLens.
+        </p>
+        <a class="btn btn-primary" asp-action="Login">Đăng nhập</a>
+    </div>
 </section>

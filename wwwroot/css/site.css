@@ -1570,6 +1570,273 @@ a:hover {
   box-shadow: var(--shadow-focus);
 }
 
+.journal-hero {
+  align-items: center;
+  display: grid;
+  gap: clamp(1.5rem, 5vw, 4rem);
+  grid-template-columns: minmax(0, 1.02fr) minmax(280px, 0.78fr);
+  margin: 0 auto;
+  max-width: 1120px;
+  padding: clamp(2rem, 8vw, 5.5rem) 0 clamp(2rem, 7vw, 4.5rem);
+}
+
+.journal-hero-copy {
+  min-width: 0;
+}
+
+.journal-hero h1,
+.auth-intro h1,
+.auth-card h1,
+.status-card h1 {
+  font-size: clamp(2.25rem, 6vw, 5rem);
+  font-weight: 780;
+  letter-spacing: 0;
+  line-height: 1.02;
+  margin-bottom: 1rem;
+}
+
+.journal-hero p,
+.auth-intro p,
+.status-card p,
+.journal-card p,
+.project-note-card p,
+.development-note {
+  color: var(--muted);
+  line-height: 1.72;
+}
+
+.journal-hero .lead {
+  color: var(--ink-soft);
+  font-size: clamp(1.05rem, 2.5vw, 1.22rem);
+  max-width: 46rem;
+}
+
+.journal-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.5rem 0 1rem;
+}
+
+.trust-note,
+.journal-trust-note {
+  background: rgba(237, 240, 223, 0.7);
+  border: 1px solid #d9dfd0;
+  border-radius: var(--radius-sm);
+  color: var(--accent-dark);
+  display: grid;
+  gap: 0.15rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 42rem;
+  padding: 0.9rem 1rem;
+}
+
+.journal-card,
+.project-note-card,
+.auth-card,
+.status-card {
+  background: var(--surface-elevated);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
+
+.hero-memory-card {
+  display: grid;
+  gap: 1.1rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+}
+
+.journal-card-topline,
+.auth-card-heading {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+  justify-content: space-between;
+  color: var(--accent-dark);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.auth-card-heading {
+  display: block;
+}
+
+.auth-card-heading .kicker {
+  margin-bottom: 0.5rem;
+}
+
+.hero-memory-card h2,
+.journal-card h3,
+.auth-card h2 {
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  font-weight: 760;
+  letter-spacing: 0;
+  line-height: 1.15;
+  margin-bottom: 0;
+}
+
+.journal-photo-strip {
+  display: grid;
+  gap: 0.55rem;
+  grid-template-columns: 1.2fr 0.8fr;
+  min-height: 220px;
+}
+
+.journal-photo-strip span {
+  background:
+    linear-gradient(135deg, rgba(154, 108, 90, 0.16), rgba(110, 113, 84, 0.10)),
+    var(--surface-soft);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.journal-photo-strip span:nth-child(2) {
+  align-self: end;
+  min-height: 74%;
+}
+
+.journal-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.journal-pill-row span {
+  background: var(--accent-soft);
+  border-radius: 999px;
+  color: var(--accent-dark);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.35rem 0.7rem;
+}
+
+.soft-section {
+  margin: 0 auto;
+  max-width: 1120px;
+  padding: 0 0 clamp(2.5rem, 7vw, 5rem);
+}
+
+.journal-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 1rem;
+}
+
+.soft-section .journal-card,
+.project-note-card {
+  padding: clamp(1.15rem, 3vw, 1.6rem);
+}
+
+.project-note-card {
+  align-items: center;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.project-note-card p {
+  margin-bottom: 0;
+}
+
+.auth-shell {
+  align-items: center;
+  display: grid;
+  gap: clamp(1.25rem, 5vw, 3.5rem);
+  grid-template-columns: minmax(0, 0.82fr) minmax(300px, 0.62fr);
+  margin: 0 auto;
+  max-width: 1080px;
+  padding: clamp(1.5rem, 7vw, 4.5rem) 0 clamp(2rem, 7vw, 5rem);
+}
+
+.auth-shell.compact {
+  max-width: 940px;
+}
+
+.auth-intro {
+  min-width: 0;
+}
+
+.auth-intro ul {
+  color: var(--muted);
+  display: grid;
+  gap: 0.65rem;
+  line-height: 1.6;
+  margin: 1.25rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.auth-card {
+  padding: clamp(1.15rem, 4vw, 2rem);
+  position: relative;
+  z-index: 2;
+}
+
+.auth-card h1 {
+  font-size: clamp(1.85rem, 4vw, 2.55rem);
+  margin-bottom: 0.65rem;
+}
+
+.auth-card .form-control {
+  background-color: #fffaf2;
+}
+
+.auth-inline-link {
+  color: var(--muted);
+  display: grid;
+  gap: 0.35rem;
+  margin: 1.25rem 0 0;
+}
+
+.auth-inline-link a {
+  align-items: center;
+  display: inline-flex;
+  font-weight: 800;
+  justify-self: start;
+  min-height: 44px;
+  position: relative;
+  z-index: 3;
+}
+
+.auth-status-shell {
+  display: grid;
+  margin: 0 auto;
+  max-width: 780px;
+  min-height: clamp(420px, 62vh, 620px);
+  padding: clamp(2rem, 7vw, 5rem) 0;
+  place-items: center;
+}
+
+.status-card {
+  padding: clamp(1.35rem, 5vw, 2.5rem);
+  width: 100%;
+}
+
+.status-card h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+}
+
+.status-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.development-note {
+  background: var(--warning-bg);
+  border: 1px solid var(--warning-border);
+  border-radius: var(--radius-sm);
+  color: var(--warning-text);
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+}
+
 .footer {
   background: transparent;
   border-top: 1px solid var(--line);
@@ -1667,6 +1934,20 @@ body.memolens-shell > .footer {
     max-width: 100%;
   }
 
+  .journal-hero,
+  .auth-shell,
+  .project-note-card {
+    grid-template-columns: 1fr;
+  }
+
+  .journal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-note-card .btn {
+    width: 100%;
+  }
+
   .placeholder-shell {
     grid-template-columns: 1fr;
   }
@@ -1753,9 +2034,60 @@ body.memolens-shell > .footer {
   }
 
   .home-hero .btn,
+  .journal-actions .btn,
   .auth-panel .btn,
-  .status-panel .btn {
+  .auth-card .btn,
+  .status-panel .btn,
+  .status-card .btn {
     width: 100%;
+  }
+
+  .journal-hero {
+    padding-top: 1.75rem;
+  }
+
+  .journal-hero h1,
+  .auth-intro h1 {
+    font-size: 2.15rem;
+    line-height: 1.1;
+  }
+
+  .journal-actions,
+  .status-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .journal-photo-strip {
+    min-height: 180px;
+  }
+
+  .hero-memory-card,
+  .soft-section .journal-card,
+  .project-note-card,
+  .auth-card,
+  .status-card {
+    border-radius: 10px;
+  }
+
+  .auth-shell,
+  .auth-status-shell {
+    padding-bottom: 2rem;
+    padding-top: 1.5rem;
+  }
+
+  .auth-intro ul {
+    padding-left: 1rem;
+  }
+
+  .auth-card h1,
+  .status-card h1 {
+    font-size: 1.9rem;
+    line-height: 1.12;
+  }
+
+  .auth-inline-link a {
+    justify-self: stretch;
   }
 
   .memory-preview,

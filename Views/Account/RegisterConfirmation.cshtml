@@ -5,18 +5,21 @@
 
 @inject IWebHostEnvironment HostEnvironment
 
-<section class="content-panel status-panel">
-    <p class="kicker">Gần hoàn tất</p>
-    <h1>Xác thực email trước khi đăng nhập.</h1>
-    <p>
-        Chúng tôi đã gửi hướng dẫn xác thực cho @(email ?? "tài khoản của bạn").
-        Hãy xác thực email trước khi quay lại đăng nhập.
-    </p>
-    @if (HostEnvironment.IsDevelopment())
-    {
-        <p class="mb-4">
-            <strong>Môi trường Development:</strong> kiểm tra terminal/console để lấy link xác nhận email.
+<section class="auth-status-shell">
+    <div class="status-card">
+        <p class="kicker">Gần hoàn tất</p>
+        <h1>Xác thực email trước khi đăng nhập.</h1>
+        <p>
+            MemoLens đã gửi hướng dẫn xác thực cho @(email ?? "tài khoản của bạn").
+            Sau khi xác thực, bạn có thể đăng nhập và bắt đầu lưu ký ức riêng tư.
         </p>
-    }
-    <a class="btn btn-outline-secondary" asp-action="Login">Đi tới đăng nhập</a>
+        @if (HostEnvironment.IsDevelopment())
+        {
+            <div class="trust-note development-note">
+                <strong>Môi trường Development:</strong>
+                <span>Kiểm tra terminal/console để lấy link xác nhận email. MemoLens không hiển thị token thô trong giao diện.</span>
+            </div>
+        }
+        <a class="btn btn-primary" asp-action="Login">Đi tới đăng nhập</a>
+    </div>
 </section>

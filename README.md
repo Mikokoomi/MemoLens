@@ -395,6 +395,8 @@ Phase 17A records the next UI/UX redesign direction before implementation. It re
 
 Phase 17B adds the base MemoLens design system in CSS: warm journal-style color tokens, surface/card tokens, typography rhythm, button/form/card/navbar/footer base styling, and mobile-first touch target defaults. Page-level redesign remains planned for later phases.
 
+Phase 17C redesigns the Home and authentication-related pages with a warmer private journal feel. It keeps routes, form posts, authentication behavior, API behavior, and database schema unchanged.
+
 ## Feeling List
 
 Memory feelings are stored as strings from this fixed list:
@@ -440,6 +442,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - Productization and mobile architecture plan added.
 - API foundation added with `/api/v1/health`, standard API responses, and Development-only Swagger.
 - Vietnamese UI language and mobile responsive stabilization added.
+- Home and auth UI redesign added.
 - No AI or social features.
 - No admin dashboard yet.
 

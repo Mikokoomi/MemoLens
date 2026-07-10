@@ -2,69 +2,81 @@
     ViewData["Title"] = "Trang chủ";
 }
 
-<section class="home-hero">
-    <div class="row align-items-center gy-5 gx-0 gx-lg-5">
-        <div class="col-lg-7">
-            <p class="kicker">Nhật ký ảnh riêng tư</p>
-            <h1 class="hero-title">Một nơi yên tĩnh cho câu chuyện phía sau mỗi bức ảnh.</h1>
-            <p class="hero-copy">
-                MemoLens giúp bạn lưu ảnh cá nhân cùng ghi chú, cảm xúc, ngày tháng, địa điểm và album.
-                Ứng dụng được xây dựng để nhìn lại, không phải để thu hút sự chú ý công khai.
-            </p>
-            <div class="d-flex flex-wrap gap-3 mt-4">
-                <a class="btn btn-primary btn-lg" asp-controller="Home" asp-action="CreateMemory">Phác thảo kỷ niệm</a>
-                <a class="btn btn-outline-secondary btn-lg" asp-controller="Home" asp-action="Privacy">Đọc cam kết riêng tư</a>
-            </div>
+<section class="journal-hero">
+    <div class="journal-hero-copy">
+        <p class="kicker">Nhật ký ảnh riêng tư</p>
+        <h1>MemoLens lưu lại câu chuyện phía sau từng bức ảnh.</h1>
+        <p>
+            Một nơi yên tĩnh để giữ ảnh cá nhân, ghi chú, cảm xúc, ngày tháng, địa điểm và album riêng tư.
+            Không bảng tin công khai, không chạy theo sự chú ý, chỉ là ký ức của bạn được sắp lại nhẹ nhàng.
+        </p>
+        <div class="journal-actions">
+            <a class="btn btn-primary btn-lg" asp-controller="Account" asp-action="Register">Tạo tài khoản</a>
+            <a class="btn btn-outline-secondary btn-lg" asp-controller="Account" asp-action="Login">Đăng nhập</a>
         </div>
-        <div class="col-lg-5">
-            <div class="memory-preview">
-                <div class="preview-topline">
-                    <span>Bản nháp riêng tư</span>
-                    <span>Hôm nay</span>
-                </div>
-                <h2>Một buổi sáng nhẹ nhàng đáng nhớ</h2>
-                <p>
-                    Một bức ảnh dễ được nhớ lại hơn khi đi cùng những chi tiết nhỏ:
-                    chuyện gì đã xảy ra, ở đâu và cảm giác lúc đó như thế nào.
-                </p>
-                <div class="preview-divider"></div>
-                <div class="preview-meta">
-                    <span>bình yên</span>
-                    <span>ở nhà</span>
-                    <span>gia đình</span>
-                </div>
-            </div>
+        <div class="trust-note">
+            <strong>Riêng tư mặc định.</strong>
+            <span>Mỗi tài khoản chỉ xem được ký ức, ảnh, album và thùng rác của chính mình.</span>
         </div>
+    </div>
+
+    <aside class="journal-card hero-memory-card" aria-label="Bản xem trước kỷ niệm riêng tư">
+        <div class="journal-card-topline">
+            <span>Bản nháp riêng tư</span>
+            <span>Hôm nay</span>
+        </div>
+        <div class="journal-photo-strip" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <h2>Một buổi sáng nhẹ nhàng đáng nhớ</h2>
+        <p>
+            Thêm một vài dòng về điều đã xảy ra, cảm giác lúc đó, nơi chốn và những chi tiết nhỏ làm bức ảnh trở nên có ý nghĩa.
+        </p>
+        <div class="journal-pill-row">
+            <span>Bình yên</span>
+            <span>Ở nhà</span>
+            <span>Gia đình</span>
+        </div>
+    </aside>
+</section>
+
+<section class="soft-section" aria-labelledby="private-journal-title">
+    <div class="section-heading">
+        <p class="kicker">Không gian cá nhân</p>
+        <h2 id="private-journal-title">Được thiết kế để nhìn lại, không phải để đăng lên.</h2>
+        <p>MemoLens tập trung vào ký ức riêng tư: ảnh, câu chuyện, cảm xúc, timeline và album cá nhân.</p>
+    </div>
+
+    <div class="journal-grid">
+        <article class="journal-card">
+            <span class="feature-number">01</span>
+            <h3>Kể lại câu chuyện</h3>
+            <p>Lưu ghi chú, cảm xúc, địa điểm và ngày tháng để mỗi bức ảnh có bối cảnh riêng.</p>
+        </article>
+        <article class="journal-card">
+            <span class="feature-number">02</span>
+            <h3>Giữ ranh giới riêng tư</h3>
+            <p>Ký ức thuộc về tài khoản của bạn. MemoLens không có public feed, like, comment hay follower.</p>
+        </article>
+        <article class="journal-card">
+            <span class="feature-number">03</span>
+            <h3>Sắp xếp nhẹ nhàng</h3>
+            <p>Dòng thời gian, thẻ và album giúp bạn tìm lại những khoảnh khắc quan trọng khi cần.</p>
+        </article>
     </div>
 </section>
 
-<section class="section-spacing">
-    <div class="section-heading">
-        <h2>Được thiết kế cho việc lưu giữ kỷ niệm cá nhân.</h2>
-        <p>Giao diện đơn giản, ranh giới riêng tư rõ ràng và cấu trúc dễ trình bày trong một đồ án phần mềm.</p>
-    </div>
-
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="feature-panel">
-                <span class="feature-number">01</span>
-                <h3>Câu chuyện trước tiên</h3>
-                <p>Lưu ghi chú, cảm xúc, địa điểm và bối cảnh khiến mỗi bức ảnh trở nên có ý nghĩa.</p>
-            </div>
+<section class="soft-section compact" aria-labelledby="school-project-title">
+    <div class="journal-card project-note-card">
+        <div>
+            <p class="kicker">MVP rõ ràng</p>
+            <h2 id="school-project-title">Một đồ án web app thực tế, dễ giải thích.</h2>
         </div>
-        <div class="col-md-4">
-            <div class="feature-panel">
-                <span class="feature-number">02</span>
-                <h3>Riêng tư mặc định</h3>
-                <p>Kỷ niệm là của bạn. Không bảng tin công khai, không thích, không bình luận, không người theo dõi.</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="feature-panel">
-                <span class="feature-number">03</span>
-                <h3>Dễ tiếp tục phát triển</h3>
-                <p>ASP.NET Core MVC, Bootstrap, Identity và SQL Server giúp dự án thực tế, rõ ràng và dễ học.</p>
-            </div>
-        </div>
+        <p>
+            MemoLens dùng ASP.NET Core MVC, Identity, Entity Framework Core, SQL Server và Bootstrap.
+            Giao diện hiện ưu tiên mobile-first và vẫn giữ phạm vi MVP riêng tư, không thêm AI hay tính năng mạng xã hội.
+        </p>
     </div>
 </section>

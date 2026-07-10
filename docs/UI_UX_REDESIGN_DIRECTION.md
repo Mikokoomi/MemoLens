@@ -235,6 +235,7 @@ Các component sau nên được định nghĩa dần trong Razor partials hoặ
    - Trạng thái: đã implement trong Phase 17B bằng CSS tokens và base Bootstrap overrides. Chưa redesign sâu từng trang.
 2. **Phase 17C: Home/Auth UI redesign**
    - Làm lại Home, Login/Register/Forgot/Reset và status pages theo tone mới.
+   - Trạng thái: đã implement trong Phase 17C cho Home và các trang auth/status. Chưa redesign Timeline, Memories, Albums, Trash hoặc Settings.
 3. **Phase 17D: Timeline and Memory Card redesign**
    - Tập trung timeline, filter, active filters, MemoryCard và empty state.
 4. **Phase 17E: Memory Details and Gallery redesign**

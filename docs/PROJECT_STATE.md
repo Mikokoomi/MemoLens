@@ -68,6 +68,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 16E: Privacy and Ownership Integration Tests.
 - Phase 17A: UI/UX Redesign Direction.
 - Phase 17B: Design System Tokens and Base CSS.
+- Phase 17C: Home and Auth UI Redesign.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -134,7 +135,6 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 16B.7: Permanent Delete Design/Implementation.
 - Phase 16F: Image Upload and Storage Tests.
 - Phase 16G: Database Cleanup Tests.
-- Phase 17C: Home/Auth UI redesign.
 - Phase 17D: Timeline and Memory Card redesign.
 - Sau MVP: permanent delete, export data, thumbnails/compression.
 
@@ -719,3 +719,18 @@ Không thay đổi:
 - Không redesign sâu Home/Auth/Timeline/Albums/Trash/Settings trong phase này.
 - Không thay đổi controller, route, form POST behavior, auth, API, database schema hoặc migrations.
 - Không thêm API CRUD, Flutter code, AI, social feature hoặc public sharing.
+
+## 35. Cập nhật Phase 17C: Home and Auth UI Redesign
+
+Phase 17C đã hoàn thành cho Home và các trang auth/status liên quan.
+
+- Home được làm lại theo hướng soft journal aesthetic, nhấn mạnh MemoLens là nhật ký ảnh riêng tư và không phải mạng xã hội.
+- Login, Register, Forgot Password, Reset Password, Register Confirmation, Forgot Password Confirmation, Reset Password Confirmation, Confirm Email và Access Denied được làm lại theo cùng tone ấm, bình tĩnh và mobile-first.
+- Các form auth vẫn giữ nguyên route, binding, form POST behavior và luồng xác thực hiện có.
+- Link chuyển giữa Login/Register/Forgot Password tiếp tục có vùng bấm rõ trên mobile.
+- Timeline, Memories, Albums, Trash và Settings chưa được redesign trong phase này.
+
+Không thay đổi:
+
+- Không thay đổi controller, auth logic, API behavior, database schema hoặc migrations.
+- Không thêm API endpoint, Flutter code, AI, social feature hoặc public sharing.
