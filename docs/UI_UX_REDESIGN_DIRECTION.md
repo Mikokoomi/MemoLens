@@ -232,6 +232,7 @@ Các component sau nên được định nghĩa dần trong Razor partials hoặ
 
 1. **Phase 17B: Design system tokens and base CSS**
    - Chốt font, màu, spacing, radius, shadow, button, form, link và base page rhythm.
+   - Trạng thái: đã implement trong Phase 17B bằng CSS tokens và base Bootstrap overrides. Chưa redesign sâu từng trang.
 2. **Phase 17C: Home/Auth UI redesign**
    - Làm lại Home, Login/Register/Forgot/Reset và status pages theo tone mới.
 3. **Phase 17D: Timeline and Memory Card redesign**

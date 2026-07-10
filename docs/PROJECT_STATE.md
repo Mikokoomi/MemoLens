@@ -67,6 +67,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 16D: Auth API Integration Tests.
 - Phase 16E: Privacy and Ownership Integration Tests.
 - Phase 17A: UI/UX Redesign Direction.
+- Phase 17B: Design System Tokens and Base CSS.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -133,8 +134,8 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 16B.7: Permanent Delete Design/Implementation.
 - Phase 16F: Image Upload and Storage Tests.
 - Phase 16G: Database Cleanup Tests.
-- Phase 17B: Design system tokens and base CSS.
 - Phase 17C: Home/Auth UI redesign.
+- Phase 17D: Timeline and Memory Card redesign.
 - Sau MVP: permanent delete, export data, thumbnails/compression.
 
 ## 10. Hướng dẫn cho Codex trong các task sau
@@ -701,4 +702,20 @@ Không thay đổi:
 
 - Không sửa Razor view, CSS hoặc UI implementation trong phase này.
 - Không thay đổi backend, auth, API, database schema hoặc migrations.
+- Không thêm API CRUD, Flutter code, AI, social feature hoặc public sharing.
+
+## 34. Cập nhật Phase 17B: Design System Tokens and Base CSS
+
+Phase 17B đã hoàn thành dưới dạng nền styling chung.
+
+- Đã cập nhật `wwwroot/css/site.css` với design tokens rõ hơn cho font stack, background, surface/card, text, muted text, border, accent, danger, radius, shadow và spacing.
+- Base typography, body background, link, button, form control, select, card, alert, navbar, footer và các panel/card hiện có được chuẩn hóa theo hướng soft journal aesthetic.
+- Font vẫn dùng web-safe/system stack, không thêm font file và không import remote font.
+- Touch target, footer normal flow, navbar mobile và no-horizontal-overflow tiếp tục được giữ làm nguyên tắc mobile-first.
+- Page-by-page redesign vẫn là future work từ Phase 17C đến 17G.
+
+Không thay đổi:
+
+- Không redesign sâu Home/Auth/Timeline/Albums/Trash/Settings trong phase này.
+- Không thay đổi controller, route, form POST behavior, auth, API, database schema hoặc migrations.
 - Không thêm API CRUD, Flutter code, AI, social feature hoặc public sharing.

@@ -1,15 +1,47 @@
 :root {
-  --canvas: #f6f5ef;
-  --surface: #ffffff;
-  --surface-soft: #fbfaf6;
-  --ink: #242823;
-  --muted: #6f756b;
-  --line: #deddd4;
-  --accent: #66725c;
-  --accent-dark: #47513f;
-  --accent-soft: #edf1e8;
-  --danger: #9f2f2d;
-  --radius: 12px;
+  --font-sans: "Segoe UI", "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  --font-display: var(--font-sans);
+  --canvas: #f7f1e9;
+  --canvas-soft: #fbf7f0;
+  --canvas-warm: #efe5da;
+  --surface: #fffdf8;
+  --surface-elevated: rgba(255, 253, 248, 0.92);
+  --surface-soft: #fdf7ee;
+  --surface-muted: #f2eadf;
+  --ink: #29231e;
+  --ink-soft: #463d35;
+  --muted: #776d62;
+  --muted-strong: #5f554c;
+  --line: #dfd3c4;
+  --line-strong: #cbbdad;
+  --accent: #6e7154;
+  --accent-hover: #55583f;
+  --accent-dark: #454832;
+  --accent-soft: #edf0df;
+  --accent-warm: #9a6c5a;
+  --accent-rose: #b5776f;
+  --danger: #9a3732;
+  --danger-soft: #f8ebe7;
+  --warning-bg: #fff5e5;
+  --warning-border: #ead3ad;
+  --warning-text: #75582f;
+  --success-bg: #edf3e7;
+  --success-border: #cbd8c1;
+  --success-text: #47583b;
+  --radius-xs: 8px;
+  --radius-sm: 10px;
+  --radius: 14px;
+  --radius-lg: 18px;
+  --shadow-soft: 0 12px 36px rgba(59, 48, 38, 0.08);
+  --shadow-card: 0 18px 52px rgba(59, 48, 38, 0.10);
+  --shadow-focus: 0 0 0 0.12rem var(--canvas-soft), 0 0 0 0.28rem rgba(110, 113, 84, 0.30);
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
 }
 
 html {
@@ -33,20 +65,43 @@ html {
 
 body {
   background:
-    radial-gradient(circle at top left, rgba(102, 114, 92, 0.10), transparent 32rem),
-    linear-gradient(180deg, #faf9f4 0%, var(--canvas) 52%, #f1f0ea 100%);
+    radial-gradient(circle at 12% 0%, rgba(154, 108, 90, 0.10), transparent 30rem),
+    radial-gradient(circle at 86% 12%, rgba(110, 113, 84, 0.08), transparent 26rem),
+    linear-gradient(180deg, var(--canvas-soft) 0%, var(--canvas) 52%, var(--canvas-warm) 100%);
   color: var(--ink);
   display: flex;
   flex-direction: column;
-  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.65;
   margin-bottom: 0;
   min-height: 100vh;
   overflow-x: hidden;
   width: 100%;
 }
 
+main {
+  display: block;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--ink);
+  font-family: var(--font-display);
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+
+p {
+  margin-top: 0;
+}
+
 a {
-  color: var(--accent-dark);
+  color: var(--accent-hover);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
 }
@@ -56,7 +111,7 @@ a:hover {
 }
 
 .btn {
-  border-radius: 8px;
+  border-radius: var(--radius-xs);
   font-weight: 650;
   letter-spacing: 0;
   min-height: 44px;
@@ -76,9 +131,11 @@ a:hover {
 .btn:active:focus,
 .btn-link.nav-link:focus,
 .nav-link:focus,
+.navbar-toggler:focus,
 .form-control:focus,
+.form-select:focus,
 .form-check-input:focus {
-  box-shadow: 0 0 0 0.12rem var(--canvas), 0 0 0 0.28rem rgba(102, 114, 92, 0.32);
+  box-shadow: var(--shadow-focus);
 }
 
 .btn-primary {
@@ -88,20 +145,73 @@ a:hover {
 }
 
 .btn-primary:hover {
-  background-color: var(--accent-dark);
-  border-color: var(--accent-dark);
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: #fff;
+}
+
+.btn-outline-primary {
+  border-color: var(--accent);
+  color: var(--accent-dark);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--accent);
+  border-color: var(--accent);
   color: #fff;
 }
 
 .btn-outline-secondary {
-  border-color: #abb1a4;
+  border-color: var(--line-strong);
   color: var(--accent-dark);
 }
 
 .btn-outline-secondary:hover {
-  background-color: var(--accent-dark);
-  border-color: var(--accent-dark);
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
   color: #fff;
+}
+
+.btn-link {
+  color: var(--accent-hover);
+  font-weight: 700;
+  min-height: 44px;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+
+.btn-link:hover {
+  color: var(--ink);
+}
+
+.card {
+  background: var(--surface-elevated);
+  border-color: var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+}
+
+.alert {
+  border-radius: var(--radius-sm);
+  line-height: 1.55;
+}
+
+.alert-success {
+  background: var(--success-bg);
+  border-color: var(--success-border);
+  color: var(--success-text);
+}
+
+.alert-danger {
+  background: var(--danger-soft);
+  border-color: #e4bbb5;
+  color: var(--danger);
+}
+
+.alert-warning {
+  background: var(--warning-bg);
+  border-color: var(--warning-border);
+  color: var(--warning-text);
 }
 
 .site-header {
@@ -110,12 +220,13 @@ a:hover {
 }
 
 .memolens-navbar {
-  background: rgba(250, 249, 244, 0.92);
-  border: 1px solid rgba(222, 221, 212, 0.9);
+  background: rgba(255, 253, 248, 0.90);
+  border: 1px solid rgba(223, 211, 196, 0.92);
   border-radius: var(--radius);
   margin: 0 auto;
   max-width: calc(100% - 1.5rem);
   min-height: 68px;
+  box-shadow: 0 10px 30px rgba(59, 48, 38, 0.06);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
@@ -126,13 +237,13 @@ a:hover {
   display: inline-flex;
   font-weight: 750;
   gap: 0.6rem;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
 }
 
 .brand-mark {
   align-items: center;
   background: var(--accent);
-  border-radius: 8px;
+  border-radius: var(--radius-xs);
   color: #fff;
   display: inline-flex;
   font-size: 0.9rem;
@@ -142,7 +253,7 @@ a:hover {
 }
 
 .navbar .nav-link {
-  border-radius: 8px;
+  border-radius: var(--radius-xs);
   color: var(--muted);
   font-size: 0.95rem;
   padding: 0.65rem 0.75rem;
@@ -156,6 +267,12 @@ a:hover {
 .nav-link-soft {
   background: var(--accent-soft);
   color: var(--accent-dark) !important;
+}
+
+.navbar-toggler {
+  border-color: var(--line);
+  border-radius: var(--radius-xs);
+  min-height: 44px;
 }
 
 .nav-account {
@@ -197,7 +314,7 @@ a:hover {
 .hero-title {
   font-size: clamp(2.7rem, 6vw, 5.4rem);
   font-weight: 760;
-  letter-spacing: -0.055em;
+  letter-spacing: 0;
   line-height: 0.98;
   max-width: 11ch;
 }
@@ -218,10 +335,10 @@ a:hover {
 .mini-album,
 .future-form,
 .quiet-box {
-  background: rgba(255, 255, 255, 0.88);
+  background: var(--surface-elevated);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  box-shadow: 0 18px 55px rgba(54, 61, 48, 0.07);
+  box-shadow: var(--shadow-card);
 }
 
 .memory-preview {
@@ -241,7 +358,7 @@ a:hover {
 .memory-preview h2 {
   font-size: 1.9rem;
   font-weight: 720;
-  letter-spacing: -0.035em;
+  letter-spacing: 0;
   line-height: 1.08;
   margin: 2rem 0 1rem;
 }
@@ -279,7 +396,7 @@ a:hover {
 .status-panel h1 {
   font-size: clamp(2rem, 4vw, 3.3rem);
   font-weight: 760;
-  letter-spacing: -0.045em;
+  letter-spacing: 0;
   line-height: 1.05;
   overflow-wrap: anywhere;
 }
@@ -301,7 +418,7 @@ a:hover {
 }
 
 .feature-panel:hover {
-  border-color: #bdc5b3;
+  border-color: var(--line-strong);
   transform: translateY(-2px);
 }
 
@@ -318,7 +435,7 @@ a:hover {
 .quiet-box h2 {
   font-size: 1.25rem;
   font-weight: 730;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
 }
 
 .feature-panel p {
@@ -395,8 +512,9 @@ a:hover {
 .form-control,
 .form-check-input {
   background-color: var(--surface-soft);
-  border-color: #cfd3c8;
-  border-radius: 8px;
+  border-color: var(--line-strong);
+  border-radius: var(--radius-xs);
+  color: var(--ink);
 }
 
 .form-control {
@@ -404,7 +522,16 @@ a:hover {
 }
 
 .form-control:focus {
-  background-color: #fff;
+  background-color: var(--surface);
+  border-color: var(--accent);
+}
+
+.form-control::placeholder {
+  color: #93887b;
+}
+
+.form-check-input:checked {
+  background-color: var(--accent);
   border-color: var(--accent);
 }
 
@@ -510,8 +637,8 @@ a:hover {
 .future-field,
 .future-area {
   background: var(--surface-soft);
-  border: 1px dashed #c7cdbd;
-  border-radius: 8px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-xs);
 }
 
 .future-field {
@@ -546,7 +673,7 @@ a:hover {
 .memory-empty-state h2 {
   font-size: clamp(2.2rem, 5vw, 4rem);
   font-weight: 760;
-  letter-spacing: -0.05em;
+  letter-spacing: 0;
   line-height: 1.02;
 }
 
@@ -564,10 +691,10 @@ a:hover {
 .memory-form-panel,
 .memory-detail-main,
 .memory-side-panel {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--surface-elevated);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  box-shadow: 0 18px 55px rgba(54, 61, 48, 0.07);
+  box-shadow: var(--shadow-card);
 }
 
 .memory-empty-state {
@@ -595,7 +722,7 @@ a:hover {
 .memory-filter-heading h2 {
   font-size: clamp(1.55rem, 3vw, 2.1rem);
   font-weight: 750;
-  letter-spacing: -0.035em;
+  letter-spacing: 0;
   line-height: 1.08;
   margin-bottom: 0;
 }
@@ -675,10 +802,10 @@ a:hover {
 }
 
 .memory-filter-alert {
-  background: #fff8ed;
-  border: 1px solid #ead9bc;
+  background: var(--warning-bg);
+  border: 1px solid var(--warning-border);
   border-radius: 10px;
-  color: #76572a;
+  color: var(--warning-text);
   margin-bottom: 1rem;
   padding: 0.9rem 1rem;
 }
@@ -716,7 +843,7 @@ a:hover {
 
 .album-card,
 .album-select-card {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--surface-elevated);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   overflow: hidden;
@@ -725,7 +852,7 @@ a:hover {
 
 .album-card:hover,
 .album-select-card:hover {
-  border-color: #bdc5b3;
+  border-color: var(--line-strong);
   transform: translateY(-2px);
 }
 
@@ -796,7 +923,7 @@ a:hover {
 .album-card h2 {
   font-size: 1.35rem;
   font-weight: 740;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
   line-height: 1.14;
 }
 
@@ -914,7 +1041,7 @@ a:hover {
 
 .trash-message {
   background: var(--accent-soft);
-  border: 1px solid #cbd5c4;
+  border: 1px solid var(--success-border);
   border-radius: 10px;
   color: var(--accent-dark);
   font-weight: 700;
@@ -933,7 +1060,7 @@ a:hover {
 .trash-section-heading h2 {
   font-size: clamp(1.55rem, 3vw, 2.1rem);
   font-weight: 750;
-  letter-spacing: -0.035em;
+  letter-spacing: 0;
   line-height: 1.08;
 }
 
@@ -944,7 +1071,7 @@ a:hover {
 }
 
 .trash-card {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--surface-elevated);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   overflow: hidden;
@@ -955,7 +1082,7 @@ a:hover {
   background:
     linear-gradient(135deg, rgba(102, 114, 92, 0.08), rgba(102, 114, 92, 0.02)),
     var(--surface-soft);
-  border-bottom: 1px dashed #c7cdbd;
+  border-bottom: 1px dashed var(--line-strong);
   color: var(--muted);
   display: flex;
   justify-content: center;
@@ -971,7 +1098,7 @@ a:hover {
 .trash-card h3 {
   font-size: 1.3rem;
   font-weight: 740;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
   line-height: 1.15;
 }
 
@@ -994,7 +1121,7 @@ a:hover {
 }
 
 .trash-empty-note {
-  background: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 253, 248, 0.78);
   border: 1px solid var(--line);
   border-radius: 10px;
   color: var(--muted);
@@ -1023,7 +1150,7 @@ a:hover {
 .settings-form-shell h1 {
   font-size: clamp(2.1rem, 5vw, 3.8rem);
   font-weight: 760;
-  letter-spacing: -0.045em;
+  letter-spacing: 0;
   line-height: 1.03;
   margin-bottom: 0.8rem;
 }
@@ -1038,7 +1165,7 @@ a:hover {
 
 .settings-message {
   background: var(--accent-soft);
-  border: 1px solid #cbd5c4;
+  border: 1px solid var(--success-border);
   border-radius: 10px;
   color: var(--accent-dark);
   font-weight: 700;
@@ -1054,10 +1181,10 @@ a:hover {
 
 .settings-card,
 .settings-limits {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--surface-elevated);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  box-shadow: 0 18px 55px rgba(54, 61, 48, 0.07);
+  box-shadow: var(--shadow-card);
 }
 
 .settings-card {
@@ -1067,7 +1194,7 @@ a:hover {
 .settings-card h2 {
   font-size: clamp(1.45rem, 3vw, 2.15rem);
   font-weight: 750;
-  letter-spacing: -0.035em;
+  letter-spacing: 0;
   line-height: 1.08;
   margin-bottom: 1rem;
   overflow-wrap: anywhere;
@@ -1170,7 +1297,7 @@ a:hover {
 }
 
 .memory-card {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--surface-elevated);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   display: grid;
@@ -1181,7 +1308,7 @@ a:hover {
 }
 
 .memory-card:hover {
-  border-color: #bdc5b3;
+  border-color: var(--line-strong);
   transform: translateY(-2px);
 }
 
@@ -1190,7 +1317,7 @@ a:hover {
   background:
     linear-gradient(135deg, rgba(102, 114, 92, 0.08), rgba(102, 114, 92, 0.02)),
     var(--surface-soft);
-  border: 1px dashed #c7cdbd;
+  border: 1px dashed var(--line-strong);
   border-radius: 10px;
   color: var(--muted);
   display: flex;
@@ -1233,7 +1360,7 @@ a:hover {
 .memory-card h2 {
   font-size: 1.45rem;
   font-weight: 740;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
   line-height: 1.14;
   margin-bottom: 0.35rem;
 }
@@ -1325,7 +1452,7 @@ a:hover {
 .story-panel h2 {
   font-size: 1.2rem;
   font-weight: 730;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
 }
 
 .story-panel p {
@@ -1369,13 +1496,13 @@ a:hover {
 .memory-panel-title {
   font-size: 1.25rem;
   font-weight: 730;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   margin-bottom: 1rem;
 }
 
 .memory-upload-box {
   background: var(--surface-soft);
-  border: 1px dashed #c7cdbd;
+  border: 1px dashed var(--line-strong);
   border-radius: 10px;
   padding: 1rem;
 }
@@ -1431,15 +1558,16 @@ a:hover {
 
 .form-select {
   background-color: var(--surface-soft);
-  border-color: #cfd3c8;
-  border-radius: 8px;
+  border-color: var(--line-strong);
+  border-radius: var(--radius-xs);
+  color: var(--ink);
   min-height: 48px;
 }
 
 .form-select:focus {
-  background-color: #fff;
+  background-color: var(--surface);
   border-color: var(--accent);
-  box-shadow: 0 0 0 0.12rem var(--canvas), 0 0 0 0.28rem rgba(102, 114, 92, 0.32);
+  box-shadow: var(--shadow-focus);
 }
 
 .footer {
@@ -1613,7 +1741,7 @@ body.memolens-shell > .footer {
 
   .hero-title {
     font-size: 2.15rem;
-    letter-spacing: -0.04em;
+    letter-spacing: 0;
     line-height: 1.12;
     max-width: 100%;
     overflow-wrap: normal;
@@ -1671,7 +1799,7 @@ body.memolens-shell > .footer {
   .content-intro h1,
   .placeholder-main h1 {
     font-size: 1.9rem;
-    letter-spacing: -0.03em;
+    letter-spacing: 0;
     line-height: 1.12;
   }
 
@@ -1702,7 +1830,7 @@ body.memolens-shell > .footer {
   .settings-hero h1,
   .settings-form-shell h1 {
     font-size: 2rem;
-    letter-spacing: -0.035em;
+    letter-spacing: 0;
     line-height: 1.06;
   }
 

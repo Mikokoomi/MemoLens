@@ -393,6 +393,8 @@ Phase 12.5 UI language and responsive stabilization is completed.
 
 Phase 17A records the next UI/UX redesign direction before implementation. It recommends a warmer soft journal aesthetic, better Vietnamese-friendly typography, more photo-first memory cards, and a phased redesign roadmap. See `docs/UI_UX_REDESIGN_DIRECTION.md`.
 
+Phase 17B adds the base MemoLens design system in CSS: warm journal-style color tokens, surface/card tokens, typography rhythm, button/form/card/navbar/footer base styling, and mobile-first touch target defaults. Page-level redesign remains planned for later phases.
+
 ## Feeling List
 
 Memory feelings are stored as strings from this fixed list:
