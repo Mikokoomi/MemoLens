@@ -243,8 +243,32 @@ Planning documents:
 - `docs/PRODUCTIZATION_PLAN.md`
 - `docs/MOBILE_ARCHITECTURE.md`
 - `docs/API_ROADMAP.md`
+- `docs/API_FOUNDATION.md`
 - `docs/PRIVATE_BETA_PLAN.md`
 - `docs/PRODUCTION_RISK_REGISTER.md`
+
+## API Foundation
+
+Phase 13 API foundation is completed.
+
+Current API foundation:
+
+- `GET /api/v1/health` returns a small JSON health check for the MemoLens API.
+- API responses use a standard format with `success`, `message`, and optional `data`.
+- Validation error responses can return field-based `errors`.
+- Swagger/OpenAPI is enabled only in `Development`.
+- Swagger is available at `/swagger` when running the app locally in Development.
+
+Current API limitations:
+
+- No auth API yet.
+- No JWT or token-based auth yet.
+- No memory CRUD API yet.
+- No album CRUD API yet.
+- No image upload API yet.
+- No Flutter app yet.
+
+See `docs/API_FOUNDATION.md` for the current API shape, response format, Swagger notes, limitations, and future privacy rules.
 
 ## Timeline Search and Filters
 
@@ -368,6 +392,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - Settings and privacy pages added.
 - MVP QA checklist and small privacy hardening added.
 - Productization and mobile architecture plan added.
+- API foundation added with `/api/v1/health`, standard API responses, and Development-only Swagger.
 - Vietnamese UI language and mobile responsive stabilization added.
 - No AI or social features.
 - No admin dashboard yet.

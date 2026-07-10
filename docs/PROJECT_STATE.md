@@ -49,6 +49,8 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 11: MVP QA / Hardening.
 - Phase 12: Productization & Mobile Architecture Plan.
 - Phase 12.5: UI Language Consistency, Footer, and Mobile Responsive Fix.
+- Phase 13A: API Foundation Code.
+- Phase 13B: API Foundation Documentation Update.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -65,6 +67,9 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Timeline có search, filter và sort.
 - Trash/Restore cho memories và albums.
 - Soft delete cho memories và albums.
+- API response models cho Web API.
+- Health endpoint `GET /api/v1/health`.
+- Swagger/OpenAPI trong môi trường Development.
 
 ## 6. Quy tắc riêng tư quan trọng
 
@@ -97,6 +102,12 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Chưa có public sharing.
 - Chưa có trang quản lý tag riêng.
 - Chưa có admin dashboard.
+- Chưa có auth API.
+- Chưa có JWT hoặc token-based auth.
+- Chưa có memory CRUD API.
+- Chưa có album CRUD API.
+- Chưa có image upload API.
+- Chưa có Flutter app.
 
 ## 9. Phase tiếp theo được đề xuất
 
@@ -212,3 +223,45 @@ Không thay đổi:
 - Không thêm Flutter/mobile app code.
 - Không đổi authentication, memory CRUD, image upload/private serving, album, trash hoặc settings logic.
 - Không thêm social features hoặc AI.
+
+## 15. Cập nhật Phase 13: API Foundation
+
+Phase 13A và 13B đã hoàn thành.
+
+Phạm vi đã có:
+
+- Thêm response model chuẩn cho API:
+  - `ApiResponse`
+  - `ApiResponse<T>`
+  - `ApiValidationErrorResponse`
+- Thêm health endpoint:
+  - `GET /api/v1/health`
+- Health endpoint trả JSON gồm `success`, `message`, `appName`, `apiVersion`, `environment` và `serverTimeUtc`.
+- Swagger/OpenAPI được bật trong môi trường `Development`.
+- Swagger title là `MemoLens API`, version là `v1`.
+- Tài liệu API foundation được tạo tại `docs/API_FOUNDATION.md`.
+
+Giới hạn hiện tại:
+
+- Chưa có auth API.
+- Chưa có JWT hoặc token-based auth.
+- Chưa có memory CRUD API.
+- Chưa có album CRUD API.
+- Chưa có image upload API.
+- Chưa có Flutter app.
+
+Không thay đổi:
+
+- Không đổi database schema.
+- Không tạo migration.
+- Không đổi MVC auth/cookie behavior.
+- Không đổi memory, album, trash, image hoặc settings behavior.
+- Không thêm social features, AI hoặc public sharing.
+
+Quy tắc riêng tư cho API tương lai:
+
+- Mọi API riêng tư phải scope theo current authenticated user.
+- Admin không được bypass private content ownership trong MVP hiện tại.
+- Không có public image URLs.
+- Không trả private physical file path ra API response.
+- Deleted memories/albums phải bị ẩn khỏi normal APIs.
