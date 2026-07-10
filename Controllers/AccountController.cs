@@ -89,7 +89,17 @@ public class AccountController : Controller
             return View(false);
         }
 
-        var decodedToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
+        string decodedToken;
+
+        try
+        {
+            decodedToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
+        }
+        catch (FormatException)
+        {
+            return View(false);
+        }
+
         var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
 
         return View(result.Succeeded);

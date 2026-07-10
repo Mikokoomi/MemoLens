@@ -46,6 +46,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 8: Private image storage and authorized image serving.
 - Phase 9: Trash/Restore for memories and albums.
 - Phase 10: Settings & Privacy.
+- Phase 11: MVP QA / Hardening.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -97,7 +98,6 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 
 ## 9. Phase tiếp theo được đề xuất
 
-- Phase 11: MVP QA / Hardening.
 - Sau MVP: permanent delete, export data, thumbnails/compression.
 
 ## 10. Hướng dẫn cho Codex trong các task sau
@@ -139,3 +139,23 @@ Gioi han van con:
 - Chua co export data.
 - Chua co xoa tai khoan.
 - Chua co admin settings panel.
+
+## 12. Cap nhat Phase 11: MVP QA / Hardening
+
+Phase 11 da hoan thanh.
+
+Ket qua:
+
+- Da tao `docs/MVP_QA_CHECKLIST.md` cho auth, user isolation, memories, images, albums, trash, settings, search/filter, mobile UI va demo prep.
+- Da audit cac controller chinh: Account, Settings, Memories, Images, Albums, Trash va Home.
+- Da giu nguyen product direction: khong social features, khong AI, khong public sharing, khong export/delete account, khong permanent delete.
+- Da harden ConfirmEmail de token hong khong lam app crash.
+- Da harden album display de chi hien album-memory relationship cung owner voi album.
+- Khong co database schema change.
+- Khong tao migration moi.
+
+Trang thai privacy:
+
+- Private pages can dang nhap.
+- Memories, albums, images, trash va settings tiep tuc scope theo current user.
+- Admin role khong bypass private content ownership trong MVP hien tai.

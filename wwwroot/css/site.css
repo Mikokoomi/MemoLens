@@ -1462,8 +1462,14 @@ a:hover {
   .nav-action-form .btn,
   .nav-register-button {
     display: block;
+    min-height: 44px;
     text-align: left;
     width: 100%;
+  }
+
+  .navbar .nav-link {
+    align-items: center;
+    display: flex;
   }
 
   .nav-account {

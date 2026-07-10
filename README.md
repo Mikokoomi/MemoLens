@@ -210,6 +210,20 @@ Current Settings limitations:
 - No delete account.
 - No admin settings panel.
 
+## MVP QA and Hardening
+
+Phase 11 MVP QA and hardening is completed.
+
+- A reusable MVP QA checklist is available at `docs/MVP_QA_CHECKLIST.md`.
+- Authorization and ownership checks were reviewed for memories, albums, trash, settings, and private images.
+- Guest users are still redirected away from private pages.
+- User-scoped queries remain the rule for private content.
+- Private image serving continues to return `NotFound` for missing, unauthorized, soft-deleted, or missing-file cases.
+- Email confirmation now handles malformed confirmation tokens without crashing the app.
+- Album display logic now filters album-memory relationships by album owner as a defensive privacy check.
+- No database schema changes or migrations were added in this phase.
+- No major new product features were added.
+
 ## Timeline Search and Filters
 
 Phase 6 timeline search and filters are completed.
@@ -323,6 +337,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - Private image storage and authorized image serving added.
 - Trash and restore for memories/albums added.
 - Settings and privacy pages added.
+- MVP QA checklist and small privacy hardening added.
 - No AI or social features.
 - No admin dashboard yet.
 

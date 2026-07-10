@@ -324,7 +324,7 @@ public class AlbumsController : Controller
 
     private static AlbumListItemViewModel ToListItemViewModel(Album album)
     {
-        var visibleMemories = GetVisibleAlbumMemories(album).ToList();
+        var visibleMemories = GetVisibleAlbumMemories(album, album.UserId).ToList();
 
         return new AlbumListItemViewModel
         {
@@ -340,7 +340,7 @@ public class AlbumsController : Controller
 
     private static AlbumDetailsViewModel ToDetailsViewModel(Album album)
     {
-        var visibleMemories = GetVisibleAlbumMemories(album).ToList();
+        var visibleMemories = GetVisibleAlbumMemories(album, album.UserId).ToList();
 
         return new AlbumDetailsViewModel
         {
@@ -356,10 +356,10 @@ public class AlbumsController : Controller
         };
     }
 
-    private static IEnumerable<AlbumMemory> GetVisibleAlbumMemories(Album album)
+    private static IEnumerable<AlbumMemory> GetVisibleAlbumMemories(Album album, string userId)
     {
         return album.AlbumMemories
-            .Where(albumMemory => !albumMemory.Memory.IsDeleted)
+            .Where(albumMemory => albumMemory.Memory.UserId == userId && !albumMemory.Memory.IsDeleted)
             .OrderBy(albumMemory => albumMemory.AddedAt)
             .ThenBy(albumMemory => albumMemory.Memory.MemoryDate);
     }
