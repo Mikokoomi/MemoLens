@@ -1,19 +1,19 @@
 @model MemoLens.Models.Settings.SettingsIndexViewModel
 
 @{
-    ViewData["Title"] = "Cai dat";
+    ViewData["Title"] = "Cài đặt";
     var displayName = string.IsNullOrWhiteSpace(Model.DisplayName) ? Model.Email : Model.DisplayName;
 }
 
 <section class="settings-hero">
     <div>
-        <p class="kicker">Cai dat rieng tu</p>
-        <h1>Cai dat</h1>
-        <p>Quan ly thong tin tai khoan va nhung ghi chu quyen rieng tu cua khong gian ky niem ca nhan.</p>
+        <p class="kicker">Cài đặt riêng tư</p>
+        <h1>Cài đặt</h1>
+        <p>Quản lý thông tin tài khoản và những ghi chú quyền riêng tư của không gian kỷ niệm cá nhân.</p>
     </div>
     <div class="memory-action-row">
-        <a class="btn btn-primary" asp-action="EditProfile">Sua ten hien thi</a>
-        <a class="btn btn-outline-secondary" asp-action="ChangePassword">Doi mat khau</a>
+        <a class="btn btn-primary" asp-action="EditProfile">Sửa tên hiển thị</a>
+        <a class="btn btn-outline-secondary" asp-action="ChangePassword">Đổi mật khẩu</a>
     </div>
 </section>
 
@@ -24,54 +24,54 @@
 
 <section class="settings-grid">
     <article class="settings-card settings-card-primary">
-        <p class="kicker">Thong tin tai khoan</p>
+        <p class="kicker">Thông tin tài khoản</p>
         <h2>@displayName</h2>
         <dl class="settings-facts">
             <div>
-                <dt>Ten hien thi</dt>
-                <dd>@(string.IsNullOrWhiteSpace(Model.DisplayName) ? "Chua dat ten hien thi" : Model.DisplayName)</dd>
+                <dt>Tên hiển thị</dt>
+                <dd>@(string.IsNullOrWhiteSpace(Model.DisplayName) ? "Chưa đặt tên hiển thị" : Model.DisplayName)</dd>
             </div>
             <div>
                 <dt>Email</dt>
                 <dd>@Model.Email</dd>
             </div>
             <div>
-                <dt>Trang thai email</dt>
+                <dt>Trạng thái email</dt>
                 <dd>
                     <span class="settings-status @(Model.EmailConfirmed ? "confirmed" : "unconfirmed")">
-                        @(Model.EmailConfirmed ? "Da xac thuc" : "Chua xac thuc")
+                        @(Model.EmailConfirmed ? "Đã xác thực" : "Chưa xác thực")
                     </span>
                 </dd>
             </div>
             <div>
-                <dt>Ngay tao tai khoan</dt>
+                <dt>Ngày tạo tài khoản</dt>
                 <dd>@Model.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy")</dd>
             </div>
         </dl>
         <div class="settings-actions">
-            <a class="btn btn-primary" asp-action="EditProfile">Sua ten hien thi</a>
-            <a class="btn btn-outline-secondary" asp-action="ChangePassword">Doi mat khau</a>
+            <a class="btn btn-primary" asp-action="EditProfile">Sửa tên hiển thị</a>
+            <a class="btn btn-outline-secondary" asp-action="ChangePassword">Đổi mật khẩu</a>
         </div>
     </article>
 
     <aside class="settings-card settings-privacy-card">
-        <p class="kicker">Ghi chu quyen rieng tu</p>
-        <h2>Ky niem cua ban chi thuoc ve ban.</h2>
+        <p class="kicker">Ghi chú quyền riêng tư</p>
+        <h2>Kỷ niệm của bạn chỉ thuộc về bạn.</h2>
         <ul class="settings-note-list">
-            <li>Ky niem, bo suu tap, anh va thung rac cua ban chi hien thi voi tai khoan cua ban.</li>
-            <li>Anh duoc luu ngoai <code>wwwroot</code> va chi duoc xem thong qua endpoint co kiem tra dang nhap va quyen so huu.</li>
-            <li>MemoLens hien chua ho tro chia se cong khai.</li>
-            <li>Export data va xoa tai khoan se duoc bo sung o phase sau.</li>
+            <li>Kỷ niệm, bộ sưu tập, ảnh và thùng rác của bạn chỉ hiển thị với tài khoản của bạn.</li>
+            <li>Ảnh được lưu ngoài <code>wwwroot</code> và chỉ được xem thông qua endpoint có kiểm tra đăng nhập và quyền sở hữu.</li>
+            <li>MemoLens hiện chưa hỗ trợ chia sẻ công khai.</li>
+            <li>Xuất dữ liệu và xóa tài khoản sẽ được bổ sung ở phase sau.</li>
         </ul>
     </aside>
 </section>
 
 <section class="settings-limits">
-    <p class="kicker">Chua co trong phase nay</p>
+    <p class="kicker">Chưa có trong phase này</p>
     <div class="settings-limit-grid">
-        <div>Khong doi email</div>
-        <div>Khong forgot password</div>
-        <div>Khong export data</div>
-        <div>Khong xoa tai khoan</div>
+        <div>Chưa đổi email</div>
+        <div>Chưa có quên mật khẩu</div>
+        <div>Chưa xuất dữ liệu</div>
+        <div>Chưa xóa tài khoản</div>
     </div>
 </section>

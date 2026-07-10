@@ -1,30 +1,30 @@
 @model MemoLens.Models.Memories.MemoryDetailsViewModel
 
 @{
-    ViewData["Title"] = "Delete Memory";
+    ViewData["Title"] = "Xóa kỷ niệm";
 }
 
 <section class="content-panel status-panel">
-    <p class="kicker">Soft delete</p>
-    <h1>Remove this memory from your timeline?</h1>
+    <p class="kicker">Xóa mềm</p>
+    <h1>Ẩn kỷ niệm này khỏi dòng thời gian?</h1>
     <p>
-        This will hide <strong>@Model.Title</strong> from your normal timeline.
-        The row stays in the database for now and is marked as deleted.
+        Thao tác này sẽ ẩn <strong>@Model.Title</strong> khỏi dòng thời gian bình thường.
+        Dữ liệu vẫn được giữ trong database và được đánh dấu là đã xóa.
     </p>
 
     <dl class="memory-facts compact">
         <div>
-            <dt>Feeling</dt>
+            <dt>Cảm xúc</dt>
             <dd>@Model.Feeling</dd>
         </div>
         <div>
-            <dt>Date</dt>
-            <dd>@Model.MemoryDate.ToString("dd MMM yyyy")</dd>
+            <dt>Ngày</dt>
+            <dd>@Model.MemoryDate.ToString("dd/MM/yyyy")</dd>
         </div>
     </dl>
 
     <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="memory-action-row mt-4">
-        <button type="submit" class="btn btn-primary">Delete from Timeline</button>
-        <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.Id">Cancel</a>
+        <button type="submit" class="btn btn-primary">Xóa khỏi dòng thời gian</button>
+        <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.Id">Hủy</a>
     </form>
 </section>

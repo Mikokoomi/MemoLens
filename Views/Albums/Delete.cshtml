@@ -1,34 +1,34 @@
 @model MemoLens.Models.Albums.AlbumDetailsViewModel
 
 @{
-    ViewData["Title"] = "Xoa bo suu tap";
+    ViewData["Title"] = "Xóa bộ sưu tập";
 }
 
 <section class="content-panel status-panel">
-    <p class="kicker">Xoa bo suu tap</p>
-    <h1>An bo suu tap nay khoi danh sach cua ban?</h1>
+    <p class="kicker">Xóa bộ sưu tập</p>
+    <h1>Ẩn bộ sưu tập này khỏi danh sách của bạn?</h1>
     <p>
-        Ban sap xoa <strong>@Model.Title</strong>. Thao tac nay khong xoa ky niem goc, khong xoa anh,
-        va chi danh dau bo suu tap la da xoa.
+        Bạn sắp xóa <strong>@Model.Title</strong>. Thao tác này không xóa kỷ niệm gốc, không xóa ảnh,
+        và chỉ đánh dấu bộ sưu tập là đã xóa.
     </p>
 
     <dl class="memory-facts compact">
         <div>
-            <dt>Ky niem ben trong</dt>
+            <dt>Kỷ niệm bên trong</dt>
             <dd>@Model.Memories.Count</dd>
         </div>
         <div>
-            <dt>Cap nhat</dt>
+            <dt>Cập nhật</dt>
             <dd>@Model.UpdatedAt.ToLocalTime().ToString("dd/MM/yyyy")</dd>
         </div>
     </dl>
 
     <div class="memory-filter-alert">
-        <p>Thao tac nay khong xoa ky niem goc. Cac ky niem van nam trong Timeline cua ban.</p>
+        <p>Thao tác này không xóa kỷ niệm gốc. Các kỷ niệm vẫn nằm trong dòng thời gian của bạn.</p>
     </div>
 
     <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="memory-action-row mt-4">
-        <button type="submit" class="btn btn-primary">Xoa bo suu tap</button>
-        <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.Id">Huy</a>
+        <button type="submit" class="btn btn-primary">Xóa bộ sưu tập</button>
+        <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.Id">Hủy</a>
     </form>
 </section>

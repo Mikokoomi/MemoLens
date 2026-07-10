@@ -6,43 +6,43 @@
 
 <section class="album-detail">
     <div class="memory-detail-main">
-        <p class="kicker">Bo suu tap rieng tu</p>
+        <p class="kicker">Bộ sưu tập riêng tư</p>
         <h1>@Model.Title</h1>
         <p class="album-description">
-            @(string.IsNullOrWhiteSpace(Model.Description) ? "Bo suu tap nay chua co mo ta. Ban co the sua de ghi lai ly do minh gom nhung ky niem nay." : Model.Description)
+            @(string.IsNullOrWhiteSpace(Model.Description) ? "Bộ sưu tập này chưa có mô tả. Bạn có thể sửa để ghi lại lý do mình gom những kỷ niệm này." : Model.Description)
         </p>
 
         <dl class="memory-facts compact">
             <div>
-                <dt>Ky niem</dt>
+                <dt>Kỷ niệm</dt>
                 <dd>@Model.Memories.Count</dd>
             </div>
             <div>
-                <dt>Cap nhat</dt>
+                <dt>Cập nhật</dt>
                 <dd>@Model.UpdatedAt.ToLocalTime().ToString("dd/MM/yyyy")</dd>
             </div>
         </dl>
 
         <div class="memory-action-row">
-            <a class="btn btn-primary" asp-action="AddMemories" asp-route-id="@Model.Id">Them ky niem</a>
-            <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model.Id">Sua bo suu tap</a>
-            <a class="btn btn-outline-secondary" asp-action="Delete" asp-route-id="@Model.Id">Xoa bo suu tap</a>
-            <a class="btn btn-link" asp-action="Index">Quay lai bo suu tap</a>
+            <a class="btn btn-primary" asp-action="AddMemories" asp-route-id="@Model.Id">Thêm kỷ niệm</a>
+            <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model.Id">Sửa bộ sưu tập</a>
+            <a class="btn btn-outline-secondary" asp-action="Delete" asp-route-id="@Model.Id">Xóa bộ sưu tập</a>
+            <a class="btn btn-link" asp-action="Index">Quay lại bộ sưu tập</a>
         </div>
     </div>
 
     <aside class="memory-side-panel">
-        <p class="kicker">Anh bia tu dong</p>
+        <p class="kicker">Ảnh bìa tự động</p>
         @if (!Model.CoverImageId.HasValue)
         {
             <div class="memory-card-photo-placeholder large">
-                <span>MemoLens se dung anh dau tien tu ky niem dau tien trong bo suu tap.</span>
+                <span>MemoLens sẽ dùng ảnh đầu tiên từ kỷ niệm đầu tiên trong bộ sưu tập.</span>
             </div>
         }
         else
         {
             <figure class="album-cover-preview">
-                <img src="@Url.Action("MemoryImage", "Images", new { id = Model.CoverImageId })" alt="Anh bia cua bo suu tap @Model.Title" onerror="this.hidden=true; this.parentElement.classList.add('image-missing');" />
+                <img src="@Url.Action("MemoryImage", "Images", new { id = Model.CoverImageId })" alt="Ảnh bìa của bộ sưu tập @Model.Title" onerror="this.hidden=true; this.parentElement.classList.add('image-missing');" />
             </figure>
         }
     </aside>
@@ -51,22 +51,22 @@
 @if (!Model.Memories.Any())
 {
     <section class="memory-empty-state">
-        <p class="kicker">Chua co ky niem</p>
-        <h2>Bo suu tap nay dang cho nhung khoanh khac dau tien.</h2>
-        <p>Them ky niem da co trong timeline cua ban. Thao tac nay khong tao ban sao va khong thay doi ky niem goc.</p>
-        <a class="btn btn-primary" asp-action="AddMemories" asp-route-id="@Model.Id">Them ky niem</a>
+        <p class="kicker">Chưa có kỷ niệm</p>
+        <h2>Bộ sưu tập này đang chờ những khoảnh khắc đầu tiên.</h2>
+        <p>Thêm kỷ niệm đã có trong dòng thời gian của bạn. Thao tác này không tạo bản sao và không thay đổi kỷ niệm gốc.</p>
+        <a class="btn btn-primary" asp-action="AddMemories" asp-route-id="@Model.Id">Thêm kỷ niệm</a>
     </section>
 }
 else
 {
-    <section class="memory-list album-memory-list" aria-label="Ky niem trong bo suu tap">
+    <section class="memory-list album-memory-list" aria-label="Kỷ niệm trong bộ sưu tập">
         @foreach (var memory in Model.Memories)
         {
             <article class="memory-card">
                 @if (!memory.CoverImageId.HasValue)
                 {
                     <div class="memory-card-photo-placeholder">
-                        <span>Chua co anh</span>
+                        <span>Chưa có ảnh</span>
                     </div>
                 }
                 else
@@ -82,12 +82,12 @@ else
                         <span>@memory.Feeling</span>
                     </div>
                     <h2><a asp-controller="Memories" asp-action="Details" asp-route-id="@memory.Id">@memory.Title</a></h2>
-                    <p class="memory-location">@(string.IsNullOrWhiteSpace(memory.Location) ? "Chua them dia diem" : memory.Location)</p>
+                    <p class="memory-location">@(string.IsNullOrWhiteSpace(memory.Location) ? "Chưa thêm địa điểm" : memory.Location)</p>
                     <p class="memory-preview-text">
-                        @(string.IsNullOrWhiteSpace(memory.Story) ? "Chua co cau chuyen cho ky niem nay." : memory.Story)
+                        @(string.IsNullOrWhiteSpace(memory.Story) ? "Chưa có câu chuyện cho kỷ niệm này." : memory.Story)
                     </p>
                     <form asp-action="RemoveMemory" asp-route-id="@Model.Id" asp-route-memoryId="@memory.Id" method="post" class="album-remove-form">
-                        <button type="submit" class="btn btn-outline-secondary">Go khoi bo suu tap</button>
+                        <button type="submit" class="btn btn-outline-secondary">Gỡ khỏi bộ sưu tập</button>
                     </form>
                 </div>
             </article>

@@ -48,6 +48,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 10: Settings & Privacy.
 - Phase 11: MVP QA / Hardening.
 - Phase 12: Productization & Mobile Architecture Plan.
+- Phase 12.5: UI Language Consistency, Footer, and Mobile Responsive Fix.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -189,3 +190,25 @@ Trang thai trung thuc:
 - Chua co API controllers.
 - Chua co token-based mobile auth.
 - Chua co real SMTP, forgot password, backup, thumbnails/compression, export data, delete account hoac production monitoring.
+
+## 14. Cập nhật Phase 12.5: UI Language Consistency, Footer, and Mobile Responsive Fix
+
+Phase 12.5 đã hoàn thành.
+
+Phạm vi:
+
+- Chuẩn hóa phần lớn text hiển thị trong MVC UI sang tiếng Việt có dấu.
+- Giữ brand name `MemoLens` không đổi.
+- Làm footer gọn và có chủ đích hơn: tên MemoLens, câu nhắc riêng tư ngắn, link quyền riêng tư.
+- Tinh chỉnh CSS để navbar, nút, form, filter, gallery và footer dễ dùng hơn trên màn hình điện thoại.
+- Cập nhật README để ghi nhận trạng thái UI language/responsive stabilization.
+
+Không thay đổi:
+
+- Không đổi backend behavior.
+- Không đổi database schema.
+- Không tạo migration.
+- Không thêm API controller.
+- Không thêm Flutter/mobile app code.
+- Không đổi authentication, memory CRUD, image upload/private serving, album, trash hoặc settings logic.
+- Không thêm social features hoặc AI.

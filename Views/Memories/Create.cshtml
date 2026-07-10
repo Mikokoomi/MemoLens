@@ -1,14 +1,14 @@
 @model MemoLens.Models.Memories.MemoryFormViewModel
 
 @{
-    ViewData["Title"] = "Create Memory";
+    ViewData["Title"] = "Tạo kỷ niệm";
 }
 
 <section class="memory-form-shell">
     <div class="memory-form-intro">
-        <p class="kicker">Create memory</p>
-        <h1>Capture the feeling and the photo.</h1>
-        <p>Add a private memory with its story, feeling, date, tags, and up to ten photos.</p>
+        <p class="kicker">Tạo kỷ niệm</p>
+        <h1>Lưu lại cảm xúc cùng bức ảnh.</h1>
+        <p>Thêm một kỷ niệm riêng tư với câu chuyện, cảm xúc, ngày tháng, thẻ và tối đa mười ảnh.</p>
     </div>
 
     <form asp-action="Create" method="post" enctype="multipart/form-data" class="memory-form-panel">
@@ -31,7 +31,7 @@
             <div class="col-md-6">
                 <label asp-for="Feeling" class="form-label"></label>
                 <select asp-for="Feeling" class="form-select">
-                    <option value="">Choose a feeling</option>
+                    <option value="">Chọn cảm xúc</option>
                     @foreach (var feeling in Model.FeelingOptions)
                     {
                         <option value="@feeling">@feeling</option>
@@ -54,21 +54,21 @@
 
         <div class="mb-4">
             <label asp-for="TagsText" class="form-label"></label>
-            <input asp-for="TagsText" class="form-control" placeholder="thuc tap, gia dinh, ca phe" />
+            <input asp-for="TagsText" class="form-control" placeholder="thực tập, gia đình, cà phê" />
             <span asp-validation-for="TagsText" class="text-danger"></span>
-            <div class="form-text">Separate tags with commas.</div>
+            <div class="form-text">Ngăn cách các thẻ bằng dấu phẩy.</div>
         </div>
 
         <div class="mb-4 memory-upload-box">
             <label asp-for="NewImages" class="form-label"></label>
             <input asp-for="NewImages" class="form-control" type="file" multiple accept=".jpg,.jpeg,.png,.webp" />
             <span asp-validation-for="NewImages" class="text-danger"></span>
-            <div class="form-text">Toi da 10 anh, moi anh toi da 5MB. Ho tro JPG, PNG, WEBP.</div>
+            <div class="form-text">Tối đa 10 ảnh, mỗi ảnh tối đa 5MB. Hỗ trợ JPG, PNG, WEBP.</div>
         </div>
 
         <div class="memory-action-row">
-            <button type="submit" class="btn btn-primary">Save Memory</button>
-            <a class="btn btn-outline-secondary" asp-action="Index">Cancel</a>
+            <button type="submit" class="btn btn-primary">Lưu kỷ niệm</button>
+            <a class="btn btn-outline-secondary" asp-action="Index">Hủy</a>
         </div>
     </form>
 </section>

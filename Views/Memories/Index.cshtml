@@ -1,7 +1,7 @@
 @model MemoLens.Models.Memories.MemoryIndexViewModel
 
 @{
-    ViewData["Title"] = "Timeline";
+    ViewData["Title"] = "Dòng thời gian";
     var advancedFilterOpen = Model.Filter.HasAnyFilter &&
         (!string.IsNullOrWhiteSpace(Model.Filter.Feeling) ||
         Model.Filter.TagId.HasValue ||
@@ -12,40 +12,40 @@
         !string.Equals(Model.Filter.SortOrder, "newest", StringComparison.OrdinalIgnoreCase));
     var monthNames = new[]
     {
-        "Thang 1",
-        "Thang 2",
-        "Thang 3",
-        "Thang 4",
-        "Thang 5",
-        "Thang 6",
-        "Thang 7",
-        "Thang 8",
-        "Thang 9",
-        "Thang 10",
-        "Thang 11",
-        "Thang 12"
+        "Tháng 1",
+        "Tháng 2",
+        "Tháng 3",
+        "Tháng 4",
+        "Tháng 5",
+        "Tháng 6",
+        "Tháng 7",
+        "Tháng 8",
+        "Tháng 9",
+        "Tháng 10",
+        "Tháng 11",
+        "Tháng 12"
     };
 }
 
 <section class="memory-page-header">
     <div>
-        <p class="kicker">Private timeline</p>
-        <h1>Your memory timeline</h1>
-        <p>Only your confirmed account can see these memories, stories, and photos.</p>
+        <p class="kicker">Dòng thời gian riêng tư</p>
+        <h1>Dòng thời gian kỷ niệm của bạn</h1>
+        <p>Chỉ tài khoản đã xác thực của bạn mới xem được những kỷ niệm, câu chuyện và ảnh này.</p>
     </div>
-    <a class="btn btn-primary" asp-action="Create">Create Memory</a>
+    <a class="btn btn-primary" asp-action="Create">Tạo kỷ niệm</a>
 </section>
 
 @if (!Model.HasMemories)
 {
     <section class="memory-empty-state">
-        <p class="kicker">No memories yet</p>
-        <h2>Start with one small moment.</h2>
+        <p class="kicker">Chưa có kỷ niệm</p>
+        <h2>Bắt đầu bằng một khoảnh khắc nhỏ.</h2>
         <p>
-            Add a title, story, feeling, date, location, tags, and private photos.
-            Keep it simple and personal.
+            Thêm tiêu đề, câu chuyện, cảm xúc, ngày tháng, địa điểm, thẻ và ảnh riêng tư.
+            Hãy giữ nó đơn giản và thật cá nhân.
         </p>
-        <a class="btn btn-primary" asp-action="Create">Create your first memory</a>
+        <a class="btn btn-primary" asp-action="Create">Tạo kỷ niệm đầu tiên</a>
     </section>
 }
 else
@@ -53,10 +53,10 @@ else
     <section class="memory-filter-panel">
         <div class="memory-filter-heading">
             <div>
-                <p class="kicker">Tim lai ky uc</p>
-                <h2>Tim kiem &amp; bo loc</h2>
+                <p class="kicker">Tìm lại ký ức</p>
+                <h2>Tìm kiếm &amp; bộ lọc</h2>
             </div>
-            <p>Tim nhanh truoc, mo bo loc nang cao khi ban can loc theo cam giac, the, ngay thang.</p>
+            <p>Tìm nhanh trước, mở bộ lọc nâng cao khi bạn cần lọc theo cảm xúc, thẻ hoặc ngày tháng.</p>
         </div>
 
         @if (Model.ValidationMessages.Any())
@@ -71,28 +71,28 @@ else
 
         @if (Model.Filter.HasAnyFilter)
         {
-            <div class="active-filter-strip" aria-label="Current filters">
-                <span>Dang loc timeline cua ban</span>
+            <div class="active-filter-strip" aria-label="Bộ lọc đang áp dụng">
+                <span>Đang lọc dòng thời gian của bạn</span>
                 @if (!string.IsNullOrWhiteSpace(Model.Filter.Search))
                 {
-                    <strong>Tu khoa: @Model.Filter.Search</strong>
+                    <strong>Từ khóa: @Model.Filter.Search</strong>
                 }
                 @if (!string.IsNullOrWhiteSpace(Model.Filter.Feeling))
                 {
-                    <strong>Cam giac: @Model.Filter.Feeling</strong>
+                    <strong>Cảm xúc: @Model.Filter.Feeling</strong>
                 }
                 @if (Model.Filter.TagId.HasValue)
                 {
                     var selectedTag = Model.AvailableTags.FirstOrDefault(tag => tag.Id == Model.Filter.TagId.Value);
-                    <strong>The: @(selectedTag?.Name ?? Model.Filter.TagId.Value.ToString())</strong>
+                    <strong>Thẻ: @(selectedTag?.Name ?? Model.Filter.TagId.Value.ToString())</strong>
                 }
                 @if (Model.Filter.FromDate.HasValue || Model.Filter.ToDate.HasValue)
                 {
-                    <strong>Khoang ngay</strong>
+                    <strong>Khoảng ngày</strong>
                 }
                 else if (Model.Filter.Year.HasValue)
                 {
-                    <strong>@(Model.Filter.Month.HasValue ? $"Thang {Model.Filter.Month}/{Model.Filter.Year}" : $"Nam {Model.Filter.Year}")</strong>
+                    <strong>@(Model.Filter.Month.HasValue ? $"Tháng {Model.Filter.Month}/{Model.Filter.Year}" : $"Năm {Model.Filter.Year}")</strong>
                 }
             </div>
         }
@@ -100,17 +100,17 @@ else
         <form asp-action="Index" method="get" class="memory-filter-form">
             <div class="memory-filter-primary">
                 <div class="filter-field">
-                    <label for="search" class="form-label">Tim kiem</label>
-                    <input id="search" name="search" class="form-control" value="@Model.Filter.Search" placeholder="Dalat, gia dinh, chuyen di..." />
+                    <label for="search" class="form-label">Tìm kiếm</label>
+                    <input id="search" name="search" class="form-control" value="@Model.Filter.Search" placeholder="Đà Lạt, gia đình, chuyến đi..." />
                 </div>
                 <div class="memory-filter-primary-actions">
-                    <button type="submit" class="btn btn-primary">Tim</button>
+                    <button type="submit" class="btn btn-primary">Tìm</button>
                     <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#advancedMemoryFilters" aria-expanded="@(advancedFilterOpen.ToString().ToLowerInvariant())" aria-controls="advancedMemoryFilters">
-                        Bo loc
+                        Bộ lọc
                     </button>
                     @if (Model.Filter.HasAnyFilter)
                     {
-                        <a class="btn btn-link" asp-action="Index">Xoa</a>
+                        <a class="btn btn-link" asp-action="Index">Xóa</a>
                     }
                 </div>
             </div>
@@ -118,9 +118,9 @@ else
             <div class="collapse memory-filter-collapse @(advancedFilterOpen ? "show" : "")" id="advancedMemoryFilters">
                 <div class="memory-filter-grid">
                     <div class="filter-field">
-                        <label for="feeling" class="form-label">Cam giac</label>
+                        <label for="feeling" class="form-label">Cảm xúc</label>
                         <select id="feeling" name="feeling" class="form-select">
-                            <option value="">Tat ca cam giac</option>
+                            <option value="">Tất cả cảm xúc</option>
                             @foreach (var feeling in Model.FeelingOptions)
                             {
                                 <option value="@feeling" selected="@(Model.Filter.Feeling == feeling)">@feeling</option>
@@ -129,9 +129,9 @@ else
                     </div>
 
                     <div class="filter-field">
-                        <label for="tagId" class="form-label">The</label>
+                        <label for="tagId" class="form-label">Thẻ</label>
                         <select id="tagId" name="tagId" class="form-select">
-                            <option value="">Tat ca the</option>
+                            <option value="">Tất cả thẻ</option>
                             @foreach (var tag in Model.AvailableTags)
                             {
                                 <option value="@tag.Id" selected="@(Model.Filter.TagId == tag.Id)">@tag.Name</option>
@@ -140,31 +140,31 @@ else
                     </div>
 
                     <div class="filter-field">
-                        <label for="fromDate" class="form-label">Tu ngay</label>
+                        <label for="fromDate" class="form-label">Từ ngày</label>
                         <input id="fromDate" name="fromDate" class="form-control" type="date" value="@Model.Filter.FromDate?.ToString("yyyy-MM-dd")" />
                     </div>
 
                     <div class="filter-field">
-                        <label for="toDate" class="form-label">Den ngay</label>
+                        <label for="toDate" class="form-label">Đến ngày</label>
                         <input id="toDate" name="toDate" class="form-control" type="date" value="@Model.Filter.ToDate?.ToString("yyyy-MM-dd")" />
                     </div>
 
                     <div class="filter-field">
-                        <label for="month" class="form-label">Thang</label>
+                        <label for="month" class="form-label">Tháng</label>
                         <select id="month" name="month" class="form-select">
-                            <option value="">Tat ca thang</option>
+                            <option value="">Tất cả tháng</option>
                             @for (var month = 1; month <= 12; month++)
                             {
                                 <option value="@month" selected="@(Model.Filter.Month == month)">@monthNames[month - 1]</option>
                             }
                         </select>
-                        <div class="form-text">Chon nam neu muon loc theo thang.</div>
+                        <div class="form-text">Chọn năm nếu muốn lọc theo tháng.</div>
                     </div>
 
                     <div class="filter-field">
-                        <label for="year" class="form-label">Nam</label>
+                        <label for="year" class="form-label">Năm</label>
                         <select id="year" name="year" class="form-select">
-                            <option value="">Tat ca nam</option>
+                            <option value="">Tất cả năm</option>
                             @foreach (var year in Model.AvailableYears)
                             {
                                 <option value="@year" selected="@(Model.Filter.Year == year)">@year</option>
@@ -177,16 +177,16 @@ else
                     </div>
 
                     <div class="filter-field">
-                        <label for="sortOrder" class="form-label">Sap xep</label>
+                        <label for="sortOrder" class="form-label">Sắp xếp</label>
                         <select id="sortOrder" name="sortOrder" class="form-select">
-                            <option value="newest" selected="@(Model.Filter.SortOrder == "newest")">Moi nhat truoc</option>
-                            <option value="oldest" selected="@(Model.Filter.SortOrder == "oldest")">Cu nhat truoc</option>
+                            <option value="newest" selected="@(Model.Filter.SortOrder == "newest")">Mới nhất trước</option>
+                            <option value="oldest" selected="@(Model.Filter.SortOrder == "oldest")">Cũ nhất trước</option>
                         </select>
                     </div>
 
                     <div class="memory-filter-actions">
-                        <button type="submit" class="btn btn-primary">Ap dung</button>
-                        <a class="btn btn-outline-secondary" asp-action="Index">Xoa bo loc</a>
+                        <button type="submit" class="btn btn-primary">Áp dụng</button>
+                        <a class="btn btn-outline-secondary" asp-action="Index">Xóa bộ lọc</a>
                     </div>
                 </div>
             </div>
@@ -196,10 +196,10 @@ else
     @if (!Model.HasResults)
     {
         <section class="memory-empty-state memory-filter-empty">
-            <p class="kicker">Khong co ket qua</p>
-            <h2>Khong tim thay ky niem phu hop.</h2>
-            <p>Thu doi bo loc hoac tim kiem bang tu khoa khac.</p>
-            <a class="btn btn-primary" asp-action="Index">Xoa bo loc</a>
+            <p class="kicker">Không có kết quả</p>
+            <h2>Không tìm thấy kỷ niệm phù hợp.</h2>
+            <p>Thử đổi bộ lọc hoặc tìm kiếm bằng từ khóa khác.</p>
+            <a class="btn btn-primary" asp-action="Index">Xóa bộ lọc</a>
         </section>
     }
     else
@@ -211,7 +211,7 @@ else
                     @if (!memory.CoverImageId.HasValue)
                     {
                         <div class="memory-card-photo-placeholder">
-                            <span>No photo yet</span>
+                            <span>Chưa có ảnh</span>
                         </div>
                     }
                     else
@@ -222,7 +222,7 @@ else
                     }
                     <div class="memory-card-body">
                         <div class="memory-card-meta">
-                            <span>@memory.MemoryDate.ToString("dd MMM yyyy")</span>
+                            <span>@memory.MemoryDate.ToString("dd/MM/yyyy")</span>
                             <span>@memory.Feeling</span>
                         </div>
                         <h2>
@@ -234,7 +234,7 @@ else
                         }
                         <p class="memory-preview-text">
                             @(string.IsNullOrWhiteSpace(memory.Story)
-                                ? "No story added yet."
+                                ? "Chưa có câu chuyện."
                                 : memory.Story.Length > 180 ? $"{memory.Story[..180]}..." : memory.Story)
                         </p>
                         @if (memory.Tags.Any())

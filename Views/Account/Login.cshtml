@@ -1,14 +1,14 @@
 @model MemoLens.Models.Account.LoginViewModel
 
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Đăng nhập";
 }
 
 <section class="auth-wrap">
     <div class="auth-panel">
-        <p class="kicker">Welcome back</p>
-        <h1>Open your private memory space.</h1>
-        <p class="auth-copy">Use your confirmed email and password to return to your personal timeline.</p>
+        <p class="kicker">Chào mừng trở lại</p>
+        <h1>Mở không gian kỷ niệm riêng tư của bạn.</h1>
+        <p class="auth-copy">Dùng email đã xác thực và mật khẩu để quay lại dòng thời gian cá nhân.</p>
 
         <form asp-action="Login" method="post" class="auth-form">
             <input type="hidden" name="returnUrl" value="@Context.Request.Query["ReturnUrl"]" />
@@ -31,12 +31,12 @@
                 <label asp-for="RememberMe" class="form-check-label"></label>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Login</button>
+            <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
         </form>
 
         <p class="auth-switch">
-            New to MemoLens?
-            <a asp-action="Register">Create an account</a>
+            Chưa có tài khoản MemoLens?
+            <a asp-action="Register">Đăng ký tài khoản</a>
         </p>
     </div>
 </section>

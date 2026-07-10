@@ -83,7 +83,7 @@ public class TrashController : Controller
 
         if (memory is null)
         {
-            TempData["TrashMessage"] = "Khong tim thay muc can khoi phuc.";
+            TempData["TrashMessage"] = "Không tìm thấy mục cần khôi phục.";
             return NotFound();
         }
 
@@ -93,7 +93,7 @@ public class TrashController : Controller
 
         await _context.SaveChangesAsync();
 
-        TempData["TrashMessage"] = "Da khoi phuc ky niem.";
+        TempData["TrashMessage"] = "Đã khôi phục kỷ niệm.";
 
         return RedirectToAction(nameof(Index));
     }
@@ -114,7 +114,7 @@ public class TrashController : Controller
 
         if (album is null)
         {
-            TempData["TrashMessage"] = "Khong tim thay muc can khoi phuc.";
+            TempData["TrashMessage"] = "Không tìm thấy mục cần khôi phục.";
             return NotFound();
         }
 
@@ -124,7 +124,7 @@ public class TrashController : Controller
 
         await _context.SaveChangesAsync();
 
-        TempData["TrashMessage"] = "Da khoi phuc bo suu tap.";
+        TempData["TrashMessage"] = "Đã khôi phục bộ sưu tập.";
 
         return RedirectToAction(nameof(Index));
     }

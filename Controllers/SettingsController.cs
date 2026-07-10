@@ -80,7 +80,7 @@ public class SettingsController : Controller
         }
 
         await _signInManager.RefreshSignInAsync(user);
-        TempData["SettingsMessage"] = "Da luu ten hien thi.";
+        TempData["SettingsMessage"] = "Đã lưu tên hiển thị.";
 
         return RedirectToAction(nameof(Index));
     }
@@ -118,7 +118,7 @@ public class SettingsController : Controller
         }
 
         await _signInManager.RefreshSignInAsync(user);
-        TempData["SettingsMessage"] = "Da doi mat khau.";
+        TempData["SettingsMessage"] = "Đã đổi mật khẩu.";
 
         return RedirectToAction(nameof(Index));
     }

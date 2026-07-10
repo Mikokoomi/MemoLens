@@ -755,7 +755,7 @@ a:hover {
 }
 
 .image-missing::after {
-  content: "Anh khong con ton tai";
+  content: "Ảnh không còn tồn tại";
   display: block;
   font-size: 0.9rem;
   padding: 1rem;
@@ -1430,15 +1430,33 @@ a:hover {
   color: var(--muted);
   flex-shrink: 0;
   line-height: 1.4;
-  padding: 1.25rem 0;
+  padding: 1.35rem 0;
   width: 100%;
 }
 
 .footer-inner {
+  align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 1rem;
   justify-content: space-between;
+}
+
+.footer-inner div {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.footer-inner strong {
+  color: var(--ink);
+  font-weight: 750;
+}
+
+.footer-inner a {
+  font-weight: 700;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 
 @media (max-width: 991.98px) {
@@ -1535,7 +1553,8 @@ a:hover {
   .memory-filter-actions .btn,
   .album-card-actions .btn,
   .memory-action-row .btn,
-  .settings-actions .btn {
+  .settings-actions .btn,
+  .memory-action-row .btn-link {
     width: 100%;
   }
 
@@ -1763,10 +1782,12 @@ a:hover {
   }
 
   .footer-inner {
-    display: block;
+    align-items: flex-start;
+    display: grid;
+    gap: 0.75rem;
   }
 
-  .footer-inner span {
-    display: block;
+  .footer-inner a {
+    justify-content: flex-start;
   }
 }

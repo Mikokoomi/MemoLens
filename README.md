@@ -319,6 +319,13 @@ Phase 6.5 mobile-first UI polish is completed.
 
 This phase only changes Razor views and CSS. It does not change database schema, authentication behavior, memory CRUD logic, image upload validation, ownership/privacy checks, or search/filter results.
 
+Phase 12.5 UI language and responsive stabilization is completed.
+
+- User-facing MVC UI text is Vietnamese-first with full accents.
+- Navbar and footer wording are more consistent and less crowded on mobile.
+- Auth, timeline, memory, album, trash, settings, and privacy pages were polished for phone-sized screens.
+- No backend behavior, database schema, migrations, API controllers, or mobile app code were changed in this phase.
+
 ## Feeling List
 
 Memory feelings are stored as strings from this fixed list:
@@ -361,6 +368,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - Settings and privacy pages added.
 - MVP QA checklist and small privacy hardening added.
 - Productization and mobile architecture plan added.
+- Vietnamese UI language and mobile responsive stabilization added.
 - No AI or social features.
 - No admin dashboard yet.
 

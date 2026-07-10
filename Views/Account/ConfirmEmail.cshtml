@@ -1,22 +1,22 @@
 @model bool
 
 @{
-    ViewData["Title"] = "Email confirmation";
+    ViewData["Title"] = "Xác thực email";
 }
 
 <section class="content-panel status-panel">
     @if (Model)
     {
-        <p class="kicker">Confirmed</p>
-        <h1>Your email is confirmed.</h1>
-        <p>You can now log in and open your private MemoLens timeline.</p>
-        <a class="btn btn-primary" asp-action="Login">Login</a>
+        <p class="kicker">Đã xác thực</p>
+        <h1>Email của bạn đã được xác thực.</h1>
+        <p>Bây giờ bạn có thể đăng nhập và mở dòng thời gian MemoLens riêng tư.</p>
+        <a class="btn btn-primary" asp-action="Login">Đăng nhập</a>
     }
     else
     {
-        <p class="kicker">Confirmation failed</p>
-        <h1>We could not confirm this email link.</h1>
-        <p>The link may be missing, expired, or already used. Register again or ask for a new confirmation flow later.</p>
-        <a class="btn btn-outline-secondary" asp-action="Register">Back to Register</a>
+        <p class="kicker">Xác thực không thành công</p>
+        <h1>MemoLens chưa thể xác thực link email này.</h1>
+        <p>Link có thể bị thiếu, đã hết hạn hoặc đã được dùng. Hãy đăng ký lại hoặc yêu cầu luồng xác thực mới ở phase sau.</p>
+        <a class="btn btn-outline-secondary" asp-action="Register">Quay lại đăng ký</a>
     }
 </section>

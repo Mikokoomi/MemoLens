@@ -6,27 +6,27 @@
 
 <section class="memory-detail">
     <div class="memory-detail-main">
-        <p class="kicker">Memory detail</p>
+        <p class="kicker">Chi tiết kỷ niệm</p>
         <h1>@Model.Title</h1>
 
         <dl class="memory-facts">
             <div>
-                <dt>Feeling</dt>
+                <dt>Cảm xúc</dt>
                 <dd>@Model.Feeling</dd>
             </div>
             <div>
-                <dt>Date</dt>
-                <dd>@Model.MemoryDate.ToString("dd MMM yyyy")</dd>
+                <dt>Ngày</dt>
+                <dd>@Model.MemoryDate.ToString("dd/MM/yyyy")</dd>
             </div>
             <div>
-                <dt>Location</dt>
-                <dd>@(string.IsNullOrWhiteSpace(Model.Location) ? "Not added" : Model.Location)</dd>
+                <dt>Địa điểm</dt>
+                <dd>@(string.IsNullOrWhiteSpace(Model.Location) ? "Chưa thêm" : Model.Location)</dd>
             </div>
         </dl>
 
         <div class="story-panel">
-            <h2>Story / Note</h2>
-            <p>@(string.IsNullOrWhiteSpace(Model.Story) ? "No story has been added yet." : Model.Story)</p>
+            <h2>Câu chuyện / ghi chú</h2>
+            <p>@(string.IsNullOrWhiteSpace(Model.Story) ? "Chưa có câu chuyện cho kỷ niệm này." : Model.Story)</p>
         </div>
 
         @if (Model.Tags.Any())
@@ -40,16 +40,16 @@
         }
 
         <p class="memory-time-note">
-            Created @Model.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm") &middot; Updated @Model.UpdatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")
+            Tạo lúc @Model.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm") &middot; Cập nhật @Model.UpdatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
         </p>
     </div>
 
     <aside class="memory-side-panel">
-        <p class="kicker">Photo gallery</p>
+        <p class="kicker">Thư viện ảnh</p>
         @if (!Model.Images.Any())
         {
             <div class="memory-card-photo-placeholder large">
-                <span>No photos have been added to this memory yet.</span>
+                <span>Chưa có ảnh nào trong kỷ niệm này.</span>
             </div>
         }
         else
@@ -64,9 +64,9 @@
             </div>
         }
         <div class="d-grid gap-2">
-            <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit Memory</a>
-            <a class="btn btn-outline-secondary" asp-action="Delete" asp-route-id="@Model.Id">Delete Memory</a>
-            <a class="btn btn-link" asp-action="Index">Back to Timeline</a>
+            <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Sửa kỷ niệm</a>
+            <a class="btn btn-outline-secondary" asp-action="Delete" asp-route-id="@Model.Id">Xóa kỷ niệm</a>
+            <a class="btn btn-link" asp-action="Index">Quay lại dòng thời gian</a>
         </div>
     </aside>
 </section>

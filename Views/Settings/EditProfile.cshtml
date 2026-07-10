@@ -1,29 +1,29 @@
 @model MemoLens.Models.Settings.EditProfileViewModel
 
 @{
-    ViewData["Title"] = "Sua ten hien thi";
+    ViewData["Title"] = "Sửa tên hiển thị";
 }
 
 <section class="settings-form-shell">
     <div class="memory-form-intro">
-        <p class="kicker">Thong tin tai khoan</p>
-        <h1>Sua ten hien thi.</h1>
-        <p>Ten hien thi giup MemoLens goi khong gian rieng cua ban mem hon. Email khong duoc thay doi trong phase nay.</p>
+        <p class="kicker">Thông tin tài khoản</p>
+        <h1>Sửa tên hiển thị.</h1>
+        <p>Tên hiển thị giúp MemoLens gọi không gian riêng của bạn mềm hơn. Email chưa được thay đổi trong phase này.</p>
     </div>
 
     <form asp-action="EditProfile" method="post" class="memory-form-panel settings-form-panel">
         <div asp-validation-summary="ModelOnly" class="text-danger validation-summary mb-3"></div>
 
         <div class="mb-4">
-            <label asp-for="DisplayName" class="form-label">Ten hien thi</label>
+            <label asp-for="DisplayName" class="form-label">Tên hiển thị</label>
             <input asp-for="DisplayName" class="form-control" autocomplete="name" />
             <span asp-validation-for="DisplayName" class="text-danger"></span>
-            <div class="form-text">Co the de trong. Khi do MemoLens se hien email thay cho ten hien thi.</div>
+            <div class="form-text">Có thể để trống. Khi đó MemoLens sẽ hiện email thay cho tên hiển thị.</div>
         </div>
 
         <div class="memory-action-row">
-            <button type="submit" class="btn btn-primary">Luu thay doi</button>
-            <a class="btn btn-outline-secondary" asp-action="Index">Huy</a>
+            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+            <a class="btn btn-outline-secondary" asp-action="Index">Hủy</a>
         </div>
     </form>
 </section>

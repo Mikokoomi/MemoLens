@@ -1,37 +1,37 @@
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Trang chủ";
 }
 
 <section class="home-hero">
-    <div class="row align-items-center g-5">
+    <div class="row align-items-center gy-5 gx-0 gx-lg-5">
         <div class="col-lg-7">
-            <p class="kicker">Private photo journal</p>
-            <h1 class="hero-title">A quiet place for the memories behind your photos.</h1>
+            <p class="kicker">Nhật ký ảnh riêng tư</p>
+            <h1 class="hero-title">Một nơi yên tĩnh cho câu chuyện phía sau mỗi bức ảnh.</h1>
             <p class="hero-copy">
-                MemoLens helps you keep personal photos with notes, moods, dates, places, and albums.
-                It is built for reflection, not public attention.
+                MemoLens giúp bạn lưu ảnh cá nhân cùng ghi chú, cảm xúc, ngày tháng, địa điểm và album.
+                Ứng dụng được xây dựng để nhìn lại, không phải để thu hút sự chú ý công khai.
             </p>
             <div class="d-flex flex-wrap gap-3 mt-4">
-                <a class="btn btn-primary btn-lg" asp-controller="Home" asp-action="CreateMemory">Plan a Memory</a>
-                <a class="btn btn-outline-secondary btn-lg" asp-controller="Home" asp-action="Privacy">Read Privacy Promise</a>
+                <a class="btn btn-primary btn-lg" asp-controller="Home" asp-action="CreateMemory">Phác thảo kỷ niệm</a>
+                <a class="btn btn-outline-secondary btn-lg" asp-controller="Home" asp-action="Privacy">Đọc cam kết riêng tư</a>
             </div>
         </div>
         <div class="col-lg-5">
             <div class="memory-preview">
                 <div class="preview-topline">
-                    <span>Private draft</span>
-                    <span>Today</span>
+                    <span>Bản nháp riêng tư</span>
+                    <span>Hôm nay</span>
                 </div>
-                <h2>A quiet morning worth remembering</h2>
+                <h2>Một buổi sáng nhẹ nhàng đáng nhớ</h2>
                 <p>
-                    A photo becomes easier to return to when it carries the small details:
-                    what happened, where it was, and how it felt.
+                    Một bức ảnh dễ được nhớ lại hơn khi đi cùng những chi tiết nhỏ:
+                    chuyện gì đã xảy ra, ở đâu và cảm giác lúc đó như thế nào.
                 </p>
                 <div class="preview-divider"></div>
                 <div class="preview-meta">
-                    <span>peaceful</span>
-                    <span>home</span>
-                    <span>family</span>
+                    <span>bình yên</span>
+                    <span>ở nhà</span>
+                    <span>gia đình</span>
                 </div>
             </div>
         </div>
@@ -40,30 +40,30 @@
 
 <section class="section-spacing">
     <div class="section-heading">
-        <h2>Designed for personal memory keeping.</h2>
-        <p>Simple surfaces, clear privacy boundaries, and a structure that is easy to explain in a school project.</p>
+        <h2>Được thiết kế cho việc lưu giữ kỷ niệm cá nhân.</h2>
+        <p>Giao diện đơn giản, ranh giới riêng tư rõ ràng và cấu trúc dễ trình bày trong một đồ án phần mềm.</p>
     </div>
 
     <div class="row g-4">
         <div class="col-md-4">
             <div class="feature-panel">
                 <span class="feature-number">01</span>
-                <h3>Stories first</h3>
-                <p>Save the note, mood, location, and context that make each photo meaningful.</p>
+                <h3>Câu chuyện trước tiên</h3>
+                <p>Lưu ghi chú, cảm xúc, địa điểm và bối cảnh khiến mỗi bức ảnh trở nên có ý nghĩa.</p>
             </div>
         </div>
         <div class="col-md-4">
             <div class="feature-panel">
                 <span class="feature-number">02</span>
-                <h3>Private by default</h3>
-                <p>Your memories are for you. No feed, no likes, no comments, no followers.</p>
+                <h3>Riêng tư mặc định</h3>
+                <p>Kỷ niệm là của bạn. Không bảng tin công khai, không thích, không bình luận, không người theo dõi.</p>
             </div>
         </div>
         <div class="col-md-4">
             <div class="feature-panel">
                 <span class="feature-number">03</span>
-                <h3>Built to grow</h3>
-                <p>ASP.NET Core MVC, Bootstrap, Identity, and SQL Server keep the project practical and teachable.</p>
+                <h3>Dễ tiếp tục phát triển</h3>
+                <p>ASP.NET Core MVC, Bootstrap, Identity và SQL Server giúp dự án thực tế, rõ ràng và dễ học.</p>
             </div>
         </div>
     </div>

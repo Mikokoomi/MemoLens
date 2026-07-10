@@ -347,7 +347,7 @@ public class MemoriesController : Controller
         {
             if (filter.FromDate.HasValue && filter.ToDate.HasValue && filter.FromDate.Value > filter.ToDate.Value)
             {
-                validationMessages.Add("Tu ngay khong duoc lon hon den ngay. Vui long chon lai khoang thoi gian.");
+                validationMessages.Add("Từ ngày không được lớn hơn đến ngày. Vui lòng chọn lại khoảng thời gian.");
                 return query.Where(memory => false);
             }
 
@@ -366,7 +366,7 @@ public class MemoriesController : Controller
 
         if (filter.Month.HasValue && !filter.Year.HasValue)
         {
-            validationMessages.Add("Vui long chon nam khi loc theo thang. Bo loc thang dang duoc bo qua.");
+            validationMessages.Add("Vui lòng chọn năm khi lọc theo tháng. Bộ lọc tháng đang được bỏ qua.");
             return query;
         }
 
@@ -451,7 +451,7 @@ public class MemoriesController : Controller
 
         if (existingImageCount + realNewImages.Count > _imageStorageService.MaxImagesPerMemory)
         {
-            ModelState.AddModelError(nameof(MemoryFormViewModel.NewImages), "Moi ky uc chi duoc luu toi da 10 anh.");
+            ModelState.AddModelError(nameof(MemoryFormViewModel.NewImages), "Mỗi kỷ niệm chỉ được lưu tối đa 10 ảnh.");
         }
 
         foreach (var error in _imageStorageService.ValidateImages(realNewImages))

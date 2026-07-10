@@ -1,14 +1,14 @@
 @{
-    ViewData["Title"] = "Check your confirmation link";
+    ViewData["Title"] = "Kiểm tra link xác thực";
     var email = ViewData["Email"] as string;
 }
 
 <section class="content-panel status-panel">
-    <p class="kicker">Almost ready</p>
-    <h1>Confirm your email before logging in.</h1>
+    <p class="kicker">Gần hoàn tất</p>
+    <h1>Xác thực email trước khi đăng nhập.</h1>
     <p>
-        The development email sender logged a confirmation link for @(email ?? "your account").
-        Check the app console or debug output, open that link, then return to login.
+        Bộ gửi email dành cho môi trường phát triển đã ghi link xác thực cho @(email ?? "tài khoản của bạn").
+        Hãy kiểm tra console hoặc debug output của ứng dụng, mở link đó, rồi quay lại đăng nhập.
     </p>
-    <a class="btn btn-outline-secondary" asp-action="Login">Go to Login</a>
+    <a class="btn btn-outline-secondary" asp-action="Login">Đi tới đăng nhập</a>
 </section>

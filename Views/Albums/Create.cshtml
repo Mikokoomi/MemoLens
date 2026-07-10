@@ -1,35 +1,35 @@
 @model MemoLens.Models.Albums.AlbumFormViewModel
 
 @{
-    ViewData["Title"] = "Tao bo suu tap";
+    ViewData["Title"] = "Tạo bộ sưu tập";
 }
 
 <section class="memory-form-shell">
     <div class="memory-form-intro">
-        <p class="kicker">Tao bo suu tap</p>
-        <h1>Dat ten cho mot nhom ky niem rieng cua ban.</h1>
-        <p>Bo suu tap giup gom nhung ky niem co cung chu de. Anh bia se duoc MemoLens chon tu dong tu ky niem ben trong.</p>
+        <p class="kicker">Tạo bộ sưu tập</p>
+        <h1>Đặt tên cho một nhóm kỷ niệm riêng của bạn.</h1>
+        <p>Bộ sưu tập giúp gom những kỷ niệm có cùng chủ đề. Ảnh bìa sẽ được MemoLens chọn tự động từ kỷ niệm bên trong.</p>
     </div>
 
     <form asp-action="Create" method="post" class="memory-form-panel">
         <div asp-validation-summary="ModelOnly" class="text-danger validation-summary mb-3"></div>
 
         <div class="mb-3">
-            <label asp-for="Title" class="form-label">Ten bo suu tap</label>
-            <input asp-for="Title" class="form-control" placeholder="Vi du: Mua he nam nay" />
+            <label asp-for="Title" class="form-label">Tên bộ sưu tập</label>
+            <input asp-for="Title" class="form-control" placeholder="Ví dụ: Mùa hè năm nay" />
             <span asp-validation-for="Title" class="text-danger"></span>
         </div>
 
         <div class="mb-4">
-            <label asp-for="Description" class="form-label">Mo ta</label>
-            <textarea asp-for="Description" class="form-control" rows="5" placeholder="Ghi chu ngan ve chu de, thoi gian, hoac cam xuc cua bo suu tap."></textarea>
+            <label asp-for="Description" class="form-label">Mô tả</label>
+            <textarea asp-for="Description" class="form-control" rows="5" placeholder="Ghi chú ngắn về chủ đề, thời gian hoặc cảm xúc của bộ sưu tập."></textarea>
             <span asp-validation-for="Description" class="text-danger"></span>
-            <div class="form-text">Khong bat buoc. Toi da 500 ky tu.</div>
+            <div class="form-text">Không bắt buộc. Tối đa 500 ký tự.</div>
         </div>
 
         <div class="memory-action-row">
-            <button type="submit" class="btn btn-primary">Tao bo suu tap</button>
-            <a class="btn btn-outline-secondary" asp-action="Index">Huy</a>
+            <button type="submit" class="btn btn-primary">Tạo bộ sưu tập</button>
+            <a class="btn btn-outline-secondary" asp-action="Index">Hủy</a>
         </div>
     </form>
 </section>

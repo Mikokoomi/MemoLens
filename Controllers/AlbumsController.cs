@@ -209,7 +209,7 @@ public class AlbumsController : Controller
 
         if (!selectedIds.Any())
         {
-            ModelState.AddModelError(nameof(model.SelectedMemoryIds), "Vui long chon it nhat mot ky niem.");
+            ModelState.AddModelError(nameof(model.SelectedMemoryIds), "Vui lòng chọn ít nhất một kỷ niệm.");
             return View(await BuildAddMemoriesViewModelAsync(album, selectedIds));
         }
 
@@ -228,7 +228,7 @@ public class AlbumsController : Controller
 
         if (!ownedMemories.Any())
         {
-            ModelState.AddModelError(nameof(model.SelectedMemoryIds), "Khong co ky niem hop le de them vao bo suu tap nay.");
+            ModelState.AddModelError(nameof(model.SelectedMemoryIds), "Không có kỷ niệm hợp lệ để thêm vào bộ sưu tập này.");
             return View(await BuildAddMemoriesViewModelAsync(album, selectedIds));
         }
 

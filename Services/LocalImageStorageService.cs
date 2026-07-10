@@ -36,13 +36,13 @@ public class LocalImageStorageService : IImageStorageService
 
             if (string.IsNullOrWhiteSpace(extension) || !AllowedExtensions.Contains(extension))
             {
-                errors.Add($"File \"{file.FileName}\" khong duoc ho tro. Chi chap nhan JPG, PNG, WEBP.");
+                errors.Add($"File \"{file.FileName}\" không được hỗ trợ. Chỉ chấp nhận JPG, PNG, WEBP.");
                 continue;
             }
 
             if (file.Length > MaxFileSizeBytes)
             {
-                errors.Add($"File \"{file.FileName}\" vuot qua gioi han 5MB.");
+                errors.Add($"File \"{file.FileName}\" vượt quá giới hạn 5MB.");
             }
         }
 

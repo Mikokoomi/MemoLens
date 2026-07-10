@@ -1,14 +1,14 @@
 @model MemoLens.Models.Account.RegisterViewModel
 
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Đăng ký";
 }
 
 <section class="auth-wrap">
     <div class="auth-panel">
-        <p class="kicker">Create private space</p>
-        <h1>Start your MemoLens journal.</h1>
-        <p class="auth-copy">Your account is protected by ASP.NET Core Identity and email confirmation.</p>
+        <p class="kicker">Tạo không gian riêng</p>
+        <h1>Bắt đầu nhật ký MemoLens của bạn.</h1>
+        <p class="auth-copy">Tài khoản được bảo vệ bằng ASP.NET Core Identity và xác thực email.</p>
 
         <form asp-action="Register" method="post" class="auth-form">
             <div asp-validation-summary="ModelOnly" class="text-danger validation-summary mb-3"></div>
@@ -29,7 +29,7 @@
                 <label asp-for="Password" class="form-label"></label>
                 <input asp-for="Password" class="form-control" autocomplete="new-password" />
                 <span asp-validation-for="Password" class="text-danger"></span>
-                <div class="form-text">At least 8 characters, with letters and numbers.</div>
+                <div class="form-text">Ít nhất 8 ký tự, có chữ và số.</div>
             </div>
 
             <div class="mb-4">
@@ -38,12 +38,12 @@
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Register</button>
+            <button type="submit" class="btn btn-primary w-100">Đăng ký</button>
         </form>
 
         <p class="auth-switch">
-            Already have an account?
-            <a asp-action="Login">Login</a>
+            Đã có tài khoản?
+            <a asp-action="Login">Đăng nhập</a>
         </p>
     </div>
 </section>

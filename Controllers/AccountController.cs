@@ -126,13 +126,13 @@ public class AccountController : Controller
 
         if (user is null)
         {
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            ModelState.AddModelError(string.Empty, "Email hoặc mật khẩu không đúng.");
             return View(model);
         }
 
         if (!await _userManager.IsEmailConfirmedAsync(user))
         {
-            ModelState.AddModelError(string.Empty, "Please confirm your email before logging in.");
+            ModelState.AddModelError(string.Empty, "Vui lòng xác thực email trước khi đăng nhập.");
             return View(model);
         }
 
@@ -152,7 +152,7 @@ public class AccountController : Controller
             return RedirectToAction("Timeline", "Home");
         }
 
-        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+        ModelState.AddModelError(string.Empty, "Email hoặc mật khẩu không đúng.");
         return View(model);
     }
 
@@ -184,9 +184,9 @@ public class AccountController : Controller
             Request.Scheme);
 
         var safeLink = HtmlEncoder.Default.Encode(confirmationLink ?? string.Empty);
-        var message = $"Please confirm your MemoLens account by opening this link: <a href=\"{safeLink}\">confirm email</a><br />{safeLink}";
+        var message = $"Vui lòng xác thực tài khoản MemoLens bằng cách mở link này: <a href=\"{safeLink}\">xác thực email</a><br />{safeLink}";
 
-        await _emailSender.SendEmailAsync(user.Email ?? string.Empty, "Confirm your MemoLens email", message);
+        await _emailSender.SendEmailAsync(user.Email ?? string.Empty, "Xác thực email MemoLens", message);
     }
 
     private void AddIdentityErrors(IdentityResult result)

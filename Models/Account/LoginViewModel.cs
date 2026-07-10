@@ -4,14 +4,15 @@ namespace MemoLens.Models.Account;
 
 public class LoginViewModel
 {
-    [Required]
-    [EmailAddress]
+    [Required(ErrorMessage = "Vui lòng nhập email.")]
+    [EmailAddress(ErrorMessage = "Email không đúng định dạng.")]
     public string Email { get; set; } = string.Empty;
 
-    [Required]
+    [Required(ErrorMessage = "Vui lòng nhập mật khẩu.")]
     [DataType(DataType.Password)]
+    [Display(Name = "Mật khẩu")]
     public string Password { get; set; } = string.Empty;
 
-    [Display(Name = "Remember me")]
+    [Display(Name = "Ghi nhớ đăng nhập")]
     public bool RememberMe { get; set; }
 }

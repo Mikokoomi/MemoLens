@@ -4,7 +4,7 @@
 @inject UserManager<ApplicationUser> UserManager
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,60 +15,60 @@
 </head>
 <body class="memolens-shell">
     <header class="site-header">
-        <nav class="navbar navbar-expand-lg memolens-navbar" aria-label="Main navigation">
+        <nav class="navbar navbar-expand-lg memolens-navbar" aria-label="Điều hướng chính">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                     <span class="brand-mark" aria-hidden="true">M</span>
                     <span>MemoLens</span>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                        aria-expanded="false" aria-label="Mở điều hướng">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div id="mainNavbar" class="navbar-collapse collapse">
                     <ul class="navbar-nav ms-auto align-items-lg-center">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Memories" asp-action="Index">Timeline</a>
+                            <a class="nav-link" asp-area="" asp-controller="Memories" asp-action="Index">Dòng thời gian</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Albums" asp-action="Index">Albums</a>
+                            <a class="nav-link" asp-area="" asp-controller="Albums" asp-action="Index">Bộ sưu tập</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Trash" asp-action="Index">Thung rac</a>
+                            <a class="nav-link" asp-area="" asp-controller="Trash" asp-action="Index">Thùng rác</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link nav-link-soft" asp-area="" asp-controller="Memories" asp-action="Create">Create Memory</a>
+                            <a class="nav-link nav-link-soft" asp-area="" asp-controller="Memories" asp-action="Create">Tạo kỷ niệm</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Quyền riêng tư</a>
                         </li>
                         @if (SignInManager.IsSignedIn(User))
                         {
                             var currentUser = await UserManager.GetUserAsync(User);
-                            var displayName = currentUser?.DisplayName ?? currentUser?.Email ?? User.Identity?.Name ?? "Account";
+                            var displayName = currentUser?.DisplayName ?? currentUser?.Email ?? User.Identity?.Name ?? "Tài khoản";
 
                             <li class="nav-item nav-account">
                                 <span class="navbar-text account-label">@displayName</span>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Settings" asp-action="Index">Cai dat</a>
+                                <a class="nav-link" asp-area="" asp-controller="Settings" asp-action="Index">Cài đặt</a>
                             </li>
                             <li class="nav-item">
                                 <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline nav-action-form">
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Logout</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Đăng xuất</button>
                                 </form>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item nav-account">
-                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">Đăng nhập</a>
                             </li>
                             <li class="nav-item">
-                                <a class="btn btn-sm btn-primary nav-register-button" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                                <a class="btn btn-sm btn-primary nav-register-button" asp-area="" asp-controller="Account" asp-action="Register">Đăng ký</a>
                             </li>
                         }
                     </ul>
@@ -85,8 +85,11 @@
 
     <footer class="footer">
         <div class="container footer-inner">
-            <span>&copy; 2026 MemoLens</span>
-            <span>Private memories, gently kept.</span>
+            <div>
+                <strong>MemoLens</strong>
+                <span>Lưu giữ kỷ niệm riêng tư, nhẹ nhàng và chỉ thuộc về bạn.</span>
+            </div>
+            <a asp-controller="Home" asp-action="Privacy">Quyền riêng tư</a>
         </div>
     </footer>
 
