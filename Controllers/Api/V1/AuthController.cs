@@ -22,6 +22,8 @@ public class AuthController : ControllerBase
 {
     private const string InvalidLoginMessage = "Email hoặc mật khẩu không đúng.";
     private const string InvalidRefreshTokenMessage = "Refresh token không hợp lệ hoặc đã hết hạn.";
+    private const string InvalidConfirmationMessage = "Liên kết xác nhận email không hợp lệ hoặc đã hết hạn.";
+    private const string ResendConfirmationMessage = "Nếu email hợp lệ và chưa được xác nhận, MemoLens sẽ gửi lại hướng dẫn xác nhận.";
 
     private readonly ApplicationDbContext _dbContext;
     private readonly UserManager<ApplicationUser> _userManager;
@@ -85,6 +87,53 @@ public class AuthController : ControllerBase
         {
             Success = true,
             Message = "Đăng ký thành công. Vui lòng xác nhận email trước khi đăng nhập."
+        });
+    }
+
+    [HttpPost("confirm-email")]
+    [AllowAnonymous]
+    public async Task<ActionResult<ApiResponse>> ConfirmEmail(ConfirmEmailRequest request)
+    {
+        var user = await _userManager.FindByIdAsync(request.UserId.Trim());
+        var decodedToken = DecodeEmailConfirmationToken(request.Token);
+
+        if (user is null ||
+            decodedToken is null ||
+            await _userManager.IsEmailConfirmedAsync(user))
+        {
+            return InvalidEmailConfirmation();
+        }
+
+        var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
+
+        if (!result.Succeeded)
+        {
+            return InvalidEmailConfirmation();
+        }
+
+        return Ok(new ApiResponse
+        {
+            Success = true,
+            Message = "Xác nhận email thành công. Bạn có thể đăng nhập."
+        });
+    }
+
+    [HttpPost("resend-confirmation-email")]
+    [AllowAnonymous]
+    public async Task<ActionResult<ApiResponse>> ResendConfirmationEmail(
+        ResendConfirmationEmailRequest request)
+    {
+        var user = await _userManager.FindByEmailAsync(request.Email.Trim());
+
+        if (user is not null && !await _userManager.IsEmailConfirmedAsync(user))
+        {
+            await SendConfirmationEmailAsync(user);
+        }
+
+        return Ok(new ApiResponse
+        {
+            Success = true,
+            Message = ResendConfirmationMessage
         });
     }
 
@@ -290,6 +339,15 @@ public class AuthController : ControllerBase
         });
     }
 
+    private BadRequestObjectResult InvalidEmailConfirmation()
+    {
+        return BadRequest(new ApiResponse
+        {
+            Success = false,
+            Message = InvalidConfirmationMessage
+        });
+    }
+
     private async Task<AuthResponse> CreateAuthResponseAsync(
         ApplicationUser user,
         string accessToken,
@@ -334,6 +392,18 @@ public class AuthController : ControllerBase
             user.Email ?? string.Empty,
             "Xác thực email MemoLens",
             message);
+    }
+
+    private static string? DecodeEmailConfirmationToken(string encodedToken)
+    {
+        try
+        {
+            return Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(encodedToken));
+        }
+        catch (FormatException)
+        {
+            return null;
+        }
     }
 
     private ApiValidationErrorResponse CreateIdentityValidationResponse(IdentityResult result)

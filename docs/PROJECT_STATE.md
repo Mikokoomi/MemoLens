@@ -57,6 +57,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 14C: Core API Auth Endpoints.
 - Phase 15A: Email Infrastructure and Confirmation Testing.
 - Phase 15B: MVC Forgot and Reset Password.
+- Phase 15C: API Email Confirmation and Resend Confirmation.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -109,7 +110,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Chưa có public sharing.
 - Chưa có trang quản lý tag riêng.
 - Chưa có admin dashboard.
-- Đã có core JWT bearer auth API; confirm-email/resend/forgot/reset API vẫn chưa có.
+- Đã có core JWT bearer auth API và API confirm/resend email; API forgot/reset vẫn chưa có.
 - Chưa có memory CRUD API.
 - Chưa có album CRUD API.
 - Chưa có image upload API.
@@ -494,6 +495,40 @@ Không thay đổi:
 
 Giới hạn còn lại:
 
-- Chưa có API confirm/resend email hoặc API forgot/reset password.
+- API confirm/resend email đã được thêm ở Phase 15C; API forgot/reset password vẫn chưa có.
 - Chưa có rate limiting cho forgot password.
+- Chưa có production SMTP credential/provider thật.
+
+## 24. Cập nhật Phase 15C: API Email Confirmation and Resend Confirmation
+
+Phase 15C đã hoàn thành.
+
+Endpoint đã implement:
+
+- `POST /api/v1/auth/confirm-email`
+- `POST /api/v1/auth/resend-confirmation-email`
+
+Hành vi bảo mật:
+
+- Confirm email nhận `userId` và token Base64Url, dùng `UserManager.ConfirmEmailAsync`.
+- User/token thiếu dùng standard API validation response tiếng Việt có dấu.
+- User không tồn tại, token sai/hết hạn/đã dùng hoặc email đã confirmed đều nhận cùng lỗi an toàn.
+- Confirm email thành công không auto-login, không tạo MVC cookie và không cấp JWT/refresh token.
+- Resend confirmation luôn trả cùng response `200`, không tiết lộ email có tồn tại hoặc đã confirmed hay không.
+- Chỉ user tồn tại và chưa confirmed mới được tạo token và gửi confirmation link.
+- Development tiếp tục log link rõ ràng qua `[MemoLens Development Email]`.
+- Confirmation link gửi lại vẫn dùng MVC `Account/ConfirmEmail`, giữ nguyên web flow hiện tại.
+
+Không thay đổi:
+
+- Không thêm API forgot/reset password endpoint.
+- Không thay đổi MVC register/confirm email hoặc MVC forgot/reset password.
+- Không tắt email confirmation và không auto-confirm user.
+- Không thay đổi database schema và không tạo migration.
+- Không thêm API CRUD, Flutter code, AI, social features hoặc public sharing.
+
+Giới hạn còn lại:
+
+- Chưa có API forgot/reset password.
+- Chưa có rate limiting cho resend confirmation.
 - Chưa có production SMTP credential/provider thật.

@@ -282,9 +282,11 @@ Phase 14A records the authentication design, Phase 14B adds the supporting infra
 - JWT options, bearer validation, a token service, and the `UserRefreshTokens` table are now available as infrastructure.
 - Refresh tokens are designed to be persisted as SHA-256 hashes only; plain tokens must only be returned to the mobile client when future auth endpoints are implemented.
 - Core endpoints are available at `POST /api/v1/auth/register`, `POST /api/v1/auth/login`, `POST /api/v1/auth/refresh`, `POST /api/v1/auth/logout`, and `GET /api/v1/account/me`.
+- Email confirmation endpoints are available at `POST /api/v1/auth/confirm-email` and `POST /api/v1/auth/resend-confirmation-email`.
 - API login requires a confirmed email, returns a 15-minute JWT access token, and stores only the SHA-256 hash of each 30-day refresh token.
 - Refresh rotates the refresh token atomically; logout revokes the supplied refresh token.
-- Confirmation/resend confirmation APIs and forgot/reset password APIs are not implemented yet.
+- Resend confirmation always returns a generic response to avoid revealing whether an account exists or is already confirmed.
+- API forgot/reset password endpoints are not implemented yet; MVC forgot/reset password is available.
 - The existing MVC web authentication remains cookie-based and unchanged.
 - Development JWT values are placeholders in `appsettings.Development.json`. Production values must come from environment variables or user secrets, especially `Jwt__SecretKey`.
 - Phase 14B.5 aligns the Microsoft ASP.NET Core and EF Core packages, plus the local `dotnet-ef` tool, on `8.0.28`. The NuGet vulnerability audit is clean after this patch.

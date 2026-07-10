@@ -66,7 +66,26 @@ Sau khi reset thành công:
 
 API forgot/reset password chưa được triển khai trong Phase 15B.
 
-## 5. Cấu hình Email
+## 5. API xác nhận và gửi lại email xác nhận
+
+Phase 15C bổ sung hai endpoint cho mobile client tương lai:
+
+- `POST /api/v1/auth/confirm-email`
+- `POST /api/v1/auth/resend-confirmation-email`
+
+`confirm-email` nhận `userId` và token Base64Url giống token trong confirmation link hiện tại. Endpoint gọi `UserManager.ConfirmEmailAsync`, không auto-login, không tạo MVC cookie và không cấp access/refresh token. Sau khi xác nhận thành công, user vẫn phải gọi login.
+
+`resend-confirmation-email` luôn trả cùng response chung:
+
+```text
+Nếu email hợp lệ và chưa được xác nhận, MemoLens sẽ gửi lại hướng dẫn xác nhận.
+```
+
+Chỉ tài khoản tồn tại nhưng chưa xác nhận mới thực sự tạo token và gửi email. Email không tồn tại hoặc đã xác nhận nhận cùng status/message để hạn chế user enumeration.
+
+Trong Development, email gửi lại tiếp tục xuất hiện trong block `[MemoLens Development Email]` với `Confirmation link:`. Link vẫn mở MVC `/Account/ConfirmEmail`, nên luồng web hiện tại không bị thay đổi. Mobile client có thể lấy `userId` và `token` từ deep link/web link theo thiết kế tích hợp sau này.
+
+## 6. Cấu hình Email
 
 Model cấu hình là `EmailOptions`, nằm tại `Models/Email/EmailOptions.cs`.
 
@@ -93,7 +112,7 @@ Model cấu hình là `EmailOptions`, nằm tại `Models/Email/EmailOptions.cs`
 
 Không đặt SMTP username, SMTP password, API key hoặc secret thật trong `appsettings.json`, `appsettings.Development.json` hay Git.
 
-## 6. Chuẩn bị Production SMTP
+## 7. Chuẩn bị Production SMTP
 
 Khi sẵn sàng gửi email thật, đặt `Email__Mode=Smtp` và cung cấp các giá trị còn lại qua User Secrets, environment variables hoặc server configuration. Ví dụ tên biến môi trường:
 
@@ -114,7 +133,7 @@ Ngoài Development, MemoLens chỉ dùng SMTP khi `Email:Mode` là `Smtp`. Nếu
 
 Trước private beta, cần kiểm tra SMTP với email provider thật, HTTPS, domain gửi mail, SPF/DKIM/DMARC theo provider, monitoring và chính sách retry phù hợp.
 
-## 7. Quy tắc bảo mật
+## 8. Quy tắc bảo mật
 
 - Không tắt `RequireConfirmedEmail`.
 - Không tự động đặt `EmailConfirmed = true` cho user mới.
@@ -125,11 +144,11 @@ Trước private beta, cần kiểm tra SMTP với email provider thật, HTTPS,
 - Luôn lưu SMTP secret ở User Secrets, environment variables hoặc secret store của server.
 - Forgot password luôn dùng response chung để tránh tiết lộ email có tồn tại hay không.
 - Reset password dùng token chuẩn của ASP.NET Core Identity và không auto-login.
+- Resend confirmation luôn dùng response chung, không tiết lộ email có tồn tại hoặc đã xác nhận hay không.
+- API confirm email không auto-login và không cấp JWT/refresh token.
 
-## 8. Chưa được triển khai
+## 9. Chưa được triển khai
 
-- API confirm email riêng cho mobile.
-- API resend confirmation email.
 - API forgot password.
 - API reset password.
 - Rate limiting cho register/login/resend.

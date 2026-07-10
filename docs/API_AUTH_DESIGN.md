@@ -173,8 +173,8 @@ Day chi la de xuat thiet ke. Model, migration va database schema chua duoc them.
 
 1. **Phase 14B (da hoan thanh):** Them refresh token model, migration, JWT configuration va token service infrastructure.
 2. **Phase 14C (da hoan thanh):** Implement API register, login, refresh, logout va account/me.
-3. **Phase 14D:** Implement API email confirmation va resend confirmation email.
-4. **Phase 15:** Them email provider that, forgot password va reset password.
+3. **Phase 15C (da hoan thanh):** Implement API email confirmation va resend confirmation email.
+4. **Phase 15D:** Implement API forgot password va reset password.
 5. **Sau do:** Revoke token khi doi mat khau, UI quan ly device sessions, va hardening lockout/rate limiting.
 
 Moi phase can nho, co manual QA, co test ownership/privacy va khong duoc lam hong MVC cookie auth hien co.
@@ -234,7 +234,21 @@ Quy tac da ap dung:
 
 Van chua implement:
 
-- API confirm email.
-- API resend confirmation email.
 - API forgot password va reset password.
 - Device sessions UI, password-change token revocation va rate limiting hardening.
+
+## 16. Trang thai implementation Phase 15C
+
+Phase 15C da implement:
+
+- `POST /api/v1/auth/confirm-email` de xac nhan email bang `userId` va token Base64Url tu confirmation link.
+- `POST /api/v1/auth/resend-confirmation-email` voi response chung cho email khong ton tai, da confirmed hoac chua confirmed.
+- Confirm email thanh cong khong auto-login, khong tao MVC cookie va khong cap access/refresh token.
+- Resend chi gui email khi user ton tai va chua confirmed; Development tiep tuc log confirmation link qua email sender hien co.
+- Link gui lai van tro den MVC `Account/ConfirmEmail`, giu tuong thich voi web flow hien tai.
+
+Van chua implement:
+
+- API forgot password va reset password.
+- Rate limiting cho register, login, resend confirmation va password recovery.
+- Production email provider da duoc cau hinh bang credential that.
