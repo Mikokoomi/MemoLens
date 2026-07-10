@@ -265,3 +265,23 @@ Quy tắc riêng tư cho API tương lai:
 - Không có public image URLs.
 - Không trả private physical file path ra API response.
 - Deleted memories/albums phải bị ẩn khỏi normal APIs.
+
+## 16. Cap nhat Phase 14A: API Authentication Design
+
+Phase 14A da hoan thanh va chi thay doi tai lieu.
+
+Da them `docs/API_AUTH_DESIGN.md` de chot huong xac thuc cho Flutter/mobile API trong tuong lai:
+
+- Mobile API du kien dung JWT access token ngan han va refresh token co the revoke.
+- Refresh token se duoc luu dang hash trong database khi Phase 14B bat dau, khong luu plain text.
+- Email confirmation van la dieu kien bat buoc truoc khi login.
+- MVC web app tiep tuc dung cookie authentication.
+- Auth API, JWT, refresh token model/table va migration chua duoc implement.
+- Moi API tuong lai van phai scope theo current user; Admin khong duoc bypass private content ownership trong MVP.
+
+Khong thay doi:
+
+- Khong thay doi application source code.
+- Khong thay doi database schema.
+- Khong tao migration.
+- Khong thay doi MVC auth/cookie behavior.

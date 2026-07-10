@@ -244,6 +244,7 @@ Planning documents:
 - `docs/MOBILE_ARCHITECTURE.md`
 - `docs/API_ROADMAP.md`
 - `docs/API_FOUNDATION.md`
+- `docs/API_AUTH_DESIGN.md`
 - `docs/PRIVATE_BETA_PLAN.md`
 - `docs/PRODUCTION_RISK_REGISTER.md`
 
@@ -269,6 +270,16 @@ Current API limitations:
 - No Flutter app yet.
 
 See `docs/API_FOUNDATION.md` for the current API shape, response format, Swagger notes, limitations, and future privacy rules.
+
+## API Authentication Design
+
+Phase 14A records the planned authentication design for a future Flutter/mobile API.
+
+- Mobile API authentication is planned to be token-based, using short-lived JWT access tokens and revocable refresh tokens.
+- No JWT, refresh token, or auth API endpoint is implemented yet.
+- The existing MVC web authentication remains cookie-based and unchanged.
+
+See `docs/API_AUTH_DESIGN.md` for the proposed token lifecycle, endpoint plan, email confirmation flow, security rules, and phased implementation approach.
 
 ## Timeline Search and Filters
 
