@@ -53,6 +53,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 13B: API Foundation Documentation Update.
 - Phase 14A: API Authentication Design.
 - Phase 14B: API Auth Infrastructure.
+- Phase 14B.5: Dependency Security Patch Review.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -316,3 +317,30 @@ Khong thay doi:
 - Email confirmation van bat buoc.
 - Password rules va role `Admin`/`User` khong doi.
 - Khong thay doi logic memories, albums, images, trash hoac settings.
+
+## 18. Cap nhat Phase 14B.5: Dependency Security Patch Review
+
+Phase 14B.5 da hoan thanh va chi cap nhat dependency/documentation.
+
+Ket qua audit truoc ban va:
+
+- `Azure.Identity 1.10.3` co advisory muc Moderate.
+- `Microsoft.Identity.Client 4.56.0` co advisory muc Low/Moderate.
+- `System.Formats.Asn1 5.0.0` co advisory muc High.
+- Cac package nay deu la dependency transitive cua `Microsoft.EntityFrameworkCore.SqlServer 8.0.10` thong qua `Microsoft.Data.SqlClient 5.1.5`.
+
+Ban va da thuc hien:
+
+- Nang `Microsoft.AspNetCore.Authentication.JwtBearer` tu `8.0.10` len `8.0.28`.
+- Nang `Microsoft.AspNetCore.Identity.EntityFrameworkCore` tu `8.0.10` len `8.0.28`.
+- Nang `Microsoft.EntityFrameworkCore.SqlServer` va `Microsoft.EntityFrameworkCore.Tools` tu `8.0.10` len `8.0.28`.
+- Nang local tool `dotnet-ef` tu `8.0.10` len `8.0.28`.
+- Giu target framework `net8.0`; khong nang major len .NET 10.
+- Giu `Swashbuckle.AspNetCore 6.6.2` vi khong nam trong chuoi advisory va task khong can major upgrade.
+
+Trang thai sau ban va:
+
+- `dotnet list package --vulnerable --include-transitive` khong con bao package de ton thuong theo cac source hien tai.
+- EF Core khong co pending model changes.
+- Khong tao migration moi.
+- Khong thay doi MVC, auth/token logic, database schema hoac API behavior.

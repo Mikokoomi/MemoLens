@@ -280,6 +280,7 @@ Phase 14A records the authentication design, and Phase 14B adds the supporting i
 - No register, login, refresh, logout, confirmation, password reset, or account API endpoint is implemented yet.
 - The existing MVC web authentication remains cookie-based and unchanged.
 - Development JWT values are placeholders in `appsettings.Development.json`. Production values must come from environment variables or user secrets, especially `Jwt__SecretKey`.
+- Phase 14B.5 aligns the Microsoft ASP.NET Core and EF Core packages, plus the local `dotnet-ef` tool, on `8.0.28`. The NuGet vulnerability audit is clean after this patch.
 
 See `docs/API_AUTH_DESIGN.md` for the proposed token lifecycle, endpoint plan, email confirmation flow, security rules, and phased implementation approach.
 
