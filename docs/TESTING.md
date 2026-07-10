@@ -2,7 +2,7 @@
 
 ## 1. Mục đích
 
-Phase 16C tạo nền tảng automated test nhỏ, độc lập với LocalDB phát triển. Phase 16D bổ sung integration tests cho các API auth hiện có. Mục tiêu là giúp các phase sau kiểm thử auth, quyền sở hữu, database và API mà không làm ảnh hưởng dữ liệu cá nhân trong môi trường Development.
+Phase 16C tạo nền tảng automated test nhỏ, độc lập với LocalDB phát triển. Phase 16D bổ sung integration tests cho các API auth hiện có, còn Phase 16E bảo vệ các boundary privacy/ownership của MVC. Mục tiêu là giúp các phase sau kiểm thử auth, quyền sở hữu, database và API mà không làm ảnh hưởng dữ liệu cá nhân trong môi trường Development.
 
 ## 2. Test project
 
@@ -52,21 +52,29 @@ Auth API integration tests hiện có:
 - Logout revoke refresh token.
 - Forgot password luôn trả response chung; reset password qua fake email link đổi được mật khẩu và revoke refresh token cũ.
 
+Privacy/ownership integration tests hiện có:
+
+- User A xem được memory của mình; User B không thể xem, sửa hoặc xóa memory của User A. Guest bị redirect về Login.
+- Album detail/edit/delete được scope theo owner; forged request thêm memory của User A vào album User B không tạo quan hệ `AlbumMemory`.
+- Authorized image endpoint chỉ trả ảnh cho owner; guest, user khác và memory soft-deleted đều không truy cập được ảnh.
+- Trash chỉ hiển thị item đã xóa của current user; forged restore memory/album của user khác trả `404` và không đổi trạng thái soft delete.
+- Settings yêu cầu login và chỉ hiển thị dữ liệu của current user.
+- User có role `Admin` vẫn không bypass ownership của memory riêng tư trong MVP hiện tại.
+
 Các test này không dùng LocalDB, không gửi email và không tạo dữ liệu trong database Development.
 
 ## 5. Chưa được cover
 
-- Ownership user A/B cho memories, albums, images và trash.
 - Image upload, private image endpoint và orphan-image cleanup.
 - Permanent delete, backup/restore và UI end-to-end.
 
 ## 6. Roadmap test
 
-1. **Phase 16E: Privacy/Ownership Tests**
-   - User A/B isolation cho memory, album, trash, settings và API tương lai.
-2. **Phase 16F: Image Access Tests**
-   - Authorized image serving, soft delete, missing file và private storage boundary.
-3. **Phase 16G: Database Cleanup Tests**
+1. **Phase 16F: Image Upload and Storage Tests**
+   - Upload validation, physical private storage, missing file và cleanup failure paths.
+2. **Phase 16G: Database Cleanup Tests**
    - Refresh token retention, unused tag và orphan image dry-run/quarantine khi các service đó được triển khai.
-4. **Sau đó: UI/end-to-end tests**
+3. **Sau đó: UI/end-to-end tests**
    - Các flow quan trọng trên browser sau khi API/MVC behavior ổn định.
+4. **Sau đó: Mobile API content tests**
+   - Các endpoint memory, album, image và trash chỉ sau khi API CRUD riêng tư được thiết kế và triển khai.

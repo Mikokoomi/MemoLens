@@ -52,7 +52,7 @@ Run the automated smoke tests with:
 dotnet test
 ```
 
-The test suite uses an isolated SQLite in-memory database and does not use LocalDB development data. It currently covers smoke checks plus core API auth integration flows. See [docs/TESTING.md](docs/TESTING.md) for current coverage and the test roadmap.
+The test suite uses an isolated SQLite in-memory database and does not use LocalDB development data. It currently covers smoke checks, core API auth, and MVC privacy/ownership integration flows. See [docs/TESTING.md](docs/TESTING.md) for current coverage and the test roadmap.
 
 ## Database Setup Notes
 

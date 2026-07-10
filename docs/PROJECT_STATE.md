@@ -65,6 +65,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 16B.3: Orphan Image and Unused Tag Cleanup Design.
 - Phase 16C: Automated Tests Foundation.
 - Phase 16D: Auth API Integration Tests.
+- Phase 16E: Privacy and Ownership Integration Tests.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -129,8 +130,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 16B.5: Unused Tag Cleanup Implementation.
 - Phase 16B.6: Orphan Image Cleanup Dry-Run Service.
 - Phase 16B.7: Permanent Delete Design/Implementation.
-- Phase 16E: Privacy/Ownership Tests.
-- Phase 16F: Image Access Tests.
+- Phase 16F: Image Upload and Storage Tests.
 - Phase 16G: Database Cleanup Tests.
 - Sau MVP: permanent delete, export data, thumbnails/compression.
 
@@ -670,3 +670,17 @@ Không thay đổi:
 
 - Không tạo migration.
 - Không thêm API CRUD, Flutter code, UI redesign, AI, social feature hoặc public sharing.
+
+## 32. Cập nhật Phase 16E: Privacy and Ownership Integration Tests
+
+Phase 16E đã hoàn thành.
+
+- Đã thêm 6 integration tests privacy/ownership, nâng tổng test suite lên 16 tests.
+- Test phủ memory, album, forged album-memory relation, private image endpoint, soft-deleted image, trash restore, settings, guest redirect và Admin không bypass ownership.
+- Mọi test vẫn chạy trong environment `Testing` với SQLite in-memory, fake email sender và MVC cookie login thật; không dùng LocalDB hoặc SMTP thật.
+- Không phát hiện privacy/security bug cần sửa production.
+
+Không thay đổi:
+
+- Không thay đổi database schema hoặc tạo migration.
+- Không thay đổi controller, auth behavior, UI, API endpoint, image upload behavior, Flutter code, AI, social feature hoặc public sharing.
