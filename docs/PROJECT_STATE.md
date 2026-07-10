@@ -70,6 +70,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 17B: Design System Tokens and Base CSS.
 - Phase 17C: Home and Auth UI Redesign.
 - Phase 17D: Timeline and Memory Card Redesign.
+- Phase 17E: Paper Note Default UI Template.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -136,7 +137,10 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 16B.7: Permanent Delete Design/Implementation.
 - Phase 16F: Image Upload and Storage Tests.
 - Phase 16G: Database Cleanup Tests.
-- Phase 17E: Memory Details and Gallery redesign.
+- Phase 17F: Memory Details and Gallery redesign.
+- Phase 17G: Create/Edit Memory Form redesign.
+- Phase 17H: Albums/Trash/Settings redesign.
+- Phase 17I: Final responsive QA.
 - Sau MVP: permanent delete, export data, thumbnails/compression.
 
 ## 10. Hướng dẫn cho Codex trong các task sau
@@ -750,5 +754,25 @@ Phase 17D đã hoàn thành cho Timeline và cách hiển thị memory card.
 Không thay đổi:
 
 - Không thay đổi search/filter query behavior, controller logic, form POST behavior, auth logic, API behavior, database schema hoặc migrations.
+- Không redesign sâu Memory Details, Create/Edit, Albums, Trash hoặc Settings trong phase này.
+- Không thêm API endpoint, Flutter code, AI, social feature hoặc public sharing.
+
+## 37. Cập nhật Phase 17E: Paper Note Default UI Template
+
+Phase 17E đã hoàn thành cho lớp giao diện mặc định Paper Note.
+
+- `wwwroot/css/site.css` được tinh chỉnh để MemoLens có cảm giác giấy ghi chú riêng tư rõ hơn: nền giấy ấm, đường kẻ mờ, surface/card như trang note, shadow mềm hơn và màu mực ấm hơn.
+- Navbar, footer, button, form control, alert, card base, Home/Auth cards, trust notes, Timeline filter panel và memory cards được làm đồng bộ với Paper Note style.
+- Timeline vẫn giữ cấu trúc Phase 17D, nhưng filter panel và memory card bớt giống Bootstrap card/dashboard hơn.
+- Home và các trang auth giữ nguyên route, form binding và auth flow; chỉ thay đổi lớp nhìn và micro-surface.
+- Paper Note hiện là style mặc định duy nhất.
+
+Không thay đổi:
+
+- Không thêm 5 theme selectable.
+- Không thêm theme selector UI.
+- Không thêm `ThemePreference` hoặc thay đổi database schema.
+- Không tạo migration.
+- Không thay đổi controller, route, form POST behavior, MVC auth, API auth, database behavior hoặc tests.
 - Không redesign sâu Memory Details, Create/Edit, Albums, Trash hoặc Settings trong phase này.
 - Không thêm API endpoint, Flutter code, AI, social feature hoặc public sharing.

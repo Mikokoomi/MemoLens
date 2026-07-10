@@ -239,12 +239,19 @@ Các component sau nên được định nghĩa dần trong Razor partials hoặ
 3. **Phase 17D: Timeline and Memory Card redesign**
    - Tập trung timeline, filter, active filters, MemoryCard và empty state.
    - Trạng thái: đã implement trong Phase 17D cho Timeline, search/filter panel, memory grid/card và empty states. Chưa redesign sâu Memory Details, Create/Edit, Albums, Trash hoặc Settings.
-4. **Phase 17E: Memory Details and Gallery redesign**
+4. **Phase 17E: Apply Paper Note Default UI Template**
+   - Áp dụng Paper Note làm style mặc định cho token nền, card, form, button, navbar, footer, Home/Auth và Timeline.
+   - Trạng thái: đã implement trong Phase 17E. Chưa thêm 5 theme selectable, chưa thêm theme selector UI, chưa thêm `ThemePreference` và chưa tạo migration.
+5. **Phase 17F: Memory Details and Gallery redesign**
    - Làm rõ story/photo-first detail, gallery, edit/delete/back actions.
-5. **Phase 17F: Albums/Trash/Settings redesign**
+6. **Phase 17G: Create/Edit Memory Form redesign**
+   - Làm form tạo/sửa memory giống trải nghiệm viết nhật ký hơn, gồm story, cảm xúc, ngày, địa điểm, ảnh và tag.
+7. **Phase 17H: Albums/Trash/Settings redesign**
    - Làm lại album list/detail/add, trash và settings theo cùng design system.
-6. **Phase 17G: Final responsive QA**
+8. **Phase 17I: Final responsive QA**
    - Kiểm tra 360/390/430/768, desktop, auth, CRUD, upload, search/filter và tests.
+
+Ghi chú: selectable themes có thể là hướng tương lai sau MVP, nhưng chưa thuộc Phase 17E. MemoLens hiện chỉ dùng Paper Note làm giao diện mặc định.
 
 ## 13. Acceptance criteria cho redesign tương lai
 
