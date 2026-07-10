@@ -3,6 +3,7 @@ using MemoLens.Models;
 using MemoLens.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,16 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddTransient<IEmailSender, DevelopmentEmailSender>();
 builder.Services.AddScoped<IImageStorageService, LocalImageStorageService>();
 builder.Services.AddControllersWithViews();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "MemoLens API",
+        Version = "v1",
+        Description = "API nền tảng cho ứng dụng mobile MemoLens."
+    });
+});
 
 var app = builder.Build();
 var seedLogger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("IdentitySeedData");
@@ -52,6 +63,14 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+else
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "MemoLens API v1");
+    });
+}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -60,6 +79,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllers();
 
 app.MapControllerRoute(
     name: "default",
