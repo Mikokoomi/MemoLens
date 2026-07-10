@@ -267,6 +267,7 @@ Planning documents:
 - `docs/API_AUTH_DESIGN.md`
 - `docs/PRIVATE_BETA_PLAN.md`
 - `docs/PRODUCTION_RISK_REGISTER.md`
+- `docs/UI_UX_REDESIGN_DIRECTION.md`
 
 ## API Foundation
 
@@ -389,6 +390,8 @@ Phase 12.5 UI language and responsive stabilization is completed.
 - Navbar and footer wording are more consistent and less crowded on mobile.
 - Auth, timeline, memory, album, trash, settings, and privacy pages were polished for phone-sized screens.
 - No backend behavior, database schema, migrations, API controllers, or mobile app code were changed in this phase.
+
+Phase 17A records the next UI/UX redesign direction before implementation. It recommends a warmer soft journal aesthetic, better Vietnamese-friendly typography, more photo-first memory cards, and a phased redesign roadmap. See `docs/UI_UX_REDESIGN_DIRECTION.md`.
 
 ## Feeling List
 

@@ -66,6 +66,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 16C: Automated Tests Foundation.
 - Phase 16D: Auth API Integration Tests.
 - Phase 16E: Privacy and Ownership Integration Tests.
+- Phase 17A: UI/UX Redesign Direction.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -132,6 +133,8 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 16B.7: Permanent Delete Design/Implementation.
 - Phase 16F: Image Upload and Storage Tests.
 - Phase 16G: Database Cleanup Tests.
+- Phase 17B: Design system tokens and base CSS.
+- Phase 17C: Home/Auth UI redesign.
 - Sau MVP: permanent delete, export data, thumbnails/compression.
 
 ## 10. Hướng dẫn cho Codex trong các task sau
@@ -684,3 +687,18 @@ Không thay đổi:
 
 - Không thay đổi database schema hoặc tạo migration.
 - Không thay đổi controller, auth behavior, UI, API endpoint, image upload behavior, Flutter code, AI, social feature hoặc public sharing.
+
+## 33. Cập nhật Phase 17A: UI/UX Redesign Direction
+
+Phase 17A đã hoàn thành dưới dạng tài liệu định hướng thiết kế.
+
+- Đã tạo `docs/UI_UX_REDESIGN_DIRECTION.md` để chốt hướng redesign trước khi sửa giao diện lớn.
+- Tài liệu ghi nhận UI hiện tại đã functional, mobile-first hơn trước, nhưng vẫn còn cảm giác Bootstrap/generic và chưa đủ cảm xúc cho một nhật ký ký ức riêng tư.
+- Hướng redesign đề xuất là soft journal aesthetic: warm neutral background, photo-first memory cards, typography hỗ trợ tiếng Việt tốt, form thân thiện hơn và layout ít dashboard-like hơn.
+- Roadmap UI được chia nhỏ thành Phase 17B đến 17G để tránh redesign toàn bộ trong một commit lớn.
+
+Không thay đổi:
+
+- Không sửa Razor view, CSS hoặc UI implementation trong phase này.
+- Không thay đổi backend, auth, API, database schema hoặc migrations.
+- Không thêm API CRUD, Flutter code, AI, social feature hoặc public sharing.
