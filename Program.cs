@@ -1,11 +1,14 @@
 using System.Text;
+using System.Text.Json;
 using MemoLens.Data;
 using MemoLens.Models;
+using MemoLens.Models.Api;
 using MemoLens.Models.Auth;
 using MemoLens.Services;
 using MemoLens.Services.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -66,6 +69,20 @@ builder.Services
             ValidateLifetime = true,
             ClockSkew = TimeSpan.FromSeconds(30)
         };
+        options.Events = new JwtBearerEvents
+        {
+            OnChallenge = async context =>
+            {
+                context.HandleResponse();
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+
+                await context.Response.WriteAsJsonAsync(new ApiResponse
+                {
+                    Success = false,
+                    Message = "Bạn cần đăng nhập bằng Bearer token để truy cập tài nguyên này."
+                });
+            }
+        };
     });
 
 builder.Services.ConfigureApplicationCookie(options =>
@@ -77,7 +94,32 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddTransient<IEmailSender, DevelopmentEmailSender>();
 builder.Services.AddScoped<IImageStorageService, LocalImageStorageService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddControllersWithViews();
+builder.Services
+    .AddControllersWithViews()
+    .ConfigureApiBehaviorOptions(options =>
+    {
+        options.InvalidModelStateResponseFactory = context =>
+        {
+            var errors = context.ModelState
+                .Where(entry => entry.Value?.Errors.Count > 0)
+                .ToDictionary(
+                    entry => string.IsNullOrWhiteSpace(entry.Key)
+                        ? "request"
+                        : JsonNamingPolicy.CamelCase.ConvertName(entry.Key),
+                    entry => entry.Value!.Errors
+                        .Select(error => string.IsNullOrWhiteSpace(error.ErrorMessage)
+                            ? "Dữ liệu gửi lên không hợp lệ."
+                            : error.ErrorMessage)
+                        .ToArray());
+
+            return new BadRequestObjectResult(new ApiValidationErrorResponse
+            {
+                Success = false,
+                Message = "Dữ liệu gửi lên chưa hợp lệ.",
+                Errors = errors
+            });
+        };
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {

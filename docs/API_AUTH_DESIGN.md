@@ -172,7 +172,7 @@ Day chi la de xuat thiet ke. Model, migration va database schema chua duoc them.
 ## 11. Cac phase implementation de xuat
 
 1. **Phase 14B (da hoan thanh):** Them refresh token model, migration, JWT configuration va token service infrastructure.
-2. **Phase 14C:** Implement API register, login, refresh va logout.
+2. **Phase 14C (da hoan thanh):** Implement API register, login, refresh, logout va account/me.
 3. **Phase 14D:** Implement API email confirmation va resend confirmation email.
 4. **Phase 15:** Them email provider that, forgot password va reset password.
 5. **Sau do:** Revoke token khi doi mat khau, UI quan ly device sessions, va hardening lockout/rate limiting.
@@ -210,3 +210,31 @@ Phase 14B da them phan ha tang sau:
 - Development chi dung placeholder secret. Production phai dung environment variables hoac user secrets.
 
 Phase 14B chua them bat ky auth API endpoint nao. Register, login, refresh, logout, confirm email, forgot/reset password va account/me van la ke hoach cho cac phase sau.
+
+## 15. Trang thai implementation Phase 14C
+
+Phase 14C da implement cac endpoint cot loi:
+
+- `POST /api/v1/auth/register`
+- `POST /api/v1/auth/login`
+- `POST /api/v1/auth/refresh`
+- `POST /api/v1/auth/logout`
+- `GET /api/v1/account/me`
+
+Quy tac da ap dung:
+
+- Register tao Identity user role `User`, gui confirmation link qua development email sender va khong cap token.
+- Login chi cap token khi email da confirmed; login API khong tao MVC cookie.
+- Access token co lifetime 15 phut.
+- Refresh token co lifetime 30 ngay va chi duoc persist dang SHA-256 hash.
+- Refresh token rotation revoke token cu, luu `ReplacedByTokenHash` va tao hash token moi trong cung transaction.
+- Atomic conditional update chan hai request cung rotate mot token cu.
+- Logout revoke refresh token nhung khong anh huong MVC cookie session.
+- `account/me` bat buoc dung JWT bearer scheme va chi tra current user summary.
+
+Van chua implement:
+
+- API confirm email.
+- API resend confirmation email.
+- API forgot password va reset password.
+- Device sessions UI, password-change token revocation va rate limiting hardening.

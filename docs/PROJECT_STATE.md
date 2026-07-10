@@ -54,6 +54,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 14A: API Authentication Design.
 - Phase 14B: API Auth Infrastructure.
 - Phase 14B.5: Dependency Security Patch Review.
+- Phase 14C: Core API Auth Endpoints.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -73,6 +74,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - API response models cho Web API.
 - Health endpoint `GET /api/v1/health`.
 - Swagger/OpenAPI trong môi trường Development.
+- Core API auth endpoints cho register, login, refresh, logout và account/me.
 
 ## 6. Quy tắc riêng tư quan trọng
 
@@ -105,8 +107,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Chưa có public sharing.
 - Chưa có trang quản lý tag riêng.
 - Chưa có admin dashboard.
-- Chưa có auth API.
-- Đã có JWT/token infrastructure nhưng chưa có auth API endpoint sử dụng bearer token.
+- Đã có core JWT bearer auth API; confirm-email/resend/forgot/reset API vẫn chưa có.
 - Chưa có memory CRUD API.
 - Chưa có album CRUD API.
 - Chưa có image upload API.
@@ -344,3 +345,39 @@ Trang thai sau ban va:
 - EF Core khong co pending model changes.
 - Khong tao migration moi.
 - Khong thay doi MVC, auth/token logic, database schema hoac API behavior.
+
+## 19. Cap nhat Phase 14C: Core API Auth Endpoints
+
+Phase 14C da hoan thanh.
+
+Endpoint da implement:
+
+- `POST /api/v1/auth/register`
+- `POST /api/v1/auth/login`
+- `POST /api/v1/auth/refresh`
+- `POST /api/v1/auth/logout`
+- `GET /api/v1/account/me`
+
+Hanh vi bao mat:
+
+- Register khong cap token va van bat buoc email confirmation.
+- Login dung Identity password/lockout checks, chi cap JWT va refresh token sau khi email confirmed.
+- Login API khong tao hoac phu thuoc MVC cookie.
+- Refresh token chi luu dang SHA-256 hash, khong luu plain token.
+- Refresh token rotation revoke token cu va chan reuse bang atomic conditional update.
+- Logout revoke refresh token duoc gui len va khong logout MVC cookie session.
+- `account/me` chi chap nhan JWT bearer va chi tra profile cua current user.
+- Validation va API auth errors dung standard `ApiResponse`/`ApiValidationErrorResponse` shape.
+
+Gioi han van con:
+
+- Chua co API confirm email hoac resend confirmation email.
+- Chua co API forgot/reset password.
+- Chua co memory, album, image, trash hoac settings API.
+- Chua co Flutter app.
+
+Khong thay doi:
+
+- MVC register/login/logout va cookie authentication.
+- Database schema; khong tao migration moi.
+- Memory, album, image, trash va settings behavior.
