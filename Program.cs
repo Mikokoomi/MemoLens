@@ -4,6 +4,7 @@ using MemoLens.Data;
 using MemoLens.Models;
 using MemoLens.Models.Api;
 using MemoLens.Models.Auth;
+using MemoLens.Models.Email;
 using MemoLens.Services;
 using MemoLens.Services.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -91,7 +92,26 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Account/AccessDenied";
 });
 
-builder.Services.AddTransient<IEmailSender, DevelopmentEmailSender>();
+builder.Services.Configure<EmailOptions>(
+    builder.Configuration.GetSection(EmailOptions.SectionName));
+
+var emailOptions = builder.Configuration
+    .GetSection(EmailOptions.SectionName)
+    .Get<EmailOptions>() ?? new EmailOptions();
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddTransient<IEmailSender, DevelopmentEmailSender>();
+}
+else if (string.Equals(emailOptions.Mode, "Smtp", StringComparison.OrdinalIgnoreCase))
+{
+    builder.Services.AddTransient<IEmailSender, SmtpEmailSender>();
+}
+else
+{
+    builder.Services.AddTransient<IEmailSender, UnconfiguredEmailSender>();
+}
+
 builder.Services.AddScoped<IImageStorageService, LocalImageStorageService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services

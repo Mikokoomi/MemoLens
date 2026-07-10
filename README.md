@@ -73,13 +73,13 @@ dotnet tool run dotnet-ef migrations add MigrationName
 - Logout redirects to Home.
 - Home and Privacy remain public.
 
-## Email Confirmation in Development
+## Email and Development Confirmation
 
-No real SMTP provider is configured in this phase.
+Email confirmation remains required before login for both MVC and API registration.
 
-After registration, MemoLens logs the email confirmation link through the development email sender. Check the app console or debug output, then open the confirmation link in the browser. After confirmation, the user can log in.
+In Development, MemoLens writes a clearly labeled `[MemoLens Development Email]` block to the terminal/console. It includes the local confirmation link needed for testing. The Register Confirmation page also reminds the user to check the terminal/console, without exposing the raw link in the UI.
 
-This keeps the project ready for a real SMTP sender later without hardcoding email credentials.
+SMTP delivery is prepared through configuration but no real provider credentials are committed. Production values must come from User Secrets, environment variables, or server configuration. See `docs/EMAIL_SETUP.md` for the Development workflow, SMTP configuration keys, secret handling, and current limitations.
 
 ## Role Notes
 

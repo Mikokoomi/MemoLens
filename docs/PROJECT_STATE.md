@@ -55,6 +55,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 14B: API Auth Infrastructure.
 - Phase 14B.5: Dependency Security Patch Review.
 - Phase 14C: Core API Auth Endpoints.
+- Phase 15A: Email Infrastructure and Confirmation Testing.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -434,3 +435,32 @@ Không thay đổi:
 - Không thay đổi database schema.
 - Không tạo migration.
 - Không thêm API CRUD, Flutter code, AI, social features hoặc public sharing.
+
+## 22. Cập nhật Phase 15A: Email Infrastructure and Confirmation Testing
+
+Phase 15A đã hoàn thành.
+
+Phạm vi đã có:
+
+- Thêm `EmailOptions` cho mode, sender name/email và SMTP configuration keys.
+- Development email log được chuẩn hóa với prefix `[MemoLens Development Email]`, recipient, subject và confirmation link dễ tìm.
+- Development log chỉ ghi thông tin cần thiết để test link xác nhận, không ghi password, access token hoặc refresh token.
+- Thêm nền tảng `SmtpEmailSender` dùng cấu hình SMTP và `UnconfiguredEmailSender` để production không log confirmation token khi chưa cấu hình provider.
+- MVC Register Confirmation có nhắc Development bằng tiếng Việt có dấu: kiểm tra terminal/console để lấy link xác nhận email.
+- API register vẫn không trả token hoặc confirmation link.
+- Đã tạo `docs/EMAIL_SETUP.md` và cập nhật README.
+
+Không thay đổi:
+
+- `RequireConfirmedEmail` vẫn được bật.
+- Không auto-confirm user.
+- Không thêm forgot password, reset password, API confirm email hoặc API resend confirmation email.
+- Không thay đổi JWT/refresh token logic hoặc MVC cookie behavior.
+- Không thay đổi database schema và không tạo migration.
+- Không thêm API CRUD, Flutter code, AI, social features hoặc public sharing.
+
+Giới hạn còn lại:
+
+- Chưa có SMTP credential/provider thật cho production.
+- Chưa có rate limiting cho register/login/resend.
+- Chưa có retry queue, delivery tracking hoặc email template provider.
