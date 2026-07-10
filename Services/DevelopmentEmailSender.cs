@@ -15,12 +15,15 @@ public class DevelopmentEmailSender : IEmailSender
 
     public Task SendEmailAsync(string email, string subject, string htmlMessage)
     {
-        var confirmationLink = FindFirstLink(htmlMessage);
+        var actionLink = FindFirstLink(htmlMessage);
+        var linkLabel = subject.Contains("mật khẩu", StringComparison.OrdinalIgnoreCase)
+            ? "Reset password link"
+            : "Confirmation link";
         var message = $"""
             [MemoLens Development Email]
             Recipient: {email}
             Subject: {subject}
-            Confirmation link: {confirmationLink ?? "Không tìm thấy link trong nội dung email."}
+            {linkLabel}: {actionLink ?? "Không tìm thấy link trong nội dung email."}
             """;
 
         _logger.LogInformation("{Message}", message);

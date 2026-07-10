@@ -24,6 +24,9 @@
                 <label asp-for="Password" class="form-label"></label>
                 <input asp-for="Password" class="form-control" autocomplete="current-password" />
                 <span asp-validation-for="Password" class="text-danger"></span>
+                <div class="form-text text-end">
+                    <a asp-action="ForgotPassword">Quên mật khẩu?</a>
+                </div>
             </div>
 
             <div class="form-check mb-4">

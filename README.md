@@ -72,6 +72,8 @@ dotnet tool run dotnet-ef migrations add MigrationName
 - Successful login redirects to the private Timeline page.
 - Logout redirects to Home.
 - Home and Privacy remain public.
+- MVC users can request a password reset from the Login page without revealing whether an email exists.
+- A valid Identity reset token is required; successful reset does not auto-login the user.
 
 ## Email and Development Confirmation
 
@@ -80,6 +82,8 @@ Email confirmation remains required before login for both MVC and API registrati
 In Development, MemoLens writes a clearly labeled `[MemoLens Development Email]` block to the terminal/console. It includes the local confirmation link needed for testing. The Register Confirmation page also reminds the user to check the terminal/console, without exposing the raw link in the UI.
 
 SMTP delivery is prepared through configuration but no real provider credentials are committed. Production values must come from User Secrets, environment variables, or server configuration. See `docs/EMAIL_SETUP.md` for the Development workflow, SMTP configuration keys, secret handling, and current limitations.
+
+MVC forgot/reset password is available at `/Account/ForgotPassword`. In Development, the reset link is written to the same clearly labeled email log. After a successful reset, active API refresh tokens for that user are revoked; existing short-lived access tokens expire naturally.
 
 ## Role Notes
 
@@ -205,7 +209,7 @@ Phase 10 settings and privacy is completed.
 Current Settings limitations:
 
 - No email change.
-- No forgot password or password reset email flow.
+- No API forgot/reset password endpoints; the MVC flow is available.
 - No export data.
 - No delete account.
 - No admin settings panel.
@@ -400,6 +404,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - EF Core database models and migrations added.
 - Identity authentication configured.
 - Custom Register/Login/Confirm Email/Logout flow added.
+- MVC forgot/reset password flow added.
 - Admin/User role seeding added.
 - User-scoped memory CRUD added.
 - Memory image upload and gallery added.

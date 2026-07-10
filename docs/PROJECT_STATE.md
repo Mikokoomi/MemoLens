@@ -56,6 +56,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 14B.5: Dependency Security Patch Review.
 - Phase 14C: Core API Auth Endpoints.
 - Phase 15A: Email Infrastructure and Confirmation Testing.
+- Phase 15B: MVC Forgot and Reset Password.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -99,7 +100,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 ## 8. Giới hạn hiện tại
 
 - Chưa có permanent delete.
-- Chưa có password reset.
+- MVC đã có forgot/reset password; API forgot/reset vẫn chưa có.
 - Chưa có account settings page.
 - Chưa có export data.
 - Chưa có thumbnails hoặc image compression.
@@ -464,3 +465,35 @@ Giới hạn còn lại:
 - Chưa có SMTP credential/provider thật cho production.
 - Chưa có rate limiting cho register/login/resend.
 - Chưa có retry queue, delivery tracking hoặc email template provider.
+
+## 23. Cập nhật Phase 15B: MVC Forgot and Reset Password
+
+Phase 15B đã hoàn thành cho MVC web app.
+
+Phạm vi đã có:
+
+- Login page có link `Quên mật khẩu?`.
+- Thêm GET/POST `/Account/ForgotPassword` và trang xác nhận chung.
+- Forgot password luôn trả cùng thông báo, không tiết lộ email có tồn tại, chưa xác thực hay không.
+- Chỉ user có email đã xác thực mới được tạo Identity password reset token và gửi reset link.
+- Thêm GET/POST `/Account/ResetPassword` dùng `UserManager.ResetPasswordAsync`.
+- Reset token sai, thiếu hoặc hết hạn được xử lý bằng thông báo an toàn.
+- Password validation dùng quy tắc Identity hiện có và message tiếng Việt có dấu.
+- Reset thành công không auto-login và chuyển tới trang xác nhận riêng.
+- Sau reset thành công, toàn bộ API refresh token chưa revoke của user được revoke; access token ngắn hạn tự hết hạn như cũ.
+- Development email log hiển thị rõ `Reset password link` nhưng không log password.
+- README và `docs/EMAIL_SETUP.md` đã được cập nhật.
+
+Không thay đổi:
+
+- Không thêm API forgot/reset password endpoint.
+- Không tắt email confirmation và không auto-confirm user.
+- Không thay đổi MVC cookie login/logout behavior.
+- Không thay đổi database schema và không tạo migration.
+- Không thêm API CRUD, Flutter code, AI, social features hoặc public sharing.
+
+Giới hạn còn lại:
+
+- Chưa có API confirm/resend email hoặc API forgot/reset password.
+- Chưa có rate limiting cho forgot password.
+- Chưa có production SMTP credential/provider thật.
