@@ -56,6 +56,8 @@ The SQL Server connection string is stored in `appsettings.json` under:
 
 The default connection uses SQL Server LocalDB so the project stays beginner-friendly for local development.
 
+The current database, ownership, soft-delete, storage, index, and backup review is documented in [docs/DATABASE_REVIEW.md](docs/DATABASE_REVIEW.md).
+
 To add a new migration later, run:
 
 ```bash

@@ -59,6 +59,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 15B: MVC Forgot and Reset Password.
 - Phase 15C: API Email Confirmation and Resend Confirmation.
 - Phase 15D: API Forgot and Reset Password.
+- Phase 16A: Database and Data Integrity Review.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -119,7 +120,9 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 
 ## 9. Phase tiếp theo được đề xuất
 
-- Phase 16: Automated Tests Foundation.
+- Phase 16B: Database Index and Cleanup Implementation.
+- Phase 16C: Automated Tests Foundation.
+- Phase 16D: Privacy/Ownership Integration Tests.
 - Sau MVP: permanent delete, export data, thumbnails/compression.
 
 ## 10. Hướng dẫn cho Codex trong các task sau
@@ -567,3 +570,20 @@ Giới hạn còn lại:
 - Chưa có production email provider được cấu hình bằng credential thật.
 - Chưa có Flutter deep link cho reset password.
 - Chưa có automated integration tests.
+
+## 26. Cập nhật Phase 16A: Database and Data Integrity Review
+
+Phase 16A đã hoàn thành dưới dạng review và tài liệu.
+
+Kết quả chính:
+
+- Đã tạo `docs/DATABASE_REVIEW.md` để ghi nhận entity, relationship, ownership, soft delete, refresh token, image storage, backup và index hiện có.
+- Không phát hiện lỗi critical cần sửa source trong phase này.
+- LocalDB không có orphan record, quan hệ album-memory chéo user hoặc trạng thái soft delete không nhất quán tại thời điểm review.
+- EF Core không có pending model changes; không tạo schema change hoặc migration.
+- Rủi ro cần xử lý sau gồm: composite index theo ownership/soft delete, cleanup refresh token/tag/orphan file, backup database kèm `App_Data/uploads`, permanent delete và ownership integration tests.
+
+Không thay đổi:
+
+- Không thay đổi application source, auth, database schema, migrations, API endpoint hoặc UI.
+- Không thêm Flutter code, AI, social features hoặc public sharing.
