@@ -67,6 +67,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasIndex(token => token.TokenHash)
                 .IsUnique();
             entity.HasIndex(token => token.ExpiresAt);
+            entity.HasIndex(token => token.RevokedAt);
 
             entity.HasOne(token => token.User)
                 .WithMany(user => user.RefreshTokens)
@@ -106,6 +107,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasIndex(memory => memory.UserId);
             entity.HasIndex(memory => memory.MemoryDate);
             entity.HasIndex(memory => memory.Feeling);
+            entity.HasIndex(memory => new { memory.UserId, memory.IsDeleted, memory.MemoryDate });
+            entity.HasIndex(memory => new { memory.UserId, memory.IsDeleted, memory.CreatedAt });
 
             entity.HasOne(memory => memory.User)
                 .WithMany(user => user.Memories)
@@ -183,6 +186,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
             entity.HasIndex(album => album.UserId);
             entity.HasIndex(album => album.UpdatedAt);
+            entity.HasIndex(album => new { album.UserId, album.IsDeleted, album.CreatedAt });
 
             entity.HasOne(album => album.User)
                 .WithMany(user => user.Albums)

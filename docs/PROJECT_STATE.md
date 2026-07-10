@@ -60,6 +60,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 15C: API Email Confirmation and Resend Confirmation.
 - Phase 15D: API Forgot and Reset Password.
 - Phase 16A: Database and Data Integrity Review.
+- Phase 16B.1: Database Index Implementation.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -120,7 +121,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 
 ## 9. Phase tiếp theo được đề xuất
 
-- Phase 16B: Database Index and Cleanup Implementation.
+- Phase 16B.2: Refresh Token Cleanup.
 - Phase 16C: Automated Tests Foundation.
 - Phase 16D: Privacy/Ownership Integration Tests.
 - Sau MVP: permanent delete, export data, thumbnails/compression.
@@ -563,6 +564,25 @@ Không thay đổi:
 - Không thay đổi database schema và không tạo migration.
 - Không thêm memory, album, image, trash hoặc settings API CRUD.
 - Không thêm Flutter code, AI, social features hoặc public sharing.
+
+## 27. Cập nhật Phase 16B.1: Database Index Implementation
+
+Phase 16B.1 đã hoàn thành.
+
+Migration `20260710174606_AddPerformanceIndexes` chỉ thêm index:
+
+- `Memories(UserId, IsDeleted, MemoryDate)`.
+- `Memories(UserId, IsDeleted, CreatedAt)`.
+- `Albums(UserId, IsDeleted, CreatedAt)`.
+- `UserRefreshTokens(RevokedAt)`.
+
+Không thay đổi:
+
+- Không thay đổi table column, data, relationship, cascade rule hoặc soft-delete behavior.
+- Không thêm global query filter, cleanup job, permanent delete, API endpoint, Flutter code, AI, social feature hoặc public sharing.
+- Không thay đổi controller, MVC/API auth hoặc UI behavior.
+
+Migration đã được áp dụng cho LocalDB. EF Core không có pending model changes sau khi cập nhật.
 
 Giới hạn còn lại:
 
