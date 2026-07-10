@@ -16,6 +16,7 @@ html {
   font-size: 14px;
   min-height: 100%;
   position: relative;
+  width: 100%;
 }
 
 *,
@@ -41,6 +42,7 @@ body {
   margin-bottom: 0;
   min-height: 100vh;
   overflow-x: hidden;
+  width: 100%;
 }
 
 a {
@@ -103,6 +105,7 @@ a:hover {
 }
 
 .site-header {
+  flex: 0 0 auto;
   padding-top: 0.75rem;
 }
 
@@ -174,6 +177,8 @@ a:hover {
 .page-content {
   flex: 1 0 auto;
   padding-top: 3rem;
+  position: relative;
+  width: 100%;
 }
 
 .home-hero {
@@ -366,7 +371,20 @@ a:hover {
 
 .auth-switch {
   color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
   margin: 1.5rem 0 0;
+}
+
+.auth-switch a {
+  align-items: center;
+  display: inline-flex;
+  font-weight: 700;
+  min-height: 44px;
+  position: relative;
+  z-index: 1;
 }
 
 .form-label {
@@ -1430,8 +1448,17 @@ a:hover {
   color: var(--muted);
   flex-shrink: 0;
   line-height: 1.4;
+  margin-top: auto;
   padding: 1.35rem 0;
+  position: relative;
+  pointer-events: auto;
   width: 100%;
+  z-index: 1;
+}
+
+body.memolens-shell > .footer {
+  bottom: auto;
+  position: relative;
 }
 
 .footer-inner {
@@ -1445,6 +1472,7 @@ a:hover {
 .footer-inner div {
   display: grid;
   gap: 0.25rem;
+  max-width: min(100%, 42rem);
 }
 
 .footer-inner strong {
@@ -1453,6 +1481,7 @@ a:hover {
 }
 
 .footer-inner a {
+  align-self: center;
   font-weight: 700;
   min-height: 44px;
   display: inline-flex;
@@ -1462,6 +1491,8 @@ a:hover {
 @media (max-width: 991.98px) {
   .memolens-navbar {
     border-radius: 0;
+    border-left: 0;
+    border-right: 0;
     max-width: 100%;
   }
 
@@ -1505,7 +1536,7 @@ a:hover {
   }
 
   .hero-title {
-    max-width: 12ch;
+    max-width: 100%;
   }
 
   .placeholder-shell {
@@ -1581,10 +1612,10 @@ a:hover {
   }
 
   .hero-title {
-    font-size: 2.35rem;
+    font-size: 2.15rem;
     letter-spacing: -0.04em;
-    line-height: 1.04;
-    max-width: 12ch;
+    line-height: 1.12;
+    max-width: 100%;
     overflow-wrap: normal;
   }
 
@@ -1639,9 +1670,24 @@ a:hover {
   .status-panel h1,
   .content-intro h1,
   .placeholder-main h1 {
-    font-size: 2rem;
+    font-size: 1.9rem;
     letter-spacing: -0.03em;
     line-height: 1.12;
+  }
+
+  .auth-wrap {
+    padding-bottom: 2rem;
+  }
+
+  .auth-switch {
+    align-items: flex-start;
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .auth-switch a {
+    justify-self: start;
+    padding: 0.35rem 0;
   }
 
   .memory-page-header {
@@ -1785,9 +1831,17 @@ a:hover {
     align-items: flex-start;
     display: grid;
     gap: 0.75rem;
+    justify-items: start;
+  }
+
+  .footer {
+    font-size: 0.92rem;
+    padding: 1rem 0;
   }
 
   .footer-inner a {
+    align-self: start;
     justify-content: flex-start;
+    justify-self: start;
   }
 }

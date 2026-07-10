@@ -381,3 +381,24 @@ Khong thay doi:
 - MVC register/login/logout va cookie authentication.
 - Database schema; khong tao migration moi.
 - Memory, album, image, trash va settings behavior.
+
+## 20. Cap nhat Phase 14C.6: Mobile UI Regression Hotfix
+
+Phase 14C.6 da hoan thanh.
+
+Pham vi:
+
+- Sua loi Home page bi horizontal overflow nhe o man hinh dien thoai 360px.
+- Sua footer de nam trong normal document flow, khong dung fixed/absolute overlay va khong chan noi dung.
+- Lam footer gon hon tren mobile va giu link Quyen rieng tu co vung cham ro rang.
+- Sua khu vuc link duoi form Login/Register de link `Dang ky tai khoan` va `Dang nhap` co target cham rieng, khong bi the cha che diem click tren mobile.
+- Giam do chat cua hero heading tren mobile de tranh cam giac chu de len nhau.
+
+Khong thay doi:
+
+- Khong doi database schema.
+- Khong tao migration.
+- Khong doi MVC auth logic.
+- Khong doi API auth behavior.
+- Khong doi memory, album, image, trash hoac settings behavior.
+- Khong them API CRUD, Flutter code, AI, social features hoac public sharing.
