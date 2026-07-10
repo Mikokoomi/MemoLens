@@ -171,7 +171,7 @@ Day chi la de xuat thiet ke. Model, migration va database schema chua duoc them.
 
 ## 11. Cac phase implementation de xuat
 
-1. **Phase 14B:** Them refresh token model, migration va JWT configuration.
+1. **Phase 14B (da hoan thanh):** Them refresh token model, migration, JWT configuration va token service infrastructure.
 2. **Phase 14C:** Implement API register, login, refresh va logout.
 3. **Phase 14D:** Implement API email confirmation va resend confirmation email.
 4. **Phase 15:** Them email provider that, forgot password va reset password.
@@ -197,3 +197,16 @@ Moi phase can nho, co manual QA, co test ownership/privacy va khong duoc lam hon
 Khong nen implement API auth trong mot task lon. Nen thuc hien theo cac phase nho o tren, review bao mat sau tung phase va giu MVC cookie authentication hoat dong binh thuong.
 
 Khi bat dau implementation auth API thuc te, nen dung model **5.6 Sol / High** vi day la phan nhay cam ve bao mat.
+
+## 14. Trang thai implementation Phase 14B
+
+Phase 14B da them phan ha tang sau:
+
+- `JwtOptions` voi issuer, audience, secret key, access-token lifetime va refresh-token lifetime co the cau hinh.
+- JWT bearer scheme rieng cho API tuong lai; MVC van dung Identity cookie lam co che xac thuc mac dinh.
+- `UserRefreshToken` va migration `AddUserRefreshTokens`.
+- Index cho `UserId`, `TokenHash` va `ExpiresAt`; `TokenHash` la unique.
+- `ITokenService` va `TokenService` de sinh access token, sinh refresh token ngau nhien, hash refresh token va so sanh hash constant-time.
+- Development chi dung placeholder secret. Production phai dung environment variables hoac user secrets.
+
+Phase 14B chua them bat ky auth API endpoint nao. Register, login, refresh, logout, confirm email, forgot/reset password va account/me van la ke hoach cho cac phase sau.

@@ -273,11 +273,13 @@ See `docs/API_FOUNDATION.md` for the current API shape, response format, Swagger
 
 ## API Authentication Design
 
-Phase 14A records the planned authentication design for a future Flutter/mobile API.
+Phase 14A records the authentication design, and Phase 14B adds the supporting infrastructure for a future Flutter/mobile API.
 
-- Mobile API authentication is planned to be token-based, using short-lived JWT access tokens and revocable refresh tokens.
-- No JWT, refresh token, or auth API endpoint is implemented yet.
+- JWT options, bearer validation, a token service, and the `UserRefreshTokens` table are now available as infrastructure.
+- Refresh tokens are designed to be persisted as SHA-256 hashes only; plain tokens must only be returned to the mobile client when future auth endpoints are implemented.
+- No register, login, refresh, logout, confirmation, password reset, or account API endpoint is implemented yet.
 - The existing MVC web authentication remains cookie-based and unchanged.
+- Development JWT values are placeholders in `appsettings.Development.json`. Production values must come from environment variables or user secrets, especially `Jwt__SecretKey`.
 
 See `docs/API_AUTH_DESIGN.md` for the proposed token lifecycle, endpoint plan, email confirmation flow, security rules, and phased implementation approach.
 

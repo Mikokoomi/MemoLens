@@ -1,4 +1,5 @@
 using MemoLens.Models;
+using MemoLens.Models.Auth;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
     public DbSet<AlbumMemory> AlbumMemories => Set<AlbumMemory>();
 
+    public DbSet<UserRefreshToken> UserRefreshTokens => Set<UserRefreshToken>();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -34,6 +37,41 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
             entity.Property(user => user.CreatedAt)
                 .IsRequired();
+        });
+
+        builder.Entity<UserRefreshToken>(entity =>
+        {
+            entity.Property(token => token.TokenHash)
+                .HasMaxLength(128)
+                .IsRequired();
+
+            entity.Property(token => token.CreatedAt)
+                .IsRequired();
+
+            entity.Property(token => token.ExpiresAt)
+                .IsRequired();
+
+            entity.Property(token => token.ReplacedByTokenHash)
+                .HasMaxLength(128);
+
+            entity.Property(token => token.DeviceName)
+                .HasMaxLength(100);
+
+            entity.Property(token => token.UserAgent)
+                .HasMaxLength(500);
+
+            entity.Property(token => token.IpAddress)
+                .HasMaxLength(45);
+
+            entity.HasIndex(token => token.UserId);
+            entity.HasIndex(token => token.TokenHash)
+                .IsUnique();
+            entity.HasIndex(token => token.ExpiresAt);
+
+            entity.HasOne(token => token.User)
+                .WithMany(user => user.RefreshTokens)
+                .HasForeignKey(token => token.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         builder.Entity<Memory>(entity =>

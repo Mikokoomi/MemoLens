@@ -51,6 +51,8 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 12.5: UI Language Consistency, Footer, and Mobile Responsive Fix.
 - Phase 13A: API Foundation Code.
 - Phase 13B: API Foundation Documentation Update.
+- Phase 14A: API Authentication Design.
+- Phase 14B: API Auth Infrastructure.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -103,7 +105,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Chưa có trang quản lý tag riêng.
 - Chưa có admin dashboard.
 - Chưa có auth API.
-- Chưa có JWT hoặc token-based auth.
+- Đã có JWT/token infrastructure nhưng chưa có auth API endpoint sử dụng bearer token.
 - Chưa có memory CRUD API.
 - Chưa có album CRUD API.
 - Chưa có image upload API.
@@ -285,3 +287,32 @@ Khong thay doi:
 - Khong thay doi database schema.
 - Khong tao migration.
 - Khong thay doi MVC auth/cookie behavior.
+
+## 17. Cap nhat Phase 14B: API Auth Infrastructure
+
+Phase 14B da hoan thanh.
+
+Ha tang da them:
+
+- `JwtOptions` voi access token mac dinh 15 phut va refresh token mac dinh 30 ngay.
+- JWT bearer authentication scheme rieng cho API tuong lai.
+- `ITokenService` va `TokenService` de sinh access token, refresh token ngau nhien va hash/validate refresh token.
+- Model `UserRefreshToken`, `DbSet`, relationship voi `ApplicationUser` va migration `AddUserRefreshTokens`.
+- Bang `UserRefreshTokens` co index cho `UserId`, `TokenHash`, `ExpiresAt`; `TokenHash` la unique.
+- Refresh token chi duoc luu dang SHA-256 hash trong database; plain token khong duoc log hoac persist.
+- Development JWT config dung placeholder; production phai cap issuer, audience va secret bang environment variables hoac user secrets.
+
+Gioi han van con:
+
+- Chua co API register/login/refresh/logout.
+- Chua co API confirm email/resend confirmation.
+- Chua co API forgot/reset password.
+- Chua co `GET /api/v1/account/me`.
+- Chua co memory, album hoac image CRUD API.
+
+Khong thay doi:
+
+- MVC Identity cookie van la auth mac dinh cho web app.
+- Email confirmation van bat buoc.
+- Password rules va role `Admin`/`User` khong doi.
+- Khong thay doi logic memories, albums, images, trash hoac settings.
