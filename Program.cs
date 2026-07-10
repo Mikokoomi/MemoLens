@@ -33,6 +33,15 @@ builder.Services
     .ValidateOnStart();
 
 builder.Services
+    .AddOptions<RefreshTokenCleanupOptions>()
+    .Bind(builder.Configuration.GetSection(RefreshTokenCleanupOptions.SectionName))
+    .Validate(options => options.CleanupIntervalHours > 0, "RefreshTokenCleanup:CleanupIntervalHours must be positive.")
+    .Validate(options => options.RevokedTokenRetentionDays >= 0, "RefreshTokenCleanup:RevokedTokenRetentionDays must be zero or greater.")
+    .Validate(options => options.ExpiredTokenRetentionDays >= 0, "RefreshTokenCleanup:ExpiredTokenRetentionDays must be zero or greater.")
+    .Validate(options => options.BatchSize is > 0 and <= 5000, "RefreshTokenCleanup:BatchSize must be between 1 and 5000.")
+    .ValidateOnStart();
+
+builder.Services
     .AddIdentity<ApplicationUser, IdentityRole>(options =>
     {
         options.SignIn.RequireConfirmedEmail = true;
@@ -114,6 +123,8 @@ else
 
 builder.Services.AddScoped<IImageStorageService, LocalImageStorageService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IRefreshTokenCleanupService, RefreshTokenCleanupService>();
+builder.Services.AddHostedService<RefreshTokenCleanupHostedService>();
 builder.Services
     .AddControllersWithViews()
     .ConfigureApiBehaviorOptions(options =>

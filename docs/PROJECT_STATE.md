@@ -122,6 +122,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 ## 9. Phase tiếp theo được đề xuất
 
 - Phase 16B.2: Refresh Token Cleanup.
+- Phase 16B.3: Orphan Image and Unused Tag Cleanup Design.
 - Phase 16C: Automated Tests Foundation.
 - Phase 16D: Privacy/Ownership Integration Tests.
 - Sau MVP: permanent delete, export data, thumbnails/compression.
@@ -565,6 +566,23 @@ Không thay đổi:
 - Không thêm memory, album, image, trash hoặc settings API CRUD.
 - Không thêm Flutter code, AI, social features hoặc public sharing.
 
+## 26. Cập nhật Phase 16A: Database and Data Integrity Review
+
+Phase 16A đã hoàn thành dưới dạng review và tài liệu.
+
+Kết quả chính:
+
+- Đã tạo `docs/DATABASE_REVIEW.md` để ghi nhận entity, relationship, ownership, soft delete, refresh token, image storage, backup và index hiện có.
+- Không phát hiện lỗi critical cần sửa source trong phase này.
+- LocalDB không có orphan record, quan hệ album-memory chéo user hoặc trạng thái soft delete không nhất quán tại thời điểm review.
+- EF Core không có pending model changes; không tạo schema change hoặc migration.
+- Rủi ro cần xử lý sau gồm: composite index theo ownership/soft delete, cleanup refresh token/tag/orphan file, backup database kèm `App_Data/uploads`, permanent delete và ownership integration tests.
+
+Không thay đổi:
+
+- Không thay đổi application source, auth, database schema, migrations, API endpoint hoặc UI.
+- Không thêm Flutter code, AI, social features hoặc public sharing.
+
 ## 27. Cập nhật Phase 16B.1: Database Index Implementation
 
 Phase 16B.1 đã hoàn thành.
@@ -584,26 +602,22 @@ Không thay đổi:
 
 Migration đã được áp dụng cho LocalDB. EF Core không có pending model changes sau khi cập nhật.
 
-Giới hạn còn lại:
+## 28. Cập nhật Phase 16B.2: Refresh Token Cleanup
 
-- Chưa có rate limiting cho password recovery.
-- Chưa có production email provider được cấu hình bằng credential thật.
-- Chưa có Flutter deep link cho reset password.
-- Chưa có automated integration tests.
+Phase 16B.2 đã hoàn thành.
 
-## 26. Cập nhật Phase 16A: Database and Data Integrity Review
+Phạm vi đã có:
 
-Phase 16A đã hoàn thành dưới dạng review và tài liệu.
-
-Kết quả chính:
-
-- Đã tạo `docs/DATABASE_REVIEW.md` để ghi nhận entity, relationship, ownership, soft delete, refresh token, image storage, backup và index hiện có.
-- Không phát hiện lỗi critical cần sửa source trong phase này.
-- LocalDB không có orphan record, quan hệ album-memory chéo user hoặc trạng thái soft delete không nhất quán tại thời điểm review.
-- EF Core không có pending model changes; không tạo schema change hoặc migration.
-- Rủi ro cần xử lý sau gồm: composite index theo ownership/soft delete, cleanup refresh token/tag/orphan file, backup database kèm `App_Data/uploads`, permanent delete và ownership integration tests.
+- `RefreshTokenCleanupOptions` cấu hình `Enabled`, interval, retention cho token revoked/expired và batch size.
+- `IRefreshTokenCleanupService` và service scoped xóa theo UTC, xử lý theo batch.
+- Chỉ token đã revoke quá retention hoặc hết hạn quá retention mới bị xóa; token active không thuộc điều kiện cleanup.
+- Hosted background service chỉ thực thi khi `RefreshTokenCleanup:Enabled=true`; cấu hình mặc định là tắt, bao gồm Development.
+- Log chỉ chứa số lượng record đã xóa, thời điểm UTC và loại exception an toàn; không log token hash hoặc plain token.
 
 Không thay đổi:
 
-- Không thay đổi application source, auth, database schema, migrations, API endpoint hoặc UI.
-- Không thêm Flutter code, AI, social features hoặc public sharing.
+- Không thay đổi schema hoặc tạo migration.
+- Không thay đổi refresh token issue, rotation, login, logout, MVC cookie auth, API endpoint hoặc UI behavior.
+- Không thêm global query filter, cleanup ảnh/tag, permanent delete, account deletion, Flutter code, AI, social feature hoặc public sharing.
+
+Kiểm thử QA xác nhận hai record cũ (expired/revoked) bị xóa, record active được giữ lại, và toàn bộ dữ liệu QA đã được dọn sau test.

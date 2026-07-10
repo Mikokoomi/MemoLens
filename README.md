@@ -88,6 +88,8 @@ SMTP delivery is prepared through configuration but no real provider credentials
 
 MVC forgot/reset password is available at `/Account/ForgotPassword`. In Development, the reset link is written to the same clearly labeled email log. After a successful reset, active API refresh tokens for that user are revoked; existing short-lived access tokens expire naturally.
 
+Refresh-token record cleanup is available as a background service. It is disabled by default and, when explicitly enabled through `RefreshTokenCleanup`, removes only revoked or expired records that are older than the configured retention period.
+
 ## Role Notes
 
 The app seeds two roles during startup:
