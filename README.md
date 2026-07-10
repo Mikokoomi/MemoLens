@@ -224,6 +224,28 @@ Phase 11 MVP QA and hardening is completed.
 - No database schema changes or migrations were added in this phase.
 - No major new product features were added.
 
+## Productization / Mobile App Direction
+
+Phase 12 productization and mobile architecture planning is completed.
+
+MemoLens aims to evolve from a web MVP into a private mobile-first app for real users. The planned mobile direction is Flutter, while the existing ASP.NET Core backend will be retained and gradually extended with Web APIs.
+
+Important direction:
+
+- The current ASP.NET Core MVC app remains useful as the MVP/demo/internal web surface.
+- A future `/api/v1/...` Web API layer should serve the Flutter mobile app.
+- Private beta is the next realistic launch goal, not an immediate public app store launch.
+- MemoLens is still not production-ready yet.
+- The product must remain private-first and must not become a social network.
+
+Planning documents:
+
+- `docs/PRODUCTIZATION_PLAN.md`
+- `docs/MOBILE_ARCHITECTURE.md`
+- `docs/API_ROADMAP.md`
+- `docs/PRIVATE_BETA_PLAN.md`
+- `docs/PRODUCTION_RISK_REGISTER.md`
+
 ## Timeline Search and Filters
 
 Phase 6 timeline search and filters are completed.
@@ -338,6 +360,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - Trash and restore for memories/albums added.
 - Settings and privacy pages added.
 - MVP QA checklist and small privacy hardening added.
+- Productization and mobile architecture plan added.
 - No AI or social features.
 - No admin dashboard yet.
 

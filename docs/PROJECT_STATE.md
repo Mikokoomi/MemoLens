@@ -47,6 +47,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 9: Trash/Restore for memories and albums.
 - Phase 10: Settings & Privacy.
 - Phase 11: MVP QA / Hardening.
+- Phase 12: Productization & Mobile Architecture Plan.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -159,3 +160,32 @@ Trang thai privacy:
 - Private pages can dang nhap.
 - Memories, albums, images, trash va settings tiep tuc scope theo current user.
 - Admin role khong bypass private content ownership trong MVP hien tai.
+
+## 13. Cap nhat Phase 12: Productization & Mobile Architecture Plan
+
+Phase 12 da hoan thanh va chi thay doi tai lieu.
+
+Tai lieu moi:
+
+- `docs/PRODUCTIZATION_PLAN.md`
+- `docs/MOBILE_ARCHITECTURE.md`
+- `docs/API_ROADMAP.md`
+- `docs/PRIVATE_BETA_PLAN.md`
+- `docs/PRODUCTION_RISK_REGISTER.md`
+
+Quyet dinh chien luoc:
+
+- Flutter la huong mobile du kien.
+- ASP.NET Core backend duoc giu lai.
+- MVC web app hien tai tiep tuc huu ich cho MVP/demo/internal web surface.
+- Web API layer se duoc them dan de phuc vu mobile app.
+- Private beta la muc tieu launch thuc te tiep theo, truoc public app store.
+- MemoLens van phai private-first va khong di theo huong social network.
+
+Trang thai trung thuc:
+
+- MemoLens demo-ready/MVP-ready nhung chua production-ready.
+- Chua co Flutter app.
+- Chua co API controllers.
+- Chua co token-based mobile auth.
+- Chua co real SMTP, forgot password, backup, thumbnails/compression, export data, delete account hoac production monitoring.
