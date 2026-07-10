@@ -61,6 +61,8 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 15D: API Forgot and Reset Password.
 - Phase 16A: Database and Data Integrity Review.
 - Phase 16B.1: Database Index Implementation.
+- Phase 16B.2: Refresh Token Cleanup.
+- Phase 16B.3: Orphan Image and Unused Tag Cleanup Design.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -121,8 +123,10 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 
 ## 9. Phase tiếp theo được đề xuất
 
-- Phase 16B.2: Refresh Token Cleanup.
-- Phase 16B.3: Orphan Image and Unused Tag Cleanup Design.
+- Phase 16B.4: Backup and Restore Plan.
+- Phase 16B.5: Unused Tag Cleanup Implementation.
+- Phase 16B.6: Orphan Image Cleanup Dry-Run Service.
+- Phase 16B.7: Permanent Delete Design/Implementation.
 - Phase 16C: Automated Tests Foundation.
 - Phase 16D: Privacy/Ownership Integration Tests.
 - Sau MVP: permanent delete, export data, thumbnails/compression.
@@ -621,3 +625,17 @@ Không thay đổi:
 - Không thêm global query filter, cleanup ảnh/tag, permanent delete, account deletion, Flutter code, AI, social feature hoặc public sharing.
 
 Kiểm thử QA xác nhận hai record cũ (expired/revoked) bị xóa, record active được giữ lại, và toàn bộ dữ liệu QA đã được dọn sau test.
+
+## 29. Cập nhật Phase 16B.3: Orphan Image and Unused Tag Cleanup Design
+
+Phase 16B.3 đã hoàn thành dưới dạng design/documentation only.
+
+- Đã tạo `docs/DATA_CLEANUP_STRATEGY.md` cho orphan image, unused tag, permanent delete và backup/restore.
+- Chiến lược yêu cầu report-only/dry-run, grace period, quarantine, batch, UTC, backup và explicit configuration trước destructive cleanup.
+- File của memory soft-deleted phải được giữ cho đến khi permanent delete/retention policy cho phép xóa.
+- Tag chỉ nên được cleanup khi không còn bất kỳ `MemoryTag` relationship nào; tag của memory soft-deleted phải được giữ để restore.
+
+Không thay đổi:
+
+- Không tạo cleanup service/background job, không xóa file hoặc database record và không tạo migration.
+- Không thay đổi image upload, image serving, auth, API, UI, schema, Flutter code, AI, social feature hoặc public sharing.

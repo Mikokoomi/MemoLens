@@ -101,6 +101,8 @@ App_Data/uploads/memories/{userId}/{memoryId}/{guid}.{extension}
 
 `LocalImageStorageService` kiểm tra extension, giới hạn kích thước và dùng GUID cho tên file. Resolve path kiểm tra file vẫn nằm dưới private root để giảm path traversal. Ảnh được phục vụ qua controller có ownership check, không qua static URL.
 
+Chiến lược report/dry-run/quarantine cho orphan image, unused tag, permanent delete và backup/restore được ghi tại [DATA_CLEANUP_STRATEGY.md](DATA_CLEANUP_STRATEGY.md). Đây mới là thiết kế; cleanup ảnh/tag chưa được triển khai.
+
 Rủi ro và việc cần làm:
 
 - Lưu file và ghi database không nằm trong một transaction phân tán. Nếu SaveChanges hoặc xóa file thất bại sau bước còn lại, có thể phát sinh orphan file hoặc orphan metadata.

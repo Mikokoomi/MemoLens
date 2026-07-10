@@ -57,6 +57,7 @@ The SQL Server connection string is stored in `appsettings.json` under:
 The default connection uses SQL Server LocalDB so the project stays beginner-friendly for local development.
 
 The current database, ownership, soft-delete, storage, index, and backup review is documented in [docs/DATABASE_REVIEW.md](docs/DATABASE_REVIEW.md).
+The future safe cleanup approach for private files, unused tags, permanent delete, and backup/restore is documented in [docs/DATA_CLEANUP_STRATEGY.md](docs/DATA_CLEANUP_STRATEGY.md).
 Migration `AddPerformanceIndexes` adds composite indexes for current user-scoped memory and album queries without changing application behavior.
 
 To add a new migration later, run:
