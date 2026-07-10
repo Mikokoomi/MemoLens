@@ -17,4 +17,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="MemoLens.Tests\**\*.cs" />
+    <Content Remove="MemoLens.Tests\**\*" />
+    <None Remove="MemoLens.Tests\**\*" />
+  </ItemGroup>
+
 </Project>

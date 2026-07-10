@@ -163,15 +163,18 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
-var seedLogger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("IdentitySeedData");
+if (!app.Environment.IsEnvironment("Testing"))
+{
+    var seedLogger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("IdentitySeedData");
 
-try
-{
-    await IdentitySeedData.SeedAsync(app.Services, app.Configuration);
-}
-catch (Exception ex)
-{
-    seedLogger.LogWarning(ex, "Identity roles could not be seeded. Run database migrations, then restart the app.");
+    try
+    {
+        await IdentitySeedData.SeedAsync(app.Services, app.Configuration);
+    }
+    catch (Exception ex)
+    {
+        seedLogger.LogWarning(ex, "Identity roles could not be seeded. Run database migrations, then restart the app.");
+    }
 }
 
 // Configure the HTTP request pipeline.
@@ -205,3 +208,5 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+public partial class Program;

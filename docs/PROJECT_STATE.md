@@ -63,6 +63,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 16B.1: Database Index Implementation.
 - Phase 16B.2: Refresh Token Cleanup.
 - Phase 16B.3: Orphan Image and Unused Tag Cleanup Design.
+- Phase 16C: Automated Tests Foundation.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -127,8 +128,10 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 16B.5: Unused Tag Cleanup Implementation.
 - Phase 16B.6: Orphan Image Cleanup Dry-Run Service.
 - Phase 16B.7: Permanent Delete Design/Implementation.
-- Phase 16C: Automated Tests Foundation.
-- Phase 16D: Privacy/Ownership Integration Tests.
+- Phase 16D: Auth API Integration Tests.
+- Phase 16E: Privacy/Ownership Tests.
+- Phase 16F: Image Access Tests.
+- Phase 16G: Database Cleanup Tests.
 - Sau MVP: permanent delete, export data, thumbnails/compression.
 
 ## 10. Hướng dẫn cho Codex trong các task sau
@@ -639,3 +642,17 @@ Không thay đổi:
 
 - Không tạo cleanup service/background job, không xóa file hoặc database record và không tạo migration.
 - Không thay đổi image upload, image serving, auth, API, UI, schema, Flutter code, AI, social feature hoặc public sharing.
+
+## 30. Cập nhật Phase 16C: Automated Tests Foundation
+
+Phase 16C đã hoàn thành.
+
+- Đã tạo test project `MemoLens.Tests` với xUnit, `Microsoft.AspNetCore.Mvc.Testing` và SQLite in-memory.
+- Test factory dùng environment `Testing`, fake email sender và database SQLite tách hoàn toàn khỏi LocalDB Development.
+- Thêm smoke tests cho Home, health API, guest redirect tới Login và `account/me` không token trả `401`.
+- Không thêm full auth flow, refresh rotation, ownership, image upload hoặc cleanup tests trong phase foundation này.
+
+Không thay đổi:
+
+- Không thay đổi database schema hoặc tạo migration.
+- Không thay đổi MVC/API auth behavior, image behavior, UI, product feature, Flutter code, AI, social feature hoặc public sharing.

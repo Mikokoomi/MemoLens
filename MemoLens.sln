@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoLens", "MemoLens.csproj", "{50EFE19C-E1CD-4621-A8A3-A6B67484B4AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoLens.Tests", "MemoLens.Tests\MemoLens.Tests.csproj", "{7CFE1B88-0DEC-432A-B4EE-D4D50471F58E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50EFE19C-E1CD-4621-A8A3-A6B67484B4AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50EFE19C-E1CD-4621-A8A3-A6B67484B4AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50EFE19C-E1CD-4621-A8A3-A6B67484B4AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50EFE19C-E1CD-4621-A8A3-A6B67484B4AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CFE1B88-0DEC-432A-B4EE-D4D50471F58E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CFE1B88-0DEC-432A-B4EE-D4D50471F58E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CFE1B88-0DEC-432A-B4EE-D4D50471F58E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CFE1B88-0DEC-432A-B4EE-D4D50471F58E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

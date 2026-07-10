@@ -44,6 +44,16 @@ If the HTTPS development certificate is not trusted yet, run:
 dotnet dev-certs https --trust
 ```
 
+## Automated Testing
+
+Run the automated smoke tests with:
+
+```bash
+dotnet test
+```
+
+The test suite uses an isolated SQLite in-memory database and does not use LocalDB development data. See [docs/TESTING.md](docs/TESTING.md) for current coverage and the test roadmap.
+
 ## Database Setup Notes
 
 The SQL Server connection string is stored in `appsettings.json` under:
