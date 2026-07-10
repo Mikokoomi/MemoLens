@@ -287,6 +287,8 @@ Phase 14A records the authentication design, Phase 14B adds the supporting infra
 
 See `docs/API_AUTH_DESIGN.md` for the proposed token lifecycle, endpoint plan, email confirmation flow, security rules, and phased implementation approach.
 
+The Phase 14C.5 security review, manual auth test cases, expected status codes, refresh-token rotation checks, and MVC regression results are recorded in `docs/API_AUTH_QA_CHECKLIST.md`.
+
 ## Timeline Search and Filters
 
 Phase 6 timeline search and filters are completed.

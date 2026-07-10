@@ -402,3 +402,35 @@ Khong thay doi:
 - Khong doi API auth behavior.
 - Khong doi memory, album, image, trash hoac settings behavior.
 - Khong them API CRUD, Flutter code, AI, social features hoac public sharing.
+
+## 21. Cập nhật Phase 14C.5: API Auth Security Review and Regression Checklist
+
+Phase 14C.5 đã hoàn thành sau khi review source code và chạy smoke test thực tế cho API auth cùng MVC cookie auth.
+
+Kết quả:
+
+- Đã tạo `docs/API_AUTH_QA_CHECKLIST.md` bằng tiếng Việt.
+- Đã review API register, login, refresh, logout, account/me, JWT config, token service, refresh-token model và database mapping.
+- Không phát hiện lỗi bảo mật cụ thể cần sửa trong source code hiện tại.
+- Register không cấp token; login vẫn bắt buộc email đã xác nhận.
+- API login không tạo MVC cookie.
+- `account/me` bắt buộc JWT Bearer và chỉ trả `id`, `email`, `displayName`, `roles` của current user.
+- Refresh token chỉ lưu dạng SHA-256 hash; rotation revoke token cũ; reuse, revoked và expired token đều bị từ chối bằng `401`.
+- Access token qua query string không được chấp nhận.
+- MVC Home, Login, Register, private-page redirect, cookie login và logout vẫn hoạt động.
+- `GET /api/v1/health` và Swagger trong Development vẫn hoạt động.
+- NuGet vulnerability audit sạch theo các package source hiện tại.
+- EF không có pending model changes.
+
+Lưu ý:
+
+- Development email sender cố ý ghi confirmation link ra console/log để test local; không được dùng cơ chế này ở production.
+- Chưa có production email provider, rate limiting, confirm/resend email API, forgot/reset password API hoặc automated integration tests.
+
+Không thay đổi:
+
+- Không thêm endpoint mới.
+- Không sửa auth/token/MVC behavior.
+- Không thay đổi database schema.
+- Không tạo migration.
+- Không thêm API CRUD, Flutter code, AI, social features hoặc public sharing.
