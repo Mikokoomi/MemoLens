@@ -64,6 +64,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 16B.2: Refresh Token Cleanup.
 - Phase 16B.3: Orphan Image and Unused Tag Cleanup Design.
 - Phase 16C: Automated Tests Foundation.
+- Phase 16D: Auth API Integration Tests.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -128,7 +129,6 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 16B.5: Unused Tag Cleanup Implementation.
 - Phase 16B.6: Orphan Image Cleanup Dry-Run Service.
 - Phase 16B.7: Permanent Delete Design/Implementation.
-- Phase 16D: Auth API Integration Tests.
 - Phase 16E: Privacy/Ownership Tests.
 - Phase 16F: Image Access Tests.
 - Phase 16G: Database Cleanup Tests.
@@ -656,3 +656,17 @@ Không thay đổi:
 
 - Không thay đổi database schema hoặc tạo migration.
 - Không thay đổi MVC/API auth behavior, image behavior, UI, product feature, Flutter code, AI, social feature hoặc public sharing.
+
+## 31. Cập nhật Phase 16D: Auth API Integration Tests
+
+Phase 16D đã hoàn thành.
+
+- Đã thêm 6 integration tests cho các API auth hiện có, nâng tổng test suite lên 10 tests.
+- Test bao phủ register không cấp token, unconfirmed login bị chặn, validation và wrong-password failure, confirm email, login, `account/me`, refresh rotation/reuse, logout, forgot/reset password và refresh-token revocation sau reset.
+- Test host vẫn dùng environment `Testing`, SQLite in-memory, fake email sender trong bộ nhớ và role seed tối thiểu cho Identity; không dùng LocalDB hoặc SMTP thật.
+- Không thay đổi endpoint, production auth behavior hoặc database schema.
+
+Không thay đổi:
+
+- Không tạo migration.
+- Không thêm API CRUD, Flutter code, UI redesign, AI, social feature hoặc public sharing.
