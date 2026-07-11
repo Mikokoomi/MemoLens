@@ -4,10 +4,10 @@
     ViewData["Title"] = "Bộ sưu tập";
 }
 
-<section class="collection-hero paper-note-panel">
+<section class="collection-hero paper-note-panel paper-shell">
     <div>
-        <p class="kicker">Bộ sưu tập riêng tư</p>
-        <h1>Bộ sưu tập</h1>
+        <p class="kicker page-kicker">Bộ sưu tập riêng tư</p>
+        <h1 class="page-title">Bộ sưu tập</h1>
         <p>Lưu giữ những khoảnh khắc theo chủ đề bạn yêu thích.</p>
     </div>
     <div class="collection-hero-actions">
@@ -30,8 +30,8 @@ else
     <section class="album-grid collection-grid" aria-label="Danh sách bộ sưu tập">
         @foreach (var album in Model)
         {
-            <article class="album-card collection-card">
-                <a class="album-cover collection-cover" asp-action="Details" asp-route-id="@album.Id" aria-label="Mở bộ sưu tập @album.Title">
+            <article class="album-card collection-card photo-note-card tape">
+                <a class="album-cover collection-cover photo-note-cover" asp-action="Details" asp-route-id="@album.Id" aria-label="Mở bộ sưu tập @album.Title">
                     @if (!album.CoverImageId.HasValue)
                     {
                         <span>Chưa có ảnh bìa</span>

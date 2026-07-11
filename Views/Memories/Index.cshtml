@@ -27,11 +27,11 @@
     };
 }
 
-<section class="timeline-shell">
+<section class="timeline-shell paper-shell">
     <header class="timeline-header">
         <div class="timeline-header-copy">
-            <p class="kicker">Dòng thời gian riêng tư</p>
-            <h1>Những kỷ niệm của bạn.</h1>
+            <p class="kicker page-kicker">Dòng thời gian riêng tư</p>
+            <h1 class="page-title">Những kỷ niệm của bạn</h1>
             <p>
                 Lưu giữ những khoảnh khắc đáng nhớ.
             </p>
@@ -57,7 +57,7 @@
     }
     else
     {
-        <section class="memory-filter-panel filter-card">
+        <section class="memory-filter-panel filter-card compact-search">
             <div class="memory-filter-heading">
                 <div>
                     <p class="kicker">Tìm kiếm</p>
@@ -104,7 +104,7 @@
                 </div>
             }
 
-            <form asp-action="Index" method="get" class="memory-filter-form">
+            <form asp-action="Index" method="get" class="memory-filter-form compact-search-form">
                 <div class="memory-filter-primary">
                     <div class="filter-field">
                         <label for="search" class="form-label">Tìm kiếm</label>
@@ -215,8 +215,8 @@
             <section class="memory-grid" aria-label="Danh sách kỷ niệm">
                 @foreach (var memory in Model.Memories)
                 {
-                    <article class="memory-card">
-                        <a class="memory-card-visual @(memory.CoverImageId.HasValue ? "has-image" : "no-image")" asp-action="Details" asp-route-id="@memory.Id" aria-label="Xem kỷ niệm @memory.Title">
+                    <article class="memory-card photo-note-card tape">
+                        <a class="memory-card-visual photo-note-cover @(memory.CoverImageId.HasValue ? "has-image" : "no-image")" asp-action="Details" asp-route-id="@memory.Id" aria-label="Xem kỷ niệm @memory.Title">
                             @if (!memory.CoverImageId.HasValue)
                             {
                                 <span class="memory-card-photo-placeholder">

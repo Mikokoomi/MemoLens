@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --font-sans: "Segoe UI", "Be Vietnam Pro", "Inter", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
   --font-display: var(--font-sans);
   --canvas: #f3eadc;
@@ -49,6 +49,7 @@
   --space-6: 2rem;
   --space-7: 3rem;
 }
+
 
 html {
   font-size: 14px;
@@ -4928,3 +4929,587 @@ h3,
     margin: 0.55rem;
   }
 }
+
+/* Phase 17K.3: scale correction for final Paper Note reference */
+:root {
+  --ml-title-home: clamp(2.55rem, 5vw, 3.5rem);
+  --ml-title-page: clamp(2.15rem, 4.2vw, 3.25rem);
+  --ml-title-detail: clamp(2rem, 4vw, 3.25rem);
+  --ml-title-mobile: clamp(1.8rem, 8.8vw, 2.35rem);
+  --ml-card-title: clamp(1.15rem, 1.45vw, 1.35rem);
+  --ml-paper-line-soft: rgba(124, 91, 56, 0.018);
+}
+
+body {
+  background:
+    radial-gradient(circle at 10% 0%, rgba(129, 84, 31, 0.045), transparent 24rem),
+    radial-gradient(circle at 92% 9%, rgba(129, 84, 31, 0.035), transparent 22rem),
+    linear-gradient(180deg, #fbf1e4 0%, #f1dfc9 100%);
+  color: #332719;
+  font-family: var(--ml-font-body);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.desktop-sidebar-brand,
+.desktop-sidebar-nav a,
+.btn,
+.form-label,
+.form-control,
+.form-select,
+.form-text,
+.memory-meta,
+.memory-entry-meta,
+.collection-meta,
+.trash-meta,
+.settings-facts,
+.tag-pill,
+.feeling-badge {
+  font-family: var(--ml-font-body);
+  letter-spacing: 0;
+}
+
+.page-title,
+.memory-grid .memory-card h2,
+.collection-card-body h2,
+.album-memory-card h2,
+.memory-story h2,
+.form-section-heading h2,
+.memory-panel-title {
+  font-family: var(--ml-font-display);
+  font-weight: 650;
+  letter-spacing: 0;
+}
+
+.page-title {
+  font-size: var(--ml-title-page);
+  line-height: 1.08;
+  max-width: 18ch;
+}
+
+.journal-hero .page-title {
+  font-size: var(--ml-title-home);
+  line-height: 1.08;
+  max-width: 14ch;
+}
+
+.memory-entry-header .page-title {
+  font-size: var(--ml-title-detail);
+}
+
+.memory-form-intro .page-title,
+.collection-hero .page-title,
+.trash-hero .page-title,
+.account-hero .page-title {
+  font-size: var(--ml-title-page);
+}
+
+.page-kicker,
+.kicker {
+  color: #715a40;
+  font-family: var(--ml-font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.paper-shell,
+.paper-card,
+.paper-note-panel,
+.memory-form-card,
+.memory-entry-card,
+.collection-card,
+.filter-card,
+.auth-card {
+  background-image: linear-gradient(180deg, rgba(255, 252, 247, 0.92), rgba(250, 241, 229, 0.88));
+  background-size: auto;
+}
+
+.app-main-paper {
+  background:
+    linear-gradient(180deg, rgba(255, 252, 247, 0.93), rgba(251, 244, 235, 0.9)),
+    linear-gradient(to bottom, transparent 0, transparent 2.25rem, var(--ml-paper-line-soft) 2.31rem, transparent 2.38rem);
+}
+
+.desktop-sidebar-nav a {
+  font-size: 0.98rem;
+  font-weight: 650;
+}
+
+.desktop-sidebar-nav a.is-active,
+.desktop-sidebar-nav a:hover {
+  background: rgba(232, 214, 190, 0.82);
+}
+
+.sidebar-mark {
+  color: #6f4617;
+}
+
+.journal-hero {
+  align-items: center;
+  gap: clamp(1.5rem, 5vw, 4rem);
+  min-height: auto;
+  padding-block: clamp(1rem, 4vw, 2.5rem);
+}
+
+.journal-hero-copy > p:not(.kicker) {
+  max-width: 34rem;
+}
+
+.journal-actions .btn-lg {
+  font-size: 0.98rem;
+  min-height: 44px;
+  padding: 0.62rem 1.35rem;
+}
+
+.journal-photo-strip {
+  max-width: 430px;
+  min-height: 255px;
+}
+
+.journal-photo-strip span {
+  min-height: 142px;
+}
+
+.auth-shell {
+  gap: 1rem;
+  min-height: 62vh;
+}
+
+.auth-intro {
+  max-width: 460px;
+}
+
+.auth-intro .page-title {
+  font-size: clamp(2rem, 4.2vw, 2.85rem);
+}
+
+.auth-card {
+  max-width: 460px;
+  padding: clamp(1.15rem, 3vw, 1.65rem);
+}
+
+.auth-form .mb-3,
+.auth-form .mb-4 {
+  margin-bottom: 0.85rem !important;
+}
+
+.timeline-header {
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.timeline-header-copy > p:not(.kicker) {
+  font-size: 0.98rem;
+  margin-bottom: 0;
+}
+
+.timeline-header-aside .btn,
+.collection-hero-actions .btn,
+.settings-actions .btn {
+  min-height: 42px;
+  padding-inline: 1.05rem;
+}
+
+.compact-search.memory-filter-panel {
+  margin-bottom: 1rem;
+  max-width: 620px;
+}
+
+.compact-search .memory-filter-primary {
+  align-items: center;
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.compact-search .form-control {
+  border-radius: 9px;
+  font-size: 0.95rem;
+  min-height: 44px;
+  padding: 0.58rem 0.9rem;
+}
+
+.compact-search .memory-filter-primary-actions {
+  display: flex;
+  gap: 0.55rem;
+}
+
+.compact-search .memory-filter-primary-actions .btn {
+  font-size: 0.94rem;
+  min-height: 44px;
+  padding: 0.58rem 0.95rem;
+}
+
+.compact-search .memory-filter-collapse {
+  margin-top: 0.75rem;
+}
+
+.memory-filter-grid {
+  border-radius: 12px;
+  gap: 0.85rem;
+  padding: 0.95rem;
+}
+
+.memory-grid,
+.collection-grid,
+.album-memory-grid {
+  align-items: start;
+  gap: 1.15rem;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  max-width: 940px;
+}
+
+.photo-note-card,
+.memory-grid .memory-card,
+.collection-card,
+.album-memory-card {
+  border-radius: 8px;
+  max-width: 100%;
+  min-height: 0;
+  overflow: visible;
+}
+
+.photo-note-card.tape::before,
+.memory-grid .memory-card::before,
+.collection-card::before,
+.gallery-item::before {
+  background: rgba(225, 195, 146, 0.7);
+  box-shadow: none;
+  height: 1.05rem;
+  left: 50%;
+  top: -0.48rem;
+  transform: translateX(-50%) rotate(-1deg);
+  width: 4.2rem;
+}
+
+.photo-note-cover,
+.memory-card-visual,
+.collection-cover,
+.album-cover {
+  aspect-ratio: 4 / 3;
+  border-radius: 7px;
+  display: block;
+  margin: 0.65rem 0.65rem 0;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0.32rem;
+}
+
+.photo-note-cover img,
+.memory-card-visual img,
+.collection-cover img,
+.album-cover img,
+.gallery-image-frame img {
+  aspect-ratio: 4 / 3;
+  display: block;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+  width: 100%;
+}
+
+.memory-grid .memory-card-photo-placeholder {
+  aspect-ratio: 4 / 3;
+  min-height: 0;
+}
+
+.memory-grid .memory-card-body,
+.collection-card-body {
+  gap: 0.32rem;
+  padding: 0.72rem 0.8rem 0.85rem;
+}
+
+.memory-grid .memory-card h2,
+.collection-card-body h2,
+.album-memory-card h2 {
+  font-size: var(--ml-card-title);
+  line-height: 1.15;
+}
+
+.memory-grid .memory-card h2 a,
+.collection-card-body h2 a {
+  color: #2f261d;
+}
+
+.memory-meta {
+  align-items: center;
+  display: flex;
+  font-size: 0.82rem;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+
+.memory-grid .memory-location,
+.memory-grid .memory-preview-text,
+.memory-grid .tag-row {
+  display: none;
+}
+
+.feeling-badge,
+.tag-pill {
+  border-radius: 999px;
+  font-size: 0.76rem;
+  line-height: 1.2;
+  padding: 0.28rem 0.55rem;
+}
+
+.memory-form-shell {
+  gap: 1rem;
+  max-width: 860px;
+}
+
+.memory-form-intro {
+  margin-inline: auto;
+  max-width: 860px;
+  text-align: left;
+}
+
+.memory-form-intro .page-title {
+  margin-bottom: 0.35rem;
+  max-width: 18ch;
+}
+
+.memory-form-intro p:not(.kicker) {
+  font-size: 0.98rem;
+  margin-bottom: 0;
+}
+
+.memory-form-card {
+  border-radius: 10px;
+  padding: clamp(0.95rem, 2.4vw, 1.35rem);
+}
+
+.form-section {
+  border-radius: 10px;
+  margin-bottom: 0.82rem;
+  padding: 0.82rem;
+}
+
+.form-section-heading {
+  margin-bottom: 0.68rem;
+}
+
+.form-section-heading h2,
+.form-section-heading .memory-panel-title {
+  font-size: clamp(1rem, 1.5vw, 1.18rem);
+  line-height: 1.2;
+}
+
+.form-section-heading .kicker {
+  margin-bottom: 0.2rem;
+}
+
+.journal-textarea {
+  min-height: 132px;
+}
+
+.upload-note input[type="file"] {
+  min-height: 44px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.form-actions .btn {
+  min-width: 9rem;
+}
+
+.memory-detail-shell {
+  max-width: 900px;
+}
+
+.memory-entry-card {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.memory-entry-meta {
+  gap: 0.55rem;
+  margin: 1rem 0 1.15rem;
+}
+
+.memory-entry-meta div {
+  padding: 0.48rem 0.7rem;
+}
+
+.memory-entry-meta dt {
+  font-size: 0.68rem;
+}
+
+.memory-entry-meta dd {
+  font-size: 0.9rem;
+}
+
+.memory-story {
+  padding: 0.95rem;
+}
+
+.memory-story p {
+  font-size: 0.98rem;
+}
+
+.gallery-grid {
+  gap: 1rem;
+}
+
+.gallery-image-frame {
+  aspect-ratio: 4 / 3;
+  min-height: 0;
+}
+
+.collection-cover,
+.album-cover {
+  min-height: 0;
+}
+
+.collection-card-body p,
+.collection-actions {
+  display: none;
+}
+
+.trash-card {
+  grid-template-columns: 96px minmax(0, 1fr) auto;
+}
+
+.trash-card-placeholder {
+  aspect-ratio: 4 / 3;
+  min-height: 0;
+}
+
+.settings-card h2,
+.account-panel h2 {
+  font-family: var(--ml-font-display);
+  font-size: clamp(1.35rem, 2.3vw, 1.8rem);
+  font-weight: 650;
+}
+
+@media (min-width: 1200px) {
+  .app-frame {
+    grid-template-columns: 210px minmax(0, 1fr);
+    max-width: 1420px;
+  }
+
+  .app-main-paper {
+    padding: clamp(1.9rem, 3.4vw, 3rem);
+  }
+
+  .desktop-sidebar {
+    padding: 2rem 1rem;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .memory-grid,
+  .collection-grid,
+  .album-memory-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 100%;
+  }
+
+  .timeline-header {
+    align-items: stretch;
+  }
+
+  .timeline-header-aside {
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .page-title,
+  .journal-hero .page-title,
+  .memory-entry-header .page-title,
+  .memory-form-intro .page-title,
+  .collection-hero .page-title,
+  .trash-hero .page-title,
+  .account-hero .page-title {
+    font-size: var(--ml-title-mobile);
+    line-height: 1.12;
+  }
+
+  .journal-hero {
+    gap: 1.2rem;
+    padding-block: 0.6rem 1rem;
+  }
+
+  .journal-photo-strip {
+    max-width: 100%;
+    min-height: 190px;
+  }
+
+  .journal-photo-strip span {
+    min-height: 112px;
+  }
+
+  .auth-shell {
+    min-height: auto;
+  }
+
+  .auth-card {
+    padding: 1rem;
+  }
+
+  .compact-search.memory-filter-panel {
+    max-width: 100%;
+  }
+
+  .compact-search .memory-filter-primary {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .compact-search .memory-filter-primary-actions .btn-outline-secondary {
+    min-width: 5.6rem;
+  }
+
+  .memory-grid,
+  .collection-grid,
+  .album-memory-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .photo-note-cover,
+  .memory-card-visual,
+  .collection-cover,
+  .album-cover {
+    margin: 0.55rem 0.55rem 0;
+  }
+
+  .memory-card-visual,
+  .memory-card-visual img,
+  .memory-grid .memory-card-photo-placeholder {
+    min-height: 0;
+  }
+
+  .memory-form-card {
+    padding: 0.85rem;
+  }
+
+  .form-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .form-actions .btn {
+    min-width: 0;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .trash-card {
+    grid-template-columns: 82px minmax(0, 1fr);
+  }
+}
+

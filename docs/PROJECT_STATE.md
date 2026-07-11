@@ -1,4 +1,4 @@
-# MemoLens - Trạng thái dự án hiện tại
+﻿# MemoLens - Trạng thái dự án hiện tại
 
 ## 1. Tên dự án
 
@@ -77,6 +77,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 17I: Paper Note Reference Alignment.
 - Phase 17J: Finalized Paper Note UI Reference and Responsive QA.
 - Phase 17K.2: Match Final Paper Note References and Typography.
+- Phase 17K.3: Fix Paper Note Scale, Typography and Card Layout.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -881,3 +882,25 @@ Không thay đổi:
 - Không thêm theme selector, `ThemePreference`, API endpoint, Flutter code, AI, social feature hoặc public sharing.
 
 Phase tiếp theo được đề xuất là Phase 18: MVP release/demo preparation.
+
+## 44. Cập nhật Phase 17K.3: Fix Paper Note Scale, Typography and Card Layout
+
+Phase 17K.3 đã hoàn thành để sửa các điểm lệch còn lại so với reference Paper Note: scale chữ, mức độ dùng display font, tỷ lệ card ảnh, search/filter row và bố cục form tạo/chỉnh sửa kỷ niệm.
+
+- Typography được giảm scale bằng token heading mới; display font chỉ dùng cho page title và một số card title chọn lọc, còn body text, nav, form label, validation, metadata và button dùng body font sạch hơn.
+- Paper background được làm nhẹ hơn, giảm cảm giác đường kẻ notebook quá rõ; Paper Note dựa nhiều hơn vào nền giấy ấm, border, shadow và tape detail.
+- Sidebar giữ icon + label, active item là beige pill mềm và label dùng body font thay vì display font.
+- Timeline card dùng `.photo-note-card` và `.photo-note-cover` với `aspect-ratio: 4 / 3` và `object-fit: cover`, giúp ảnh dọc không làm card quá cao.
+- Timeline grid giữ 3 cột compact trên desktop khi đủ rộng, 2 cột ở tablet và 1 cột ở mobile.
+- Search/filter row được làm compact hơn, giữ nguyên query string/search/filter behavior hiện có.
+- Create/Edit Memory được sửa thành form giấy tập trung hơn: heading ngắn `Tạo kỷ niệm` / `Chỉnh sửa kỷ niệm`, card form compact, section gọn và action nằm cuối form.
+- Responsive QA bằng browser kiểm tra 360px, 390px, 430px, 768px và 1280px: không horizontal overflow, card ratio đúng 4:3, search row gọn và form mobile vừa màn hình.
+
+Không thay đổi:
+
+- Không thay đổi controller logic, route, form POST behavior, memory CRUD behavior, image upload validation hoặc private image serving.
+- Không thay đổi auth logic, API behavior, database schema hoặc migration.
+- Không thêm theme selector, `ThemePreference`, API endpoint, Flutter code, AI, social feature hoặc public sharing.
+
+Phase tiếp theo được đề xuất là Phase 18: MVP release/demo preparation.
+

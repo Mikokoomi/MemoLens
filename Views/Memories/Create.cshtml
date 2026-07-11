@@ -4,18 +4,18 @@
     ViewData["Title"] = "Tạo kỷ niệm";
 }
 
-<section class="memory-form-shell memory-writing-shell">
+<section class="memory-form-shell memory-writing-shell paper-shell">
     <aside class="memory-form-intro paper-note-panel">
-        <p class="kicker">Tạo kỷ niệm</p>
-        <h1>Ghi lại khoảnh khắc, cảm xúc và câu chuyện của bạn.</h1>
-        <p>Thêm câu chuyện, ngày, cảm xúc, địa điểm, thẻ và ảnh trong không gian riêng tư.</p>
+        <p class="kicker page-kicker">Tạo kỷ niệm</p>
+        <h1 class="page-title">Tạo kỷ niệm</h1>
+        <p>Ghi lại khoảnh khắc, cảm xúc và câu chuyện của bạn.</p>
         <div class="private-note">
             <strong>Riêng tư mặc định</strong>
             <span>Ảnh chỉ được phục vụ qua endpoint có kiểm tra quyền sở hữu.</span>
         </div>
     </aside>
 
-    <form asp-action="Create" method="post" enctype="multipart/form-data" class="memory-form-card">
+    <form asp-action="Create" method="post" enctype="multipart/form-data" class="memory-form-card paper-card">
         <div asp-validation-summary="All" class="text-danger validation-summary form-validation-note mb-3"></div>
 
         <section class="form-section" aria-labelledby="story-section-heading">

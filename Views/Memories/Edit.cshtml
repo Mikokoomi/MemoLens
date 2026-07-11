@@ -4,18 +4,18 @@
     ViewData["Title"] = "Sửa kỷ niệm";
 }
 
-<section class="memory-form-shell memory-writing-shell edit-memory-shell">
+<section class="memory-form-shell memory-writing-shell edit-memory-shell paper-shell">
     <aside class="memory-form-intro paper-note-panel">
-        <p class="kicker">Sửa kỷ niệm</p>
-        <h1>Lưu giữ những khoảnh khắc đáng nhớ.</h1>
-        <p>Cập nhật câu chuyện, cảm xúc, thẻ và ảnh của kỷ niệm riêng này.</p>
+        <p class="kicker page-kicker">Sửa kỷ niệm</p>
+        <h1 class="page-title">Chỉnh sửa kỷ niệm</h1>
+        <p>Lưu giữ những khoảnh khắc đáng nhớ.</p>
         <div class="private-note">
             <strong>Không gian cá nhân</strong>
             <span>Thao tác này không tạo chia sẻ công khai và không thay đổi quyền truy cập ảnh.</span>
         </div>
     </aside>
 
-    <form asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data" class="memory-form-card">
+    <form asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data" class="memory-form-card paper-card">
         <input asp-for="Id" type="hidden" />
         <div asp-validation-summary="All" class="text-danger validation-summary form-validation-note mb-3"></div>
 

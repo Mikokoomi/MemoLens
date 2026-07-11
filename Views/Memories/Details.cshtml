@@ -8,11 +8,11 @@
     var hasImages = Model.Images.Any();
 }
 
-<section class="memory-detail-shell">
-    <article class="memory-entry-card">
+<section class="memory-detail-shell paper-shell">
+    <article class="memory-entry-card paper-card">
         <div class="memory-entry-header">
-            <p class="kicker">Kỷ niệm riêng tư</p>
-            <h1>@Model.Title</h1>
+            <p class="kicker page-kicker">Kỷ niệm riêng tư</p>
+            <h1 class="page-title">@Model.Title</h1>
             <p class="memory-entry-date">@Model.MemoryDate.ToString("dd/MM/yyyy")</p>
         </div>
 
@@ -79,8 +79,8 @@
             <div class="gallery-grid">
                 @foreach (var image in Model.Images)
                 {
-                    <figure class="gallery-item">
-                        <div class="gallery-image-frame">
+                    <figure class="gallery-item photo-note-card tape">
+                        <div class="gallery-image-frame photo-note-cover">
                             <img src="@Url.Action("MemoryImage", "Images", new { id = image.Id })"
                                  alt="Ảnh trong kỷ niệm: @image.OriginalFileName"
                                  onerror="this.hidden=true; this.closest('.gallery-item').classList.add('image-missing');" />
