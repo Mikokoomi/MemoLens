@@ -403,6 +403,8 @@ Phase 17E applies Paper Note as the default visual style across the base UI, Hom
 
 Phase 17F redesigns Memory Details and the private gallery so a memory feels more like reading a personal notebook entry with photos. It keeps image serving, routes, form posts, authentication behavior, API behavior, and database schema unchanged.
 
+Phase 17G redesigns the Create/Edit Memory forms into a calmer writing experience with grouped story, feeling/date/location, tags, upload guidance, validation presentation, and responsive existing-image management. It keeps memory CRUD behavior, upload validation, private image serving, routes, form posts, authentication behavior, API behavior, and database schema unchanged.
+
 ## Feeling List
 
 Memory feelings are stored as strings from this fixed list:
@@ -452,6 +454,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - Timeline and memory card redesign added.
 - Paper Note default UI style added.
 - Memory Details and gallery redesign added.
+- Create/Edit Memory form redesign added.
 - No AI or social features.
 - No admin dashboard yet.
 

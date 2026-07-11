@@ -72,6 +72,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 17D: Timeline and Memory Card Redesign.
 - Phase 17E: Paper Note Default UI Template.
 - Phase 17F: Memory Details and Gallery Redesign.
+- Phase 17G: Create/Edit Memory Form Redesign.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -138,7 +139,6 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 16B.7: Permanent Delete Design/Implementation.
 - Phase 16F: Image Upload and Storage Tests.
 - Phase 16G: Database Cleanup Tests.
-- Phase 17G: Create/Edit Memory Form redesign.
 - Phase 17H: Albums/Trash/Settings redesign.
 - Phase 17I: Final responsive QA.
 - Sau MVP: permanent delete, export data, thumbnails/compression.
@@ -794,3 +794,21 @@ Không thay đổi:
 - Không tạo migration.
 - Không thêm theme selector, `ThemePreference`, API endpoint, Flutter code, AI, social feature hoặc public sharing.
 - Không redesign sâu Create/Edit, Albums, Trash hoặc Settings trong phase này.
+
+## 39. Cập nhật Phase 17G: Create/Edit Memory Form Redesign
+
+Phase 17G đã hoàn thành cho trải nghiệm tạo và chỉnh sửa kỷ niệm.
+
+- `Views/Memories/Create.cshtml` được làm lại theo hướng viết nhật ký riêng tư, chia form thành các nhóm Câu chuyện, Thời gian & cảm xúc, Thẻ và Ảnh.
+- `Views/Memories/Edit.cshtml` được làm lại theo cùng cấu trúc, giữ nguyên form binding, action route và hành vi lưu/xóa ảnh hiện có.
+- Vùng upload ảnh được trình bày rõ hơn trên mobile, giữ nguyên giới hạn file, loại file và private image serving hiện có.
+- Danh sách ảnh hiện có trên Edit dùng layout card responsive, nút xóa ảnh dễ bấm hơn trên màn hình nhỏ.
+- Validation summary, helper text và các action Lưu/Hủy được làm rõ hơn theo Paper Note style.
+- `wwwroot/css/site.css` bổ sung các lớp nền cho `memory-writing-shell`, `memory-form-card`, `form-section`, `journal-textarea`, `upload-note`, `form-actions`, `private-note` và image edit grid.
+
+Không thay đổi:
+
+- Không thay đổi controller, route, form POST behavior, memory CRUD behavior hoặc image upload/private serving behavior.
+- Không thay đổi auth logic, API behavior, database schema hoặc migration.
+- Không thêm API endpoint, Flutter code, AI, social feature, public sharing, theme selector hoặc `ThemePreference`.
+- Không redesign Albums, Trash hoặc Settings trong phase này.

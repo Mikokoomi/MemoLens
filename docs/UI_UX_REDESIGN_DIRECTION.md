@@ -247,6 +247,7 @@ Các component sau nên được định nghĩa dần trong Razor partials hoặ
    - Trạng thái: đã implement trong Phase 17F cho Memory Details, gallery responsive, empty image state, detail actions và Delete confirmation. Chưa redesign sâu Create/Edit, Albums, Trash hoặc Settings.
 6. **Phase 17G: Create/Edit Memory Form redesign**
    - Làm form tạo/sửa memory giống trải nghiệm viết nhật ký hơn, gồm story, cảm xúc, ngày, địa điểm, ảnh và tag.
+   - Trạng thái: đã implement trong Phase 17G cho Create/Edit Memory forms, upload note, validation presentation, action row và existing image edit grid. Chưa redesign Albums, Trash hoặc Settings.
 7. **Phase 17H: Albums/Trash/Settings redesign**
    - Làm lại album list/detail/add, trash và settings theo cùng design system.
 8. **Phase 17I: Final responsive QA**
