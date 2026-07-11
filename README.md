@@ -411,6 +411,8 @@ Phase 17I aligns the existing UI more closely with the Paper Note reference: war
 
 Phase 17J implements the finalized Paper Note UI reference across the main MVC pages, including the desktop notebook/sidebar frame, lighter mobile copy, calmer cards/forms, and responsive QA at phone, tablet, and desktop widths. It keeps controller logic, form posts, authentication, API behavior, image validation, and database schema unchanged.
 
+Phase 17K.2 matches the final Paper Note references more closely with Playpen Sans display typography, Be Vietnam Pro body typography, a compact icon sidebar, softer paper texture, smaller photo-first timeline cards, and tighter Home/Auth/Create/Edit/Albums/Trash/Settings styling. It does not add font files, theme selection, migrations, or behavior changes.
+
 ## Feeling List
 
 Memory feelings are stored as strings from this fixed list:
@@ -464,6 +466,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - Albums, Trash, and Settings redesign added.
 - Paper Note reference alignment added.
 - Finalized Paper Note UI reference and responsive QA added.
+- Final Paper Note typography and reference matching added.
 - No AI or social features.
 - No admin dashboard yet.
 
