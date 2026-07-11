@@ -2916,6 +2916,234 @@ body.memolens-shell > .footer {
   align-items: center;
 }
 
+/* Paper Note reference alignment */
+:root {
+  --canvas: #f1e7d7;
+  --canvas-soft: #fbf3e5;
+  --canvas-warm: #e6d5bf;
+  --surface: #fffaf0;
+  --surface-elevated: rgba(255, 250, 240, 0.96);
+  --surface-soft: #f8ead7;
+  --surface-muted: #eddbc4;
+  --paper: #fff9ee;
+  --paper-deep: #f2dfc4;
+  --paper-line: rgba(119, 88, 56, 0.17);
+  --paper-faint-line: rgba(119, 88, 56, 0.075);
+  --paper-tape: #ead9ad;
+  --ink: #2a221b;
+  --ink-soft: #49382c;
+  --muted: #756351;
+  --muted-strong: #5f4f41;
+  --line: #d8bea0;
+  --line-strong: #bd9c77;
+  --accent: #7c6740;
+  --accent-hover: #5f4c2e;
+  --accent-dark: #463821;
+  --accent-soft: #e9e1c5;
+  --accent-warm: #9d624d;
+  --accent-rose: #b46f62;
+  --shadow-soft: 0 10px 22px rgba(74, 50, 28, 0.075);
+  --shadow-card: 0 16px 30px rgba(74, 50, 28, 0.105), 0 1px 0 rgba(255, 255, 255, 0.82) inset;
+  --paper-shadow: 0 12px 24px rgba(74, 50, 28, 0.09), 0 2px 0 rgba(255, 255, 255, 0.78) inset;
+}
+
+body {
+  background:
+    linear-gradient(var(--paper-faint-line) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(119, 88, 56, 0.035) 1px, transparent 1px),
+    linear-gradient(180deg, var(--canvas-soft) 0%, var(--canvas) 58%, var(--canvas-warm) 100%);
+  background-size: 100% 34px, 34px 100%, auto;
+}
+
+.memolens-navbar {
+  background:
+    linear-gradient(var(--paper-faint-line) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 251, 243, 0.98), rgba(247, 234, 216, 0.94));
+  background-size: 100% 30px, auto;
+  border-color: rgba(119, 88, 56, 0.22);
+  box-shadow: 0 8px 20px rgba(74, 50, 28, 0.075);
+}
+
+.brand-mark {
+  background:
+    linear-gradient(135deg, #80643f, #9d624d);
+  box-shadow: 0 6px 14px rgba(74, 50, 28, 0.14), 0 1px 0 rgba(255, 255, 255, 0.45) inset;
+}
+
+.btn-primary {
+  background:
+    linear-gradient(180deg, #806742, #614c2d);
+  border-color: #5a4328;
+  box-shadow: 0 2px 0 #49351f, 0 1px 0 rgba(255, 255, 255, 0.28) inset;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background:
+    linear-gradient(180deg, #6f5634, #4f3c24);
+  border-color: #4f3a22;
+  box-shadow: 0 2px 0 #3d2b19, var(--shadow-focus);
+}
+
+.btn-outline-primary,
+.btn-outline-secondary,
+.btn-soft {
+  background: rgba(255, 249, 238, 0.78);
+  border-color: rgba(119, 88, 56, 0.30);
+  color: var(--accent-hover);
+}
+
+.btn-outline-primary:hover,
+.btn-outline-secondary:hover,
+.btn-soft:hover {
+  background: var(--accent-soft);
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+
+.form-control,
+.form-select {
+  background:
+    linear-gradient(var(--paper-faint-line) 1px, transparent 1px),
+    rgba(255, 251, 244, 0.94);
+  background-size: 100% 30px, auto;
+  border-color: rgba(119, 88, 56, 0.24);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.80) inset;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: #fffaf0;
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-focus);
+}
+
+textarea.form-control,
+.journal-textarea {
+  line-height: 1.72;
+}
+
+.journal-card,
+.project-note-card,
+.auth-card,
+.status-card,
+.memory-grid .memory-card,
+.filter-card,
+.memory-entry-card,
+.paper-note-panel,
+.memory-form-card,
+.collection-card,
+.collection-select-card,
+.trash-item,
+.account-panel,
+.collection-empty-state,
+.trash-safe-empty,
+.error-note-card {
+  background:
+    linear-gradient(var(--paper-faint-line) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 252, 246, 0.96), rgba(248, 235, 216, 0.92)),
+    var(--paper);
+  background-size: 100% 32px, auto, auto;
+  border-color: rgba(119, 88, 56, 0.22);
+  box-shadow: var(--paper-shadow);
+}
+
+.journal-card::before,
+.project-note-card::before,
+.auth-card::before,
+.status-card::before,
+.paper-note-panel::before,
+.memory-form-card::before,
+.collection-card::before,
+.trash-item::before {
+  background: linear-gradient(180deg, rgba(239, 221, 178, 0.88), rgba(225, 203, 153, 0.70));
+  box-shadow: 0 4px 10px rgba(74, 50, 28, 0.07);
+}
+
+.memory-grid {
+  gap: clamp(1.15rem, 3vw, 1.6rem);
+}
+
+.memory-card-visual {
+  background: rgba(255, 252, 246, 0.92);
+  border: 1px solid rgba(119, 88, 56, 0.18);
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(74, 50, 28, 0.09);
+  margin: 0.8rem 0.8rem 0;
+  min-height: 224px;
+  padding: 0.45rem;
+}
+
+.memory-card-visual img {
+  border-radius: 8px;
+  min-height: 214px;
+}
+
+.memory-grid .memory-card-photo-placeholder {
+  background:
+    linear-gradient(var(--paper-line) 1px, transparent 1px),
+    linear-gradient(135deg, rgba(157, 98, 77, 0.13), rgba(124, 103, 64, 0.13)),
+    var(--paper-deep);
+  background-size: 100% 30px, auto, auto;
+  border-radius: 8px;
+  min-height: 214px;
+}
+
+.memory-grid .memory-card-body,
+.memory-entry-body,
+.collection-card-body,
+.trash-card-body {
+  position: relative;
+}
+
+.feeling-badge,
+.memory-feeling,
+.detail-feeling {
+  background: #ead8bd;
+  border-color: rgba(119, 88, 56, 0.26);
+  color: #68462f;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.55) inset;
+}
+
+.tag-pill,
+.tag-chip,
+.detail-tag {
+  background: rgba(255, 249, 238, 0.88);
+  border-color: rgba(119, 88, 56, 0.24);
+  border-style: dashed;
+  color: var(--muted-strong);
+}
+
+.form-section,
+.memory-upload-box,
+.upload-note {
+  background:
+    linear-gradient(var(--paper-faint-line) 1px, transparent 1px),
+    rgba(255, 250, 240, 0.66);
+  background-size: 100% 30px, auto;
+  border-color: rgba(119, 88, 56, 0.20);
+}
+
+.gallery-item,
+.edit-image-card,
+.image-edit-card,
+.album-cover,
+.album-cover-preview,
+.album-select-visual,
+.trash-card-placeholder {
+  background: rgba(255, 252, 246, 0.88);
+  border-color: rgba(119, 88, 56, 0.20);
+  box-shadow: 0 8px 18px rgba(74, 50, 28, 0.085);
+}
+
+.footer {
+  background:
+    linear-gradient(var(--paper-faint-line) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(251, 244, 232, 0.42), rgba(230, 213, 191, 0.58));
+  background-size: 100% 30px, auto;
+  border-top-color: rgba(119, 88, 56, 0.22);
+}
+
 @media (max-width: 991.98px) {
   .memolens-navbar {
     border-radius: 0;

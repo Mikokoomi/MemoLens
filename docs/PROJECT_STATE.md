@@ -74,6 +74,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 17F: Memory Details and Gallery Redesign.
 - Phase 17G: Create/Edit Memory Form Redesign.
 - Phase 17H: Albums, Trash, and Settings Redesign.
+- Phase 17I: Paper Note Reference Alignment.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -140,7 +141,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 16B.7: Permanent Delete Design/Implementation.
 - Phase 16F: Image Upload and Storage Tests.
 - Phase 16G: Database Cleanup Tests.
-- Phase 17I: Final responsive QA.
+- Phase 17J: Final UI Responsive QA.
 - Sau MVP: permanent delete, export data, thumbnails/compression.
 
 ## 10. Hướng dẫn cho Codex trong các task sau
@@ -830,3 +831,15 @@ Không thay đổi:
 - Không thay đổi album/trash/settings controller behavior, route, form POST behavior hoặc ownership/privacy checks.
 - Không thay đổi auth logic, API behavior, database schema hoặc migration.
 - Không thêm theme selector, `ThemePreference`, API endpoint, Flutter code, AI, social feature hoặc public sharing.
+
+## 41. Cập nhật Phase 17I: Paper Note Reference Alignment
+
+Phase 17I đã hoàn thành để căn giao diện hiện tại gần hơn với Paper Note reference mockup.
+
+- `wwwroot/css/site.css` được tinh chỉnh bằng lớp styling Paper Note alignment: nền giấy ấm có đường kẻ nhẹ, surface kem, accent nâu/sepia, shadow mềm và cảm giác ghi chú cá nhân rõ hơn.
+- Navbar, footer, button, form control, card, memory card, gallery item, album/trash/settings card, tag và feeling badge được đồng bộ hơn theo hướng giấy viết tay sạch, riêng tư và mobile-first.
+- Memory cards có cảm giác ảnh dán trên trang giấy hơn, nhưng vẫn giữ nguyên route, link, nội dung và hành vi hiện có.
+- Không thêm 5-theme selector, không thêm `ThemePreference`, không tạo migration và không đổi database schema.
+- Không thay đổi controller, auth behavior, API behavior, form POST, memory CRUD, album/trash/settings behavior, image serving, Flutter code, AI, social feature hoặc public sharing.
+
+Phase tiếp theo được đề xuất cho UI là Phase 17J: Final UI Responsive QA.

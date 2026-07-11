@@ -407,6 +407,8 @@ Phase 17G redesigns the Create/Edit Memory forms into a calmer writing experienc
 
 Phase 17H redesigns Albums, Trash, Settings, Privacy, and Error polish to match the Paper Note UI. It keeps album/trash/settings behavior, ownership protections, form posts, authentication behavior, API behavior, and database schema unchanged.
 
+Phase 17I aligns the existing UI more closely with the Paper Note reference: warmer paper texture, cream surfaces, sepia accents, tactile buttons/forms, photo-note memory cards, and sticker-like tags/badges. It does not add a theme selector, database theme preference, migrations, or behavior changes.
+
 ## Feeling List
 
 Memory feelings are stored as strings from this fixed list:
@@ -458,6 +460,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - Memory Details and gallery redesign added.
 - Create/Edit Memory form redesign added.
 - Albums, Trash, and Settings redesign added.
+- Paper Note reference alignment added.
 - No AI or social features.
 - No admin dashboard yet.
 
