@@ -3,6 +3,15 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var isSignedIn = SignInManager.IsSignedIn(User);
+    var currentUser = isSignedIn ? await UserManager.GetUserAsync(User) : null;
+    var displayName = currentUser?.DisplayName ?? currentUser?.Email ?? User.Identity?.Name ?? "Tài khoản";
+    var profileInitial = string.IsNullOrWhiteSpace(displayName) ? "M" : displayName.Substring(0, 1).ToUpperInvariant();
+    string ActiveNav(string controller) => string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase) ? "is-active" : "";
+}
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -45,11 +54,8 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Quyền riêng tư</a>
                         </li>
-                        @if (SignInManager.IsSignedIn(User))
+                        @if (isSignedIn)
                         {
-                            var currentUser = await UserManager.GetUserAsync(User);
-                            var displayName = currentUser?.DisplayName ?? currentUser?.Email ?? User.Identity?.Name ?? "Tài khoản";
-
                             <li class="nav-item nav-account">
                                 <span class="navbar-text account-label">@displayName</span>
                             </li>
@@ -77,10 +83,58 @@
         </nav>
     </header>
 
-    <div class="container page-content">
-        <main role="main" class="pb-4">
-            @RenderBody()
-        </main>
+    <div class="app-frame">
+        <aside class="desktop-sidebar" aria-label="Điều hướng MemoLens">
+            <a class="desktop-sidebar-brand" asp-controller="Home" asp-action="Index">
+                <span>MemoLens</span>
+            </a>
+            <nav class="desktop-sidebar-nav">
+                <a class="@ActiveNav("Memories")" asp-controller="Memories" asp-action="Index">
+                    <span class="sidebar-mark" aria-hidden="true">T</span>
+                    <span>Timeline</span>
+                </a>
+                <a asp-controller="Memories" asp-action="Create">
+                    <span class="sidebar-mark" aria-hidden="true">M</span>
+                    <span>Memories</span>
+                </a>
+                <a class="@ActiveNav("Albums")" asp-controller="Albums" asp-action="Index">
+                    <span class="sidebar-mark" aria-hidden="true">A</span>
+                    <span>Albums</span>
+                </a>
+                <a class="@ActiveNav("Trash")" asp-controller="Trash" asp-action="Index">
+                    <span class="sidebar-mark" aria-hidden="true">R</span>
+                    <span>Trash</span>
+                </a>
+                <a class="@ActiveNav("Settings")" asp-controller="Settings" asp-action="Index">
+                    <span class="sidebar-mark" aria-hidden="true">S</span>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="desktop-sidebar-foot">
+                <span>Private journal</span>
+                <small>Không feed, không like, không follower.</small>
+            </div>
+        </aside>
+
+        <div class="container page-content">
+            <main role="main" class="pb-4 app-main-paper">
+                <div class="desktop-profile-row">
+                    @if (isSignedIn)
+                    {
+                        <a class="profile-chip" asp-controller="Settings" asp-action="Index" aria-label="Mở cài đặt tài khoản">
+                            <span aria-hidden="true">@profileInitial</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="profile-chip" asp-controller="Account" asp-action="Login" aria-label="Đăng nhập">
+                            <span aria-hidden="true">M</span>
+                        </a>
+                    }
+                </div>
+                @RenderBody()
+            </main>
+        </div>
     </div>
 
     <footer class="footer">

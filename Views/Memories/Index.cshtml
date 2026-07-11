@@ -31,14 +31,14 @@
     <header class="timeline-header">
         <div class="timeline-header-copy">
             <p class="kicker">Dòng thời gian riêng tư</p>
-            <h1>Những kỷ niệm chỉ thuộc về bạn.</h1>
+            <h1>Những kỷ niệm của bạn.</h1>
             <p>
-                Lật lại ảnh, câu chuyện, cảm xúc và những nơi chốn đã đi qua. MemoLens giữ mọi thứ trong không gian riêng của tài khoản này.
+                Lưu giữ những khoảnh khắc đáng nhớ.
             </p>
         </div>
         <div class="timeline-header-aside">
             <span>@Model.TotalMemoryCount kỷ niệm đã lưu</span>
-            <a class="btn btn-primary" asp-action="Create">Tạo kỷ niệm</a>
+            <a class="btn btn-primary" asp-action="Create">+ Tạo kỷ niệm</a>
         </div>
     </header>
 
@@ -60,10 +60,10 @@
         <section class="memory-filter-panel filter-card">
             <div class="memory-filter-heading">
                 <div>
-                    <p class="kicker">Tìm lại ký ức</p>
+                    <p class="kicker">Tìm kiếm</p>
                     <h2>Tìm kiếm &amp; bộ lọc</h2>
                 </div>
-                <p>Tìm nhanh bằng từ khóa, hoặc mở bộ lọc nâng cao khi bạn muốn xem lại theo cảm xúc, thẻ hay thời gian.</p>
+                <p>Tìm nhanh theo từ khóa, cảm xúc, thẻ hoặc thời gian.</p>
             </div>
 
             @if (Model.ValidationMessages.Any())
@@ -244,12 +244,6 @@
                             {
                                 <p class="memory-location">@memory.Location</p>
                             }
-
-                            <p class="memory-preview-text">
-                                @(string.IsNullOrWhiteSpace(memory.Story)
-                                    ? "Chưa có câu chuyện. Bạn có thể bổ sung thêm khi chỉnh sửa kỷ niệm này."
-                                    : memory.Story.Length > 180 ? $"{memory.Story[..180]}..." : memory.Story)
-                            </p>
 
                             @if (memory.Tags.Any())
                             {

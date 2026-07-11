@@ -256,6 +256,7 @@ Các component sau nên được định nghĩa dần trong Razor partials hoặ
    - Trạng thái: đã implement trong Phase 17I bằng CSS refinement, không thêm theme selector, `ThemePreference`, migration hoặc thay đổi behavior.
 9. **Phase 17J: Final UI Responsive QA**
    - Kiểm tra 360/390/430/768, desktop, auth, CRUD, upload, search/filter và tests.
+   - Trạng thái: đã implement trong Phase 17J bằng lớp UI cuối theo reference Paper Note, desktop sidebar/notebook frame, microcopy gọn hơn và responsive QA toàn app. Không thêm theme selector, `ThemePreference`, migration hoặc thay đổi behavior.
 
 Ghi chú: selectable themes có thể là hướng tương lai sau MVP, nhưng chưa thuộc Phase 17E. MemoLens hiện chỉ dùng Paper Note làm giao diện mặc định.
 

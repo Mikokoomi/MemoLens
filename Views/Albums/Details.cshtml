@@ -24,10 +24,10 @@
         </dl>
 
         <div class="detail-actions detail-actions-inline">
-            <a class="btn btn-primary" asp-action="AddMemories" asp-route-id="@Model.Id">Thêm kỷ niệm</a>
-            <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model.Id">Sửa bộ sưu tập</a>
-            <a class="btn btn-outline-secondary" asp-action="Delete" asp-route-id="@Model.Id">Xóa bộ sưu tập</a>
-            <a class="btn btn-link" asp-action="Index">Quay lại bộ sưu tập</a>
+            <a class="btn btn-primary" asp-action="AddMemories" asp-route-id="@Model.Id">+ Thêm kỷ niệm</a>
+            <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model.Id">Sửa</a>
+            <a class="btn btn-outline-secondary" asp-action="Delete" asp-route-id="@Model.Id">Xóa</a>
+            <a class="btn btn-link" asp-action="Index">Quay lại</a>
         </div>
     </div>
 
@@ -84,9 +84,6 @@ else
                     </div>
                     <h2><a asp-controller="Memories" asp-action="Details" asp-route-id="@memory.Id">@memory.Title</a></h2>
                     <p class="memory-location">@(string.IsNullOrWhiteSpace(memory.Location) ? "Chưa thêm địa điểm" : memory.Location)</p>
-                    <p class="memory-preview-text">
-                        @(string.IsNullOrWhiteSpace(memory.Story) ? "Chưa có câu chuyện cho kỷ niệm này." : memory.Story)
-                    </p>
                     <form asp-action="RemoveMemory" asp-route-id="@Model.Id" asp-route-memoryId="@memory.Id" method="post" class="album-remove-form">
                         <button type="submit" class="btn btn-outline-secondary">Gỡ khỏi bộ sưu tập</button>
                     </form>

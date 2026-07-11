@@ -7,8 +7,8 @@
 <section class="memory-form-shell memory-writing-shell edit-memory-shell">
     <aside class="memory-form-intro paper-note-panel">
         <p class="kicker">Sửa kỷ niệm</p>
-        <h1>Chỉnh lại câu chuyện mà vẫn giữ nguyên quyền riêng tư.</h1>
-        <p>Cập nhật nội dung, cảm xúc, thẻ, ảnh mới hoặc xóa những ảnh không còn phù hợp. Mọi thay đổi chỉ áp dụng cho kỷ niệm riêng của bạn.</p>
+        <h1>Lưu giữ những khoảnh khắc đáng nhớ.</h1>
+        <p>Cập nhật câu chuyện, cảm xúc, thẻ và ảnh của kỷ niệm riêng này.</p>
         <div class="private-note">
             <strong>Không gian cá nhân</strong>
             <span>Thao tác này không tạo chia sẻ công khai và không thay đổi quyền truy cập ảnh.</span>
@@ -41,7 +41,7 @@
 
         <section class="form-section" aria-labelledby="time-section-heading">
             <div class="form-section-heading">
-                <p class="kicker">Thời gian & cảm xúc</p>
+                <p class="kicker">Ngày / Cảm xúc / Địa điểm</p>
                 <h2 id="time-section-heading">Bối cảnh của kỷ niệm</h2>
             </div>
 
@@ -86,7 +86,7 @@
         <section class="form-section upload-note" aria-labelledby="photos-section-heading">
             <div class="form-section-heading">
                 <p class="kicker">Ảnh mới</p>
-                <h2 id="photos-section-heading">Bổ sung khung hình</h2>
+                <h2 id="photos-section-heading">Thêm ảnh khác</h2>
             </div>
 
             <label asp-for="NewImages" class="form-label"></label>
@@ -96,8 +96,8 @@
         </section>
 
         <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
             <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.Id">Hủy</a>
+            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
         </div>
     </form>
 

@@ -75,6 +75,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 17G: Create/Edit Memory Form Redesign.
 - Phase 17H: Albums, Trash, and Settings Redesign.
 - Phase 17I: Paper Note Reference Alignment.
+- Phase 17J: Finalized Paper Note UI Reference and Responsive QA.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -141,7 +142,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 16B.7: Permanent Delete Design/Implementation.
 - Phase 16F: Image Upload and Storage Tests.
 - Phase 16G: Database Cleanup Tests.
-- Phase 17J: Final UI Responsive QA.
+- Phase 18: MVP release/demo preparation.
 - Sau MVP: permanent delete, export data, thumbnails/compression.
 
 ## 10. Hướng dẫn cho Codex trong các task sau
@@ -842,4 +843,20 @@ Phase 17I đã hoàn thành để căn giao diện hiện tại gần hơn với
 - Không thêm 5-theme selector, không thêm `ThemePreference`, không tạo migration và không đổi database schema.
 - Không thay đổi controller, auth behavior, API behavior, form POST, memory CRUD, album/trash/settings behavior, image serving, Flutter code, AI, social feature hoặc public sharing.
 
-Phase tiếp theo được đề xuất cho UI là Phase 17J: Final UI Responsive QA.
+## 42. Cập nhật Phase 17J: Finalized Paper Note UI Reference and Responsive QA
+
+Phase 17J đã hoàn thành để đưa giao diện MemoLens gần hơn với bộ ảnh tham chiếu Paper Note cuối cùng và kiểm tra responsive toàn app.
+
+- Layout desktop có thêm khung Paper Note lớn và sidebar trái dạng notebook cho các trang đã đăng nhập, trong khi mobile vẫn dùng navbar gọn hiện có.
+- Home, Login, Register, Timeline, Create/Edit Memory, Memory Details, Albums, Trash và Settings được tinh gọn microcopy để bớt dày chữ và gần hơn với reference.
+- Card ảnh, album, gallery, upload area, badge/tag, form và action row được polish theo hướng ảnh dán trên giấy, calm, private-first và mobile-first.
+- Đã kiểm tra responsive ở 360px, 390px, 430px, 768px và desktop; các trang MemoLens không có horizontal overflow, footer overlay hoặc link bị che.
+- Smoke test xác nhận Login/Register, Forgot Password, Create/Edit Memory, image upload validation, Memory Details, Album Details, Trash/Restore, Settings đổi mật khẩu và `/api/v1/health` vẫn hoạt động.
+
+Không thay đổi:
+
+- Không thay đổi controller logic, route, form POST behavior, memory CRUD behavior, album/trash/settings behavior, image upload validation hoặc private image serving.
+- Không thay đổi auth logic, API behavior, database schema hoặc migration.
+- Không thêm theme selector, `ThemePreference`, API endpoint, Flutter code, AI, social feature hoặc public sharing.
+
+Phase tiếp theo được đề xuất là Phase 18: MVP release/demo preparation.

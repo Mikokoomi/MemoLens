@@ -7,12 +7,12 @@
 <section class="collection-hero paper-note-panel">
     <div>
         <p class="kicker">Bộ sưu tập riêng tư</p>
-        <h1>Gom những kỷ niệm cùng một câu chuyện.</h1>
-        <p>Mỗi bộ sưu tập chỉ hiển thị trong tài khoản của bạn. Đây là nơi nhóm lại chuyến đi, năm học, gia đình hoặc những khoảng thời gian bạn muốn giữ riêng.</p>
+        <h1>Bộ sưu tập</h1>
+        <p>Lưu giữ những khoảnh khắc theo chủ đề bạn yêu thích.</p>
     </div>
     <div class="collection-hero-actions">
         <span>@Model.Count bộ sưu tập</span>
-        <a class="btn btn-primary" asp-action="Create">Tạo bộ sưu tập</a>
+        <a class="btn btn-primary" asp-action="Create">+ Tạo bộ sưu tập</a>
     </div>
 </section>
 
@@ -47,9 +47,9 @@ else
                         <span>Cập nhật @album.UpdatedAt.ToLocalTime().ToString("dd/MM/yyyy")</span>
                     </div>
                     <h2><a asp-action="Details" asp-route-id="@album.Id">@album.Title</a></h2>
-                    <p>@(string.IsNullOrWhiteSpace(album.Description) ? "Chưa có mô tả. Bạn có thể thêm vài dòng để nhớ rõ vì sao những kỷ niệm này nằm cùng nhau." : album.Description)</p>
+                    <p>@(string.IsNullOrWhiteSpace(album.Description) ? "Chưa có mô tả." : album.Description)</p>
                     <div class="album-card-actions collection-actions">
-                        <a class="btn btn-primary" asp-action="Details" asp-route-id="@album.Id">Mở bộ sưu tập</a>
+                        <a class="btn btn-primary" asp-action="Details" asp-route-id="@album.Id">Mở</a>
                         <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@album.Id">Sửa</a>
                     </div>
                 </div>

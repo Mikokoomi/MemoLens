@@ -8,7 +8,7 @@
     <div>
         <p class="kicker">Khôi phục riêng tư</p>
         <h1>Thùng rác</h1>
-        <p>Các kỷ niệm và bộ sưu tập đã xóa sẽ xuất hiện tại đây để bạn có thể khôi phục khi cần. MemoLens chưa xóa vĩnh viễn trong giai đoạn này.</p>
+        <p>Các kỷ niệm và bộ sưu tập đã xóa được lưu tạm thời trước khi xóa vĩnh viễn.</p>
     </div>
     <div class="collection-hero-actions">
         <span>Khu vực khôi phục an toàn</span>
@@ -36,7 +36,7 @@ else
         <div class="trash-section-heading">
             <p class="kicker">Kỷ niệm đã xóa</p>
             <h2 id="deleted-memories-title">Kỷ niệm có thể khôi phục</h2>
-            <p>Ảnh không hiển thị trong thùng rác cho đến khi kỷ niệm được khôi phục.</p>
+            <p>Ảnh sẽ hiển thị lại sau khi kỷ niệm được khôi phục.</p>
         </div>
 
         @if (!Model.DeletedMemories.Any())
@@ -69,7 +69,7 @@ else
                             </p>
                             <p class="trash-deleted-at">Đã xóa: @(memory.DeletedAt?.ToLocalTime().ToString("dd/MM/yyyy HH:mm") ?? "Không rõ thời gian")</p>
                             <form asp-action="RestoreMemory" asp-route-id="@memory.Id" method="post">
-                                <button type="submit" class="btn btn-primary w-100">Khôi phục kỷ niệm</button>
+                                <button type="submit" class="btn btn-primary w-100">Khôi phục</button>
                             </form>
                         </div>
                     </article>
@@ -82,7 +82,7 @@ else
         <div class="trash-section-heading">
             <p class="kicker">Bộ sưu tập đã xóa</p>
             <h2 id="deleted-albums-title">Bộ sưu tập có thể khôi phục</h2>
-            <p>Khôi phục album sẽ đưa album trở lại danh sách, nhưng không tự khôi phục các kỷ niệm đã bị xóa riêng.</p>
+            <p>Khôi phục album sẽ đưa album trở lại danh sách bộ sưu tập.</p>
         </div>
 
         @if (!Model.DeletedAlbums.Any())
@@ -107,7 +107,7 @@ else
                             </p>
                             <p class="trash-deleted-at">Đã xóa: @(album.DeletedAt?.ToLocalTime().ToString("dd/MM/yyyy HH:mm") ?? "Không rõ thời gian")</p>
                             <form asp-action="RestoreAlbum" asp-route-id="@album.Id" method="post">
-                                <button type="submit" class="btn btn-primary w-100">Khôi phục bộ sưu tập</button>
+                                <button type="submit" class="btn btn-primary w-100">Khôi phục</button>
                             </form>
                         </div>
                     </article>
