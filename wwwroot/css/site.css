@@ -1689,65 +1689,139 @@ a:hover {
   width: 3rem;
 }
 
-.memory-detail {
-  align-items: start;
-  grid-template-columns: minmax(0, 1fr) 320px;
-  max-width: 1100px;
+.memory-detail-shell,
+.delete-note-shell {
+  display: grid;
+  gap: 1rem;
+  margin: 0 auto 2rem;
+  max-width: 1120px;
 }
 
-.memory-detail-main,
-.memory-side-panel,
-.memory-form-panel {
-  padding: clamp(1.35rem, 4vw, 2rem);
+.memory-entry-card,
+.paper-note-panel {
+  background:
+    linear-gradient(var(--paper-faint-line) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 250, 240, 0.97), rgba(248, 235, 214, 0.90)),
+    var(--paper);
+  background-size: 100% 34px, auto, auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--paper-shadow);
+  min-width: 0;
+  padding: clamp(1.15rem, 4vw, 2rem);
+  position: relative;
 }
 
+.memory-entry-card::before,
+.paper-note-panel::before {
+  background: rgba(239, 225, 191, 0.82);
+  border: 1px solid rgba(144, 112, 76, 0.12);
+  border-radius: 999px;
+  content: "";
+  height: 0.55rem;
+  left: 1rem;
+  pointer-events: none;
+  position: absolute;
+  right: 1rem;
+  top: -0.28rem;
+}
+
+.memory-entry-header {
+  display: grid;
+  gap: 0.55rem;
+  margin-bottom: 1.25rem;
+}
+
+.memory-entry-header h1 {
+  font-size: clamp(2.15rem, 7vw, 4.8rem);
+  font-weight: 780;
+  letter-spacing: 0;
+  line-height: 1.02;
+  margin-bottom: 0;
+  overflow-wrap: anywhere;
+}
+
+.memory-entry-date {
+  color: var(--accent-warm);
+  font-size: 1rem;
+  font-weight: 800;
+  margin-bottom: 0;
+}
+
+.memory-entry-meta,
 .memory-facts {
   display: grid;
   gap: 0.75rem;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin: 1.5rem 0;
+  margin: 1.35rem 0;
 }
 
 .memory-facts.compact {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.memory-entry-meta div,
 .memory-facts div {
-  background: var(--surface-soft);
+  background: rgba(255, 248, 236, 0.72);
   border: 1px solid var(--line);
   border-radius: 10px;
   padding: 0.9rem;
 }
 
+.memory-entry-meta dt,
 .memory-facts dt {
   color: var(--muted);
-  font-size: 0.82rem;
-  font-weight: 700;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
   margin-bottom: 0.35rem;
+  text-transform: uppercase;
 }
 
+.memory-entry-meta dd,
 .memory-facts dd {
   color: var(--ink);
-  font-weight: 700;
+  font-weight: 750;
+  line-height: 1.45;
   margin-bottom: 0;
+  overflow-wrap: anywhere;
 }
 
+.memory-story,
 .story-panel {
-  border-top: 1px solid var(--line);
+  background: rgba(255, 248, 236, 0.56);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-sm);
   margin-top: 1.5rem;
-  padding-top: 1.5rem;
+  padding: clamp(1rem, 3vw, 1.35rem);
 }
 
+.memory-story h2,
 .story-panel h2 {
-  font-size: 1.2rem;
-  font-weight: 730;
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  font-weight: 760;
   letter-spacing: 0;
+  line-height: 1.15;
+  margin-bottom: 0.75rem;
 }
 
+.memory-story p,
 .story-panel p {
-  color: var(--muted);
-  line-height: 1.75;
+  color: var(--ink-soft);
+  font-size: 1.04rem;
+  line-height: 1.85;
+  margin-bottom: 0;
+  overflow-wrap: break-word;
   white-space: pre-line;
+}
+
+.memory-entry-tags {
+  border-top: 1px dashed var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
 }
 
 .detail-tags {
@@ -1766,6 +1840,12 @@ a:hover {
   align-items: start;
   grid-template-columns: minmax(240px, 0.7fr) minmax(0, 1fr);
   max-width: 1100px;
+}
+
+.memory-detail-main,
+.memory-side-panel,
+.memory-form-panel {
+  padding: clamp(1.35rem, 4vw, 2rem);
 }
 
 .memory-form-panel textarea {
@@ -1803,10 +1883,47 @@ a:hover {
 }
 
 .memory-gallery,
+.gallery-grid,
 .edit-image-grid {
   display: grid;
   gap: 0.85rem;
   margin-bottom: 1rem;
+}
+
+.memory-gallery-panel {
+  display: grid;
+  gap: 1rem;
+}
+
+.memory-gallery-heading {
+  align-items: start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: space-between;
+}
+
+.memory-gallery-heading h2 {
+  font-size: clamp(1.45rem, 4vw, 2.35rem);
+  font-weight: 770;
+  letter-spacing: 0;
+  line-height: 1.08;
+  margin-bottom: 0;
+  overflow-wrap: anywhere;
+}
+
+.memory-gallery-heading span {
+  background: var(--accent-soft);
+  border: 1px solid rgba(113, 102, 65, 0.14);
+  border-radius: 999px;
+  color: var(--accent-dark);
+  font-size: 0.86rem;
+  font-weight: 800;
+  padding: 0.35rem 0.7rem;
+}
+
+.gallery-grid {
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
 }
 
 .edit-image-grid {
@@ -1814,20 +1931,122 @@ a:hover {
 }
 
 .memory-gallery figure,
+.gallery-item,
 .edit-image-card {
-  background: var(--surface-soft);
+  background:
+    linear-gradient(180deg, rgba(255, 252, 246, 0.96), rgba(247, 232, 208, 0.88)),
+    var(--paper);
   border: 1px solid var(--line);
   border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(76, 55, 33, 0.08);
   margin: 0;
   overflow: hidden;
+  padding: 0.55rem;
 }
 
 .memory-gallery img,
+.gallery-item img,
 .edit-image-card img {
+  background: var(--surface-soft);
+  border-radius: 8px;
   display: block;
-  height: 220px;
-  object-fit: cover;
+  height: auto;
+  max-height: 520px;
+  object-fit: contain;
   width: 100%;
+}
+
+.gallery-image-frame {
+  align-items: center;
+  background:
+    linear-gradient(var(--paper-faint-line) 1px, transparent 1px),
+    var(--paper-deep);
+  background-size: 100% 30px, auto;
+  border-radius: 8px;
+  display: grid;
+  min-height: 220px;
+  overflow: hidden;
+}
+
+.gallery-item figcaption {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin-top: 0.55rem;
+  overflow-wrap: anywhere;
+}
+
+.memory-gallery-empty {
+  align-items: start;
+  background: rgba(255, 248, 236, 0.68);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-sm);
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: auto minmax(0, 1fr);
+  padding: 1rem;
+}
+
+.memory-gallery-empty h3 {
+  font-size: 1.15rem;
+  font-weight: 750;
+  letter-spacing: 0;
+  margin-bottom: 0.25rem;
+}
+
+.memory-gallery-empty p {
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 0;
+}
+
+.detail-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  justify-content: flex-end;
+}
+
+.detail-actions .btn-link {
+  color: var(--accent-dark);
+}
+
+.detail-actions-inline {
+  margin-top: 1.25rem;
+}
+
+.delete-note-shell {
+  max-width: 760px;
+}
+
+.delete-note-card h1 {
+  font-size: clamp(2rem, 6vw, 3.6rem);
+  font-weight: 780;
+  letter-spacing: 0;
+  line-height: 1.04;
+  margin-bottom: 0.9rem;
+  overflow-wrap: anywhere;
+}
+
+.delete-note-card p {
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.delete-note-meta {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.delete-note-warning {
+  background: var(--warning-bg);
+  border: 1px dashed var(--warning-border);
+  border-radius: var(--radius-sm);
+  color: var(--warning-text);
+  display: grid;
+  gap: 0.25rem;
+  line-height: 1.6;
+  padding: 0.9rem 1rem;
 }
 
 .edit-image-card {
@@ -2320,6 +2539,7 @@ body.memolens-shell > .footer {
 
   .memory-filter-primary-actions,
   .memory-filter-actions,
+  .detail-actions,
   .memory-action-row,
   .settings-actions {
     display: grid;
@@ -2328,10 +2548,12 @@ body.memolens-shell > .footer {
 
   .memory-filter-primary-actions .btn,
   .memory-filter-actions .btn,
+  .detail-actions .btn,
   .memory-card-actions .btn,
   .album-card-actions .btn,
   .memory-action-row .btn,
   .settings-actions .btn,
+  .detail-actions .btn-link,
   .memory-action-row .btn-link {
     width: 100%;
   }
@@ -2345,6 +2567,11 @@ body.memolens-shell > .footer {
   }
 
   .memory-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .memory-entry-meta,
+  .delete-note-meta {
     grid-template-columns: 1fr;
   }
 }
@@ -2532,6 +2759,7 @@ body.memolens-shell > .footer {
   .memory-page-header h1,
   .memory-form-intro h1,
   .memory-detail-main h1,
+  .memory-entry-header h1,
   .memory-empty-state h2,
   .settings-hero h1,
   .settings-form-shell h1 {
@@ -2678,8 +2906,17 @@ body.memolens-shell > .footer {
     padding: 0.8rem;
   }
 
-  .memory-gallery img {
-    height: 260px;
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-image-frame {
+    min-height: 210px;
+  }
+
+  .memory-gallery img,
+  .gallery-item img {
+    max-height: 420px;
   }
 
   .edit-image-grid {

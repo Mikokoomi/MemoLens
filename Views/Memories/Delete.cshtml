@@ -4,27 +4,34 @@
     ViewData["Title"] = "Xóa kỷ niệm";
 }
 
-<section class="content-panel status-panel">
-    <p class="kicker">Xóa mềm</p>
-    <h1>Ẩn kỷ niệm này khỏi dòng thời gian?</h1>
-    <p>
-        Thao tác này sẽ ẩn <strong>@Model.Title</strong> khỏi dòng thời gian bình thường.
-        Dữ liệu vẫn được giữ trong database và được đánh dấu là đã xóa.
-    </p>
+<section class="delete-note-shell">
+    <article class="paper-note-panel delete-note-card">
+        <p class="kicker">Xóa mềm</p>
+        <h1>Cất kỷ niệm này khỏi dòng thời gian?</h1>
+        <p>
+            Thao tác này sẽ ẩn <strong>@Model.Title</strong> khỏi dòng thời gian bình thường.
+            Kỷ niệm vẫn được giữ lại để có thể khôi phục sau này từ Thùng rác.
+        </p>
 
-    <dl class="memory-facts compact">
-        <div>
-            <dt>Cảm xúc</dt>
-            <dd>@Model.Feeling</dd>
-        </div>
-        <div>
-            <dt>Ngày</dt>
-            <dd>@Model.MemoryDate.ToString("dd/MM/yyyy")</dd>
-        </div>
-    </dl>
+        <dl class="memory-entry-meta delete-note-meta">
+            <div>
+                <dt>Cảm xúc</dt>
+                <dd>@Model.Feeling</dd>
+            </div>
+            <div>
+                <dt>Ngày</dt>
+                <dd>@Model.MemoryDate.ToString("dd/MM/yyyy")</dd>
+            </div>
+        </dl>
 
-    <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="memory-action-row mt-4">
-        <button type="submit" class="btn btn-primary">Xóa khỏi dòng thời gian</button>
-        <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.Id">Hủy</a>
-    </form>
+        <div class="delete-note-warning">
+            <strong>Lưu ý riêng tư</strong>
+            <span>Ảnh và nội dung vẫn không công khai. Đây chỉ là thao tác ẩn khỏi timeline, không phải xóa vĩnh viễn.</span>
+        </div>
+
+        <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="memory-action-row detail-actions-inline">
+            <button type="submit" class="btn btn-primary">Xóa khỏi dòng thời gian</button>
+            <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.Id">Hủy</a>
+        </form>
+    </article>
 </section>

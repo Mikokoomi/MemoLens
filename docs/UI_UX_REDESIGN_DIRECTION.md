@@ -244,6 +244,7 @@ Các component sau nên được định nghĩa dần trong Razor partials hoặ
    - Trạng thái: đã implement trong Phase 17E. Chưa thêm 5 theme selectable, chưa thêm theme selector UI, chưa thêm `ThemePreference` và chưa tạo migration.
 5. **Phase 17F: Memory Details and Gallery redesign**
    - Làm rõ story/photo-first detail, gallery, edit/delete/back actions.
+   - Trạng thái: đã implement trong Phase 17F cho Memory Details, gallery responsive, empty image state, detail actions và Delete confirmation. Chưa redesign sâu Create/Edit, Albums, Trash hoặc Settings.
 6. **Phase 17G: Create/Edit Memory Form redesign**
    - Làm form tạo/sửa memory giống trải nghiệm viết nhật ký hơn, gồm story, cảm xúc, ngày, địa điểm, ảnh và tag.
 7. **Phase 17H: Albums/Trash/Settings redesign**

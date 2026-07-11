@@ -401,6 +401,8 @@ Phase 17D redesigns the Timeline and memory cards so browsing memories feels mor
 
 Phase 17E applies Paper Note as the default visual style across the base UI, Home/Auth surfaces, Timeline filters, and memory cards. It does not add a theme selector, database theme preference, migrations, or behavior changes.
 
+Phase 17F redesigns Memory Details and the private gallery so a memory feels more like reading a personal notebook entry with photos. It keeps image serving, routes, form posts, authentication behavior, API behavior, and database schema unchanged.
+
 ## Feeling List
 
 Memory feelings are stored as strings from this fixed list:
@@ -449,6 +451,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - Home and auth UI redesign added.
 - Timeline and memory card redesign added.
 - Paper Note default UI style added.
+- Memory Details and gallery redesign added.
 - No AI or social features.
 - No admin dashboard yet.
 
