@@ -1,22 +1,24 @@
-﻿@model ErrorViewModel
+@model ErrorViewModel
 @{
     ViewData["Title"] = "Lỗi";
 }
 
-<section class="content-panel status-panel">
-    <p class="kicker">Có lỗi xảy ra</p>
-    <h1>MemoLens chưa thể xử lý yêu cầu này.</h1>
-    <p>Vui lòng thử lại sau hoặc quay lại trang trước đó.</p>
+<section class="delete-note-shell">
+    <div class="status-card delete-note-card error-note-card">
+        <p class="kicker">Có lỗi xảy ra</p>
+        <h1>MemoLens chưa thể xử lý yêu cầu này.</h1>
+        <p>Vui lòng thử lại sau hoặc quay lại trang trước đó. Không có dữ liệu kỷ niệm nào được hiển thị công khai từ trang lỗi này.</p>
 
-    @if (Model.ShowRequestId)
-    {
-        <p>
-            <strong>Mã yêu cầu:</strong> <code>@Model.RequestId</code>
-        </p>
-    }
+        @if (Model.ShowRequestId)
+        {
+            <p>
+                <strong>Mã yêu cầu:</strong> <code>@Model.RequestId</code>
+            </p>
+        }
 
-    <div class="memory-filter-alert">
-        <p>Trong môi trường phát triển, bạn có thể xem thêm chi tiết lỗi bằng cấu hình <strong>Development</strong>.</p>
-        <p>Không bật chế độ này khi triển khai thật vì có thể làm lộ thông tin nhạy cảm.</p>
+        <div class="delete-note-warning">
+            <strong>Ghi chú phát triển</strong>
+            <span>Trong môi trường phát triển, bạn có thể xem thêm chi tiết lỗi bằng cấu hình Development. Không bật chế độ này khi triển khai thật.</span>
+        </div>
     </div>
 </section>

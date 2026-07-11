@@ -4,31 +4,34 @@
     ViewData["Title"] = "Xóa bộ sưu tập";
 }
 
-<section class="content-panel status-panel">
-    <p class="kicker">Xóa bộ sưu tập</p>
-    <h1>Ẩn bộ sưu tập này khỏi danh sách của bạn?</h1>
-    <p>
-        Bạn sắp xóa <strong>@Model.Title</strong>. Thao tác này không xóa kỷ niệm gốc, không xóa ảnh,
-        và chỉ đánh dấu bộ sưu tập là đã xóa.
-    </p>
+<section class="delete-note-shell">
+    <div class="status-card delete-note-card danger-note">
+        <p class="kicker">Xóa bộ sưu tập</p>
+        <h1>Ẩn bộ sưu tập này khỏi danh sách của bạn?</h1>
+        <p>
+            Bạn sắp xóa <strong>@Model.Title</strong>. Thao tác này chỉ đưa bộ sưu tập vào thùng rác.
+            Kỷ niệm gốc và ảnh riêng tư bên trong không bị xóa.
+        </p>
 
-    <dl class="memory-facts compact">
-        <div>
-            <dt>Kỷ niệm bên trong</dt>
-            <dd>@Model.Memories.Count</dd>
-        </div>
-        <div>
-            <dt>Cập nhật</dt>
-            <dd>@Model.UpdatedAt.ToLocalTime().ToString("dd/MM/yyyy")</dd>
-        </div>
-    </dl>
+        <dl class="memory-facts compact delete-note-meta">
+            <div>
+                <dt>Kỷ niệm bên trong</dt>
+                <dd>@Model.Memories.Count</dd>
+            </div>
+            <div>
+                <dt>Cập nhật</dt>
+                <dd>@Model.UpdatedAt.ToLocalTime().ToString("dd/MM/yyyy")</dd>
+            </div>
+        </dl>
 
-    <div class="memory-filter-alert">
-        <p>Thao tác này không xóa kỷ niệm gốc. Các kỷ niệm vẫn nằm trong dòng thời gian của bạn.</p>
+        <div class="delete-note-warning">
+            <strong>Ghi chú an toàn</strong>
+            <span>Album bị xóa có thể khôi phục trong Thùng rác. Việc này không xóa memory gốc khỏi Timeline.</span>
+        </div>
+
+        <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="form-actions mt-4">
+            <button type="submit" class="btn btn-primary">Xóa bộ sưu tập</button>
+            <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.Id">Hủy</a>
+        </form>
     </div>
-
-    <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="memory-action-row mt-4">
-        <button type="submit" class="btn btn-primary">Xóa bộ sưu tập</button>
-        <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.Id">Hủy</a>
-    </form>
 </section>

@@ -2,38 +2,34 @@
     ViewData["Title"] = "Quyền riêng tư";
 }
 
-<section class="content-panel content-panel-wide">
-    <div class="content-intro">
+<section class="privacy-note-shell">
+    <div class="paper-note-panel privacy-note-card">
         <p class="kicker">Cam kết riêng tư</p>
         <h1>Kỷ niệm được đặt riêng tư theo mặc định.</h1>
         <p>
-            MemoLens được xây dựng như một nhật ký kỷ niệm cá nhân. Hướng sản phẩm rất rõ:
-            người dùng chỉ được xem kỷ niệm của chính mình sau khi đăng nhập.
+            MemoLens được xây dựng như một nhật ký kỷ niệm cá nhân. Người dùng chỉ được xem kỷ niệm,
+            bộ sưu tập, ảnh và thùng rác của chính mình sau khi đăng nhập.
         </p>
     </div>
 
-    <div class="row g-4 mt-2">
-        <div class="col-md-6">
-            <div class="quiet-box">
-                <h2>Những gì không có trong MemoLens</h2>
-                <ul class="calm-list">
-                    <li>Không có bảng tin công khai.</li>
-                    <li>Không có lượt thích hoặc bình luận.</li>
-                    <li>Không có người theo dõi hoặc hồ sơ công khai.</li>
-                    <li>Không có trang khám phá hoặc xu hướng.</li>
-                </ul>
-            </div>
+    <div class="privacy-note-grid">
+        <div class="quiet-box paper-note-panel">
+            <h2>Những gì không có trong MemoLens</h2>
+            <ul class="calm-list soft-list">
+                <li>Không có bảng tin công khai.</li>
+                <li>Không có lượt thích hoặc bình luận.</li>
+                <li>Không có người theo dõi hoặc hồ sơ công khai.</li>
+                <li>Không có trang khám phá hoặc xu hướng.</li>
+            </ul>
         </div>
-        <div class="col-md-6">
-            <div class="quiet-box">
-                <h2>Những gì được bảo vệ</h2>
-                <ul class="calm-list">
-                    <li>Cần đăng nhập trước khi xem kỷ niệm, bộ sưu tập, thùng rác, cài đặt hoặc ảnh riêng tư.</li>
-                    <li>Người dùng chỉ có thể quản lý kỷ niệm và bộ sưu tập của chính mình.</li>
-                    <li>Ảnh mới được lưu ngoài <code>wwwroot</code> và chỉ được phục vụ qua endpoint có kiểm tra quyền.</li>
-                    <li>Xuất dữ liệu và xóa tài khoản được dự kiến cho phase sau.</li>
-                </ul>
-            </div>
+        <div class="quiet-box paper-note-panel">
+            <h2>Những gì được bảo vệ</h2>
+            <ul class="calm-list soft-list">
+                <li>Cần đăng nhập trước khi xem kỷ niệm, bộ sưu tập, thùng rác, cài đặt hoặc ảnh riêng tư.</li>
+                <li>Người dùng chỉ có thể quản lý kỷ niệm và bộ sưu tập của chính mình.</li>
+                <li>Ảnh mới được lưu ngoài <code>wwwroot</code> và chỉ được phục vụ qua endpoint có kiểm tra quyền.</li>
+                <li>Xuất dữ liệu và xóa tài khoản được dự kiến cho phase sau.</li>
+            </ul>
         </div>
     </div>
 </section>

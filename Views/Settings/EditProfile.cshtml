@@ -4,24 +4,29 @@
     ViewData["Title"] = "Sửa tên hiển thị";
 }
 
-<section class="settings-form-shell">
-    <div class="memory-form-intro">
+<section class="settings-form-shell memory-writing-shell">
+    <aside class="memory-form-intro paper-note-panel">
         <p class="kicker">Thông tin tài khoản</p>
         <h1>Sửa tên hiển thị.</h1>
         <p>Tên hiển thị giúp MemoLens gọi không gian riêng của bạn mềm hơn. Email chưa được thay đổi trong phase này.</p>
-    </div>
+    </aside>
 
-    <form asp-action="EditProfile" method="post" class="memory-form-panel settings-form-panel">
-        <div asp-validation-summary="ModelOnly" class="text-danger validation-summary mb-3"></div>
+    <form asp-action="EditProfile" method="post" class="memory-form-card settings-form-panel">
+        <div asp-validation-summary="ModelOnly" class="text-danger validation-summary form-validation-note mb-3"></div>
 
-        <div class="mb-4">
+        <section class="form-section" aria-labelledby="display-name-heading">
+            <div class="form-section-heading">
+                <p class="kicker">Tên hiển thị</p>
+                <h2 id="display-name-heading">Cách MemoLens gọi bạn</h2>
+            </div>
+
             <label asp-for="DisplayName" class="form-label">Tên hiển thị</label>
             <input asp-for="DisplayName" class="form-control" autocomplete="name" />
             <span asp-validation-for="DisplayName" class="text-danger"></span>
             <div class="form-text">Có thể để trống. Khi đó MemoLens sẽ hiện email thay cho tên hiển thị.</div>
-        </div>
+        </section>
 
-        <div class="memory-action-row">
+        <div class="form-actions">
             <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
             <a class="btn btn-outline-secondary" asp-action="Index">Hủy</a>
         </div>

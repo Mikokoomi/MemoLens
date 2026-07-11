@@ -4,31 +4,42 @@
     ViewData["Title"] = "Sửa bộ sưu tập";
 }
 
-<section class="memory-form-shell">
-    <div class="memory-form-intro">
+<section class="memory-form-shell memory-writing-shell collection-form-shell">
+    <aside class="memory-form-intro paper-note-panel">
         <p class="kicker">Sửa bộ sưu tập</p>
         <h1>Cập nhật tên và mô tả, giữ nguyên quyền riêng tư.</h1>
-        <p>Chỉnh sửa này chỉ đổi thông tin bộ sưu tập. Các kỷ niệm gốc và ảnh không bị thay đổi.</p>
-    </div>
+        <p>Chỉnh sửa này chỉ đổi thông tin bộ sưu tập. Các kỷ niệm gốc, ảnh và quyền truy cập không bị thay đổi.</p>
+        <div class="private-note">
+            <strong>Không ảnh hưởng kỷ niệm gốc</strong>
+            <span>Album chỉ là cách sắp xếp lại những kỷ niệm bạn đã lưu.</span>
+        </div>
+    </aside>
 
-    <form asp-action="Edit" asp-route-id="@Model.Id" method="post" class="memory-form-panel">
+    <form asp-action="Edit" asp-route-id="@Model.Id" method="post" class="memory-form-card collection-form-card">
         <input asp-for="Id" type="hidden" />
-        <div asp-validation-summary="ModelOnly" class="text-danger validation-summary mb-3"></div>
+        <div asp-validation-summary="ModelOnly" class="text-danger validation-summary form-validation-note mb-3"></div>
 
-        <div class="mb-3">
-            <label asp-for="Title" class="form-label">Tên bộ sưu tập</label>
-            <input asp-for="Title" class="form-control" />
-            <span asp-validation-for="Title" class="text-danger"></span>
-        </div>
+        <section class="form-section" aria-labelledby="album-edit-heading">
+            <div class="form-section-heading">
+                <p class="kicker">Thông tin bộ sưu tập</p>
+                <h2 id="album-edit-heading">Giữ chủ đề dễ nhớ</h2>
+            </div>
 
-        <div class="mb-4">
-            <label asp-for="Description" class="form-label">Mô tả</label>
-            <textarea asp-for="Description" class="form-control" rows="5"></textarea>
-            <span asp-validation-for="Description" class="text-danger"></span>
-            <div class="form-text">Mô tả giúp bạn nhớ vì sao những kỷ niệm này nằm cùng nhau.</div>
-        </div>
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label">Tên bộ sưu tập</label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
 
-        <div class="memory-action-row">
+            <div class="mb-0">
+                <label asp-for="Description" class="form-label">Mô tả</label>
+                <textarea asp-for="Description" class="form-control journal-textarea album-description-field" rows="5"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+                <div class="form-text">Mô tả giúp bạn nhớ vì sao những kỷ niệm này nằm cùng nhau.</div>
+            </div>
+        </section>
+
+        <div class="form-actions">
             <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
             <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.Id">Hủy</a>
         </div>

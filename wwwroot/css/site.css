@@ -991,7 +991,7 @@ a:hover {
 }
 
 .album-select-grid {
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
 }
 
 .album-select-card {
@@ -1313,6 +1313,301 @@ a:hover {
 
 .settings-form-panel {
   min-width: 0;
+}
+
+.collection-hero,
+.trash-hero,
+.account-hero {
+  align-items: end;
+  display: grid;
+  gap: clamp(1rem, 3vw, 1.5rem);
+  grid-template-columns: minmax(0, 1fr) auto;
+  margin: 0 auto 1.5rem;
+  max-width: 1120px;
+}
+
+.collection-hero h1,
+.trash-hero h1,
+.account-hero h1,
+.privacy-note-card h1 {
+  font-size: clamp(2.15rem, 5vw, 4rem);
+  font-weight: 780;
+  letter-spacing: 0;
+  line-height: 1.04;
+  margin-bottom: 0.8rem;
+}
+
+.collection-hero p,
+.trash-hero p,
+.account-hero p,
+.privacy-note-card p,
+.collection-cover-note {
+  color: var(--muted);
+  line-height: 1.72;
+  margin-bottom: 0;
+}
+
+.collection-hero-actions {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  justify-content: flex-end;
+}
+
+.collection-hero-actions span {
+  background: var(--accent-soft);
+  border: 1px solid rgba(113, 102, 65, 0.14);
+  border-radius: 999px;
+  color: var(--accent-dark);
+  font-size: 0.88rem;
+  font-weight: 780;
+  min-height: 42px;
+  padding: 0.55rem 0.85rem;
+}
+
+.collection-grid {
+  gap: clamp(1rem, 3vw, 1.35rem);
+  margin: 0 auto;
+  max-width: 1120px;
+}
+
+.collection-card,
+.collection-select-card,
+.trash-item,
+.account-panel {
+  background:
+    linear-gradient(var(--paper-faint-line) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 250, 241, 0.98), rgba(247, 233, 211, 0.9)),
+    var(--paper);
+  background-size: 100% 32px, auto, auto;
+  box-shadow: var(--paper-shadow);
+  position: relative;
+}
+
+.collection-card::before,
+.collection-select-card::before,
+.trash-item::before,
+.account-panel::before {
+  background: rgba(239, 225, 191, 0.78);
+  border: 1px solid rgba(144, 112, 76, 0.12);
+  border-radius: 999px;
+  content: "";
+  height: 0.5rem;
+  left: 1rem;
+  pointer-events: none;
+  position: absolute;
+  right: 1rem;
+  top: -0.28rem;
+}
+
+.collection-card {
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.collection-cover {
+  min-height: 230px;
+}
+
+.collection-cover span,
+.trash-card-placeholder span {
+  max-width: 14rem;
+  text-align: center;
+}
+
+.collection-card-body {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.collection-card-body h2 {
+  margin-bottom: 0;
+}
+
+.collection-card-body p {
+  margin-bottom: 0;
+  overflow-wrap: anywhere;
+}
+
+.collection-actions {
+  margin-top: 0.25rem;
+}
+
+.collection-detail-shell {
+  max-width: 1120px;
+}
+
+.collection-detail-card {
+  background:
+    linear-gradient(var(--paper-faint-line) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 250, 241, 0.98), rgba(247, 233, 211, 0.9)),
+    var(--paper);
+  background-size: 100% 32px, auto, auto;
+}
+
+.collection-facts {
+  margin-top: 1.2rem;
+}
+
+.collection-cover-panel {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.collection-cover-note {
+  font-size: 0.94rem;
+}
+
+.album-memory-grid {
+  margin-top: 1.5rem;
+}
+
+.album-memory-card .memory-card-body {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.collection-add-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.collection-select-grid {
+  gap: clamp(0.9rem, 3vw, 1.15rem);
+}
+
+.collection-select-card {
+  border-style: dashed;
+  overflow: hidden;
+}
+
+.collection-select-card input {
+  accent-color: var(--accent);
+  z-index: 2;
+}
+
+.collection-sticky-actions {
+  background:
+    linear-gradient(180deg, rgba(255, 248, 236, 0.94), rgba(246, 232, 210, 0.94)),
+    var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  bottom: 0.5rem;
+  box-shadow: 0 10px 20px rgba(76, 55, 33, 0.08);
+  margin-top: 0.5rem;
+  position: sticky;
+  z-index: 5;
+}
+
+.collection-form-shell {
+  max-width: 1020px;
+}
+
+.album-description-field {
+  min-height: 160px;
+}
+
+.collection-empty-state {
+  background:
+    linear-gradient(var(--paper-faint-line) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 250, 241, 0.98), rgba(247, 233, 211, 0.9)),
+    var(--paper);
+  background-size: 100% 32px, auto, auto;
+}
+
+.trash-hero {
+  align-items: center;
+}
+
+.trash-paper-section {
+  background: rgba(255, 248, 236, 0.38);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  padding: clamp(1rem, 3vw, 1.25rem);
+}
+
+.trash-section-heading {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.trash-section-heading p:not(.kicker) {
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 0;
+}
+
+.trash-item {
+  overflow: hidden;
+}
+
+.trash-item h3,
+.settings-card h2,
+.settings-limits div,
+.privacy-note-card h1 {
+  overflow-wrap: anywhere;
+}
+
+.trash-safe-empty {
+  background:
+    linear-gradient(var(--paper-faint-line) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 250, 241, 0.98), rgba(247, 233, 211, 0.9)),
+    var(--paper);
+  background-size: 100% 32px, auto, auto;
+}
+
+.settings-journal-grid {
+  gap: clamp(1rem, 3vw, 1.25rem);
+}
+
+.account-panel {
+  overflow: visible;
+}
+
+.account-facts div,
+.settings-limit-grid div {
+  background:
+    linear-gradient(180deg, rgba(255, 248, 236, 0.8), rgba(251, 239, 221, 0.78)),
+    var(--surface-soft);
+}
+
+.soft-list {
+  line-height: 1.72;
+}
+
+.soft-list li {
+  padding-left: 0.1rem;
+}
+
+.settings-form-shell.memory-writing-shell {
+  max-width: 1020px;
+}
+
+.privacy-note-shell {
+  display: grid;
+  gap: 1rem;
+  margin: 0 auto;
+  max-width: 1040px;
+}
+
+.privacy-note-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.privacy-note-card,
+.privacy-note-grid .quiet-box {
+  height: auto;
+}
+
+.error-note-card {
+  background:
+    linear-gradient(var(--paper-faint-line) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 250, 241, 0.98), rgba(247, 233, 211, 0.9)),
+    var(--paper);
+  background-size: 100% 32px, auto, auto;
 }
 
 .memory-card {
@@ -2697,7 +2992,11 @@ body.memolens-shell > .footer {
   .album-detail,
   .settings-hero,
   .settings-grid,
-  .settings-form-shell {
+  .settings-form-shell,
+  .collection-hero,
+  .trash-hero,
+  .account-hero,
+  .privacy-note-grid {
     grid-template-columns: 1fr;
   }
 
@@ -2754,9 +3053,17 @@ body.memolens-shell > .footer {
   .memory-action-row .btn,
   .form-actions .btn,
   .settings-actions .btn,
+  .collection-hero-actions .btn,
+  .collection-hero-actions span,
   .detail-actions .btn-link,
   .memory-action-row .btn-link {
     width: 100%;
+  }
+
+  .collection-hero-actions {
+    align-items: stretch;
+    display: grid;
+    justify-content: stretch;
   }
 
   .memory-card-actions .btn-link {
@@ -2894,7 +3201,11 @@ body.memolens-shell > .footer {
   .trash-message,
   .settings-card,
   .settings-limits,
-  .settings-message {
+  .settings-message,
+  .collection-hero,
+  .trash-hero,
+  .privacy-note-card,
+  .trash-paper-section {
     border-radius: 10px;
   }
 
@@ -2908,7 +3219,11 @@ body.memolens-shell > .footer {
   .memory-form-card,
   .paper-note-panel,
   .settings-card,
-  .settings-limits {
+  .settings-limits,
+  .collection-hero,
+  .trash-hero,
+  .privacy-note-card,
+  .trash-paper-section {
     padding: 1.15rem;
   }
 
@@ -2974,8 +3289,18 @@ body.memolens-shell > .footer {
   }
 
   .settings-hero,
-  .settings-form-shell {
+  .settings-form-shell,
+  .collection-hero,
+  .trash-hero {
     gap: 1rem;
+  }
+
+  .collection-hero h1,
+  .trash-hero h1,
+  .account-hero h1,
+  .privacy-note-card h1 {
+    font-size: 2rem;
+    line-height: 1.06;
   }
 
   .settings-facts div,
@@ -3067,6 +3392,18 @@ body.memolens-shell > .footer {
     margin-left: -0.25rem;
     margin-right: -0.25rem;
     padding: 0.85rem 0.25rem;
+  }
+
+  .collection-sticky-actions {
+    border-radius: 10px;
+    bottom: 0.25rem;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0.85rem;
+  }
+
+  .collection-cover {
+    min-height: 220px;
   }
 
   .trash-section {

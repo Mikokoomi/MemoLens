@@ -4,22 +4,25 @@
     ViewData["Title"] = "Thêm kỷ niệm";
 }
 
-<section class="memory-page-header">
+<section class="collection-hero paper-note-panel">
     <div>
         <p class="kicker">Thêm kỷ niệm</p>
         <h1>Chọn kỷ niệm cho bộ sưu tập @Model.AlbumTitle.</h1>
         <p>Chỉ những kỷ niệm riêng tư của tài khoản bạn và chưa nằm trong bộ sưu tập này mới hiển thị ở đây.</p>
     </div>
-    <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.AlbumId">Quay lại bộ sưu tập</a>
+    <div class="collection-hero-actions">
+        <span>@Model.AvailableMemories.Count kỷ niệm có thể thêm</span>
+        <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.AlbumId">Quay lại bộ sưu tập</a>
+    </div>
 </section>
 
 @if (!Model.AvailableMemories.Any())
 {
-    <section class="memory-empty-state">
+    <section class="memory-empty-state collection-empty-state">
         <p class="kicker">Không có kỷ niệm để thêm</p>
         <h2>Tất cả kỷ niệm hiện có đã nằm trong bộ sưu tập này, hoặc bạn chưa có kỷ niệm nào.</h2>
-        <p>Hãy tạo thêm kỷ niệm trong dòng thời gian nếu bạn muốn mở rộng bộ sưu tập.</p>
-        <div class="memory-action-row">
+        <p>Hãy tạo thêm kỷ niệm trong dòng thời gian nếu bạn muốn mở rộng bộ sưu tập. Việc thêm vào album không tạo chia sẻ công khai.</p>
+        <div class="form-actions">
             <a class="btn btn-primary" asp-controller="Memories" asp-action="Create">Tạo kỷ niệm</a>
             <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.AlbumId">Quay lại bộ sưu tập</a>
         </div>
@@ -27,16 +30,16 @@
 }
 else
 {
-    <form asp-action="AddMemories" asp-route-id="@Model.AlbumId" method="post" class="album-add-form">
+    <form asp-action="AddMemories" asp-route-id="@Model.AlbumId" method="post" class="album-add-form collection-add-form">
         <input asp-for="AlbumId" type="hidden" />
-        <div asp-validation-summary="ModelOnly" class="text-danger validation-summary mb-3"></div>
+        <div asp-validation-summary="ModelOnly" class="text-danger validation-summary form-validation-note mb-3"></div>
         <span asp-validation-for="SelectedMemoryIds" class="text-danger d-block mb-3"></span>
 
-        <section class="album-select-grid" aria-label="Chọn kỷ niệm">
+        <section class="album-select-grid collection-select-grid" aria-label="Chọn kỷ niệm">
             @foreach (var memory in Model.AvailableMemories)
             {
                 var checkboxId = $"memory-{memory.Id}";
-                <label class="album-select-card" for="@checkboxId">
+                <label class="album-select-card collection-select-card" for="@checkboxId">
                     <input id="@checkboxId" name="SelectedMemoryIds" type="checkbox" value="@memory.Id" checked="@Model.SelectedMemoryIds.Contains(memory.Id)" />
                     <span class="album-select-visual">
                         @if (!memory.CoverImageId.HasValue)
@@ -57,7 +60,7 @@ else
             }
         </section>
 
-        <div class="memory-action-row album-sticky-actions">
+        <div class="form-actions album-sticky-actions collection-sticky-actions">
             <button type="submit" class="btn btn-primary">Thêm kỷ niệm</button>
             <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.AlbumId">Hủy</a>
         </div>

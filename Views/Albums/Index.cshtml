@@ -4,31 +4,34 @@
     ViewData["Title"] = "Bộ sưu tập";
 }
 
-<section class="memory-page-header">
+<section class="collection-hero paper-note-panel">
     <div>
         <p class="kicker">Bộ sưu tập riêng tư</p>
         <h1>Gom những kỷ niệm cùng một câu chuyện.</h1>
-        <p>Mỗi bộ sưu tập chỉ hiển thị trong tài khoản của bạn. Không có chia sẻ công khai hay trang khám phá.</p>
+        <p>Mỗi bộ sưu tập chỉ hiển thị trong tài khoản của bạn. Đây là nơi nhóm lại chuyến đi, năm học, gia đình hoặc những khoảng thời gian bạn muốn giữ riêng.</p>
     </div>
-    <a class="btn btn-primary" asp-action="Create">Tạo bộ sưu tập</a>
+    <div class="collection-hero-actions">
+        <span>@Model.Count bộ sưu tập</span>
+        <a class="btn btn-primary" asp-action="Create">Tạo bộ sưu tập</a>
+    </div>
 </section>
 
 @if (!Model.Any())
 {
-    <section class="memory-empty-state">
+    <section class="memory-empty-state collection-empty-state">
         <p class="kicker">Chưa có bộ sưu tập</p>
         <h2>Bắt đầu bằng một chủ đề nhỏ.</h2>
-        <p>Tạo bộ sưu tập cho một chuyến đi, một năm học, gia đình, bạn bè hoặc bất kỳ khoảng thời gian nào bạn muốn giữ lại.</p>
+        <p>Tạo bộ sưu tập cho một chuyến đi, một năm học, gia đình, bạn bè hoặc bất kỳ khoảng thời gian nào bạn muốn nhìn lại như một câu chuyện riêng.</p>
         <a class="btn btn-primary" asp-action="Create">Tạo bộ sưu tập đầu tiên</a>
     </section>
 }
 else
 {
-    <section class="album-grid" aria-label="Danh sách bộ sưu tập">
+    <section class="album-grid collection-grid" aria-label="Danh sách bộ sưu tập">
         @foreach (var album in Model)
         {
-            <article class="album-card">
-                <a class="album-cover" asp-action="Details" asp-route-id="@album.Id" aria-label="Mở bộ sưu tập @album.Title">
+            <article class="album-card collection-card">
+                <a class="album-cover collection-cover" asp-action="Details" asp-route-id="@album.Id" aria-label="Mở bộ sưu tập @album.Title">
                     @if (!album.CoverImageId.HasValue)
                     {
                         <span>Chưa có ảnh bìa</span>
@@ -38,14 +41,14 @@ else
                         <img src="@Url.Action("MemoryImage", "Images", new { id = album.CoverImageId })" alt="Ảnh bìa của bộ sưu tập @album.Title" onerror="this.hidden=true; this.parentElement.classList.add('image-missing');" />
                     }
                 </a>
-                <div class="album-card-body">
-                    <div class="album-card-meta">
+                <div class="album-card-body collection-card-body">
+                    <div class="album-card-meta collection-meta">
                         <span>@album.MemoryCount kỷ niệm</span>
                         <span>Cập nhật @album.UpdatedAt.ToLocalTime().ToString("dd/MM/yyyy")</span>
                     </div>
                     <h2><a asp-action="Details" asp-route-id="@album.Id">@album.Title</a></h2>
-                    <p>@(string.IsNullOrWhiteSpace(album.Description) ? "Chưa có mô tả. Bạn có thể thêm mô tả để nhớ rõ chủ đề của bộ sưu tập này." : album.Description)</p>
-                    <div class="album-card-actions">
+                    <p>@(string.IsNullOrWhiteSpace(album.Description) ? "Chưa có mô tả. Bạn có thể thêm vài dòng để nhớ rõ vì sao những kỷ niệm này nằm cùng nhau." : album.Description)</p>
+                    <div class="album-card-actions collection-actions">
                         <a class="btn btn-primary" asp-action="Details" asp-route-id="@album.Id">Mở bộ sưu tập</a>
                         <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@album.Id">Sửa</a>
                     </div>

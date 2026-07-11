@@ -4,30 +4,41 @@
     ViewData["Title"] = "Tạo bộ sưu tập";
 }
 
-<section class="memory-form-shell">
-    <div class="memory-form-intro">
+<section class="memory-form-shell memory-writing-shell collection-form-shell">
+    <aside class="memory-form-intro paper-note-panel">
         <p class="kicker">Tạo bộ sưu tập</p>
         <h1>Đặt tên cho một nhóm kỷ niệm riêng của bạn.</h1>
         <p>Bộ sưu tập giúp gom những kỷ niệm có cùng chủ đề. Ảnh bìa sẽ được MemoLens chọn tự động từ kỷ niệm bên trong.</p>
-    </div>
-
-    <form asp-action="Create" method="post" class="memory-form-panel">
-        <div asp-validation-summary="ModelOnly" class="text-danger validation-summary mb-3"></div>
-
-        <div class="mb-3">
-            <label asp-for="Title" class="form-label">Tên bộ sưu tập</label>
-            <input asp-for="Title" class="form-control" placeholder="Ví dụ: Mùa hè năm nay" />
-            <span asp-validation-for="Title" class="text-danger"></span>
+        <div class="private-note">
+            <strong>Riêng tư mặc định</strong>
+            <span>Bộ sưu tập chỉ sắp xếp kỷ niệm trong tài khoản của bạn, không tạo bản sao hay chia sẻ công khai.</span>
         </div>
+    </aside>
 
-        <div class="mb-4">
-            <label asp-for="Description" class="form-label">Mô tả</label>
-            <textarea asp-for="Description" class="form-control" rows="5" placeholder="Ghi chú ngắn về chủ đề, thời gian hoặc cảm xúc của bộ sưu tập."></textarea>
-            <span asp-validation-for="Description" class="text-danger"></span>
-            <div class="form-text">Không bắt buộc. Tối đa 500 ký tự.</div>
-        </div>
+    <form asp-action="Create" method="post" class="memory-form-card collection-form-card">
+        <div asp-validation-summary="ModelOnly" class="text-danger validation-summary form-validation-note mb-3"></div>
 
-        <div class="memory-action-row">
+        <section class="form-section" aria-labelledby="album-create-heading">
+            <div class="form-section-heading">
+                <p class="kicker">Thông tin bộ sưu tập</p>
+                <h2 id="album-create-heading">Một chủ đề để nhìn lại</h2>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label">Tên bộ sưu tập</label>
+                <input asp-for="Title" class="form-control" placeholder="Ví dụ: Mùa hè năm nay" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="mb-0">
+                <label asp-for="Description" class="form-label">Mô tả</label>
+                <textarea asp-for="Description" class="form-control journal-textarea album-description-field" rows="5" placeholder="Ghi chú ngắn về chủ đề, thời gian hoặc cảm xúc của bộ sưu tập."></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+                <div class="form-text">Không bắt buộc. Tối đa 500 ký tự.</div>
+            </div>
+        </section>
+
+        <div class="form-actions">
             <button type="submit" class="btn btn-primary">Tạo bộ sưu tập</button>
             <a class="btn btn-outline-secondary" asp-action="Index">Hủy</a>
         </div>

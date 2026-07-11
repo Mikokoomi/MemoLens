@@ -73,6 +73,7 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 17E: Paper Note Default UI Template.
 - Phase 17F: Memory Details and Gallery Redesign.
 - Phase 17G: Create/Edit Memory Form Redesign.
+- Phase 17H: Albums, Trash, and Settings Redesign.
 
 ## 5. Tính năng cốt lõi hiện tại
 
@@ -139,7 +140,6 @@ Mọi thay đổi trong tương lai cần giữ MemoLens là một không gian r
 - Phase 16B.7: Permanent Delete Design/Implementation.
 - Phase 16F: Image Upload and Storage Tests.
 - Phase 16G: Database Cleanup Tests.
-- Phase 17H: Albums/Trash/Settings redesign.
 - Phase 17I: Final responsive QA.
 - Sau MVP: permanent delete, export data, thumbnails/compression.
 
@@ -812,3 +812,21 @@ Không thay đổi:
 - Không thay đổi auth logic, API behavior, database schema hoặc migration.
 - Không thêm API endpoint, Flutter code, AI, social feature, public sharing, theme selector hoặc `ThemePreference`.
 - Không redesign Albums, Trash hoặc Settings trong phase này.
+
+## 40. Cập nhật Phase 17H: Albums, Trash, and Settings Redesign
+
+Phase 17H đã hoàn thành cho Albums, Trash, Settings và một số trang hỗ trợ nhỏ.
+
+- `Views/Albums/Index.cshtml`, `Details.cshtml`, `AddMemories.cshtml`, `Create.cshtml`, `Edit.cshtml` và `Delete.cshtml` được làm lại theo Paper Note style, nhấn mạnh album là bộ sưu tập kỷ niệm riêng tư.
+- Album Details và Add Memories dùng card/grid thân thiện hơn trên mobile, giữ nguyên quan hệ album-memory và các action/form POST hiện có.
+- Delete Album được trình bày như thao tác đưa album vào thùng rác, nhắc rõ rằng kỷ niệm gốc và ảnh không bị xóa.
+- `Views/Trash/Index.cshtml` được làm lại thành khu vực khôi phục an toàn, tách rõ kỷ niệm đã xóa và bộ sưu tập đã xóa, vẫn không có permanent delete.
+- `Views/Settings/Index.cshtml`, `EditProfile.cshtml` và `ChangePassword.cshtml` được làm lại như không gian tài khoản riêng tư, dễ đọc hơn trên mobile.
+- `Views/Home/Privacy.cshtml` và `Views/Shared/Error.cshtml` được polish nhẹ để đồng bộ Paper Note.
+- `wwwroot/css/site.css` bổ sung các lớp `collection-hero`, `collection-card`, `collection-detail-shell`, `collection-select-card`, `trash-hero`, `trash-item`, `account-panel`, `soft-list`, `privacy-note-shell` và các rule responsive liên quan.
+
+Không thay đổi:
+
+- Không thay đổi album/trash/settings controller behavior, route, form POST behavior hoặc ownership/privacy checks.
+- Không thay đổi auth logic, API behavior, database schema hoặc migration.
+- Không thêm theme selector, `ThemePreference`, API endpoint, Flutter code, AI, social feature hoặc public sharing.

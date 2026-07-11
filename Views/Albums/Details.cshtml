@@ -4,15 +4,15 @@
     ViewData["Title"] = Model.Title;
 }
 
-<section class="album-detail">
-    <div class="memory-detail-main">
+<section class="album-detail collection-detail-shell">
+    <div class="memory-detail-main collection-detail-card">
         <p class="kicker">Bộ sưu tập riêng tư</p>
         <h1>@Model.Title</h1>
         <p class="album-description">
             @(string.IsNullOrWhiteSpace(Model.Description) ? "Bộ sưu tập này chưa có mô tả. Bạn có thể sửa để ghi lại lý do mình gom những kỷ niệm này." : Model.Description)
         </p>
 
-        <dl class="memory-facts compact">
+        <dl class="memory-facts compact collection-facts">
             <div>
                 <dt>Kỷ niệm</dt>
                 <dd>@Model.Memories.Count</dd>
@@ -23,7 +23,7 @@
             </div>
         </dl>
 
-        <div class="memory-action-row">
+        <div class="detail-actions detail-actions-inline">
             <a class="btn btn-primary" asp-action="AddMemories" asp-route-id="@Model.Id">Thêm kỷ niệm</a>
             <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model.Id">Sửa bộ sưu tập</a>
             <a class="btn btn-outline-secondary" asp-action="Delete" asp-route-id="@Model.Id">Xóa bộ sưu tập</a>
@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <aside class="memory-side-panel">
+    <aside class="paper-note-panel collection-cover-panel">
         <p class="kicker">Ảnh bìa tự động</p>
         @if (!Model.CoverImageId.HasValue)
         {
@@ -45,24 +45,25 @@
                 <img src="@Url.Action("MemoryImage", "Images", new { id = Model.CoverImageId })" alt="Ảnh bìa của bộ sưu tập @Model.Title" onerror="this.hidden=true; this.parentElement.classList.add('image-missing');" />
             </figure>
         }
+        <p class="collection-cover-note">Ảnh bìa không phải ảnh công khai. Ảnh vẫn được phục vụ qua endpoint có kiểm tra đăng nhập và quyền sở hữu.</p>
     </aside>
 </section>
 
 @if (!Model.Memories.Any())
 {
-    <section class="memory-empty-state">
+    <section class="memory-empty-state collection-empty-state">
         <p class="kicker">Chưa có kỷ niệm</p>
         <h2>Bộ sưu tập này đang chờ những khoảnh khắc đầu tiên.</h2>
-        <p>Thêm kỷ niệm đã có trong dòng thời gian của bạn. Thao tác này không tạo bản sao và không thay đổi kỷ niệm gốc.</p>
+        <p>Thêm kỷ niệm đã có trong dòng thời gian của bạn. Thao tác này chỉ thêm kỷ niệm vào bộ sưu tập, không tạo bản sao và không thay đổi kỷ niệm gốc.</p>
         <a class="btn btn-primary" asp-action="AddMemories" asp-route-id="@Model.Id">Thêm kỷ niệm</a>
     </section>
 }
 else
 {
-    <section class="memory-list album-memory-list" aria-label="Kỷ niệm trong bộ sưu tập">
+    <section class="memory-grid album-memory-grid" aria-label="Kỷ niệm trong bộ sưu tập">
         @foreach (var memory in Model.Memories)
         {
-            <article class="memory-card">
+            <article class="memory-card album-memory-card">
                 @if (!memory.CoverImageId.HasValue)
                 {
                     <div class="memory-card-photo-placeholder">
@@ -71,13 +72,13 @@ else
                 }
                 else
                 {
-                    <a class="memory-card-cover" asp-controller="Memories" asp-action="Details" asp-route-id="@memory.Id">
+                    <a class="memory-card-visual" asp-controller="Memories" asp-action="Details" asp-route-id="@memory.Id">
                         <img src="@Url.Action("MemoryImage", "Images", new { id = memory.CoverImageId })" alt="@memory.Title" onerror="this.hidden=true; this.parentElement.classList.add('image-missing');" />
                     </a>
                 }
 
-                <div>
-                    <div class="memory-card-meta">
+                <div class="memory-card-body">
+                    <div class="memory-meta">
                         <span>@memory.MemoryDate.ToString("dd/MM/yyyy")</span>
                         <span>@memory.Feeling</span>
                     </div>

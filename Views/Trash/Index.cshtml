@@ -4,13 +4,14 @@
     ViewData["Title"] = "Thùng rác";
 }
 
-<section class="memory-page-header">
+<section class="trash-hero paper-note-panel">
     <div>
         <p class="kicker">Khôi phục riêng tư</p>
         <h1>Thùng rác</h1>
-        <p>Các kỷ niệm và bộ sưu tập đã xóa sẽ xuất hiện tại đây để bạn có thể khôi phục khi cần.</p>
+        <p>Các kỷ niệm và bộ sưu tập đã xóa sẽ xuất hiện tại đây để bạn có thể khôi phục khi cần. MemoLens chưa xóa vĩnh viễn trong giai đoạn này.</p>
     </div>
-    <div class="memory-action-row">
+    <div class="collection-hero-actions">
+        <span>Khu vực khôi phục an toàn</span>
         <a class="btn btn-outline-secondary" asp-controller="Memories" asp-action="Index">Dòng thời gian</a>
         <a class="btn btn-outline-secondary" asp-controller="Albums" asp-action="Index">Bộ sưu tập</a>
     </div>
@@ -23,18 +24,19 @@
 
 @if (Model.IsEmpty)
 {
-    <section class="memory-empty-state">
+    <section class="memory-empty-state trash-safe-empty">
         <p class="kicker">Đang trống</p>
         <h2>Thùng rác đang trống.</h2>
-        <p>Những gì bạn xóa sẽ xuất hiện ở đây để có thể khôi phục. MemoLens chưa xóa vĩnh viễn trong giai đoạn này.</p>
+        <p>Những gì bạn xóa sẽ xuất hiện ở đây để có thể khôi phục. Không có nút xóa vĩnh viễn trong MVP hiện tại.</p>
     </section>
 }
 else
 {
-    <section class="trash-section" aria-labelledby="deleted-memories-title">
+    <section class="trash-section trash-paper-section" aria-labelledby="deleted-memories-title">
         <div class="trash-section-heading">
             <p class="kicker">Kỷ niệm đã xóa</p>
-            <h2 id="deleted-memories-title">Kỷ niệm đã xóa</h2>
+            <h2 id="deleted-memories-title">Kỷ niệm có thể khôi phục</h2>
+            <p>Ảnh không hiển thị trong thùng rác cho đến khi kỷ niệm được khôi phục.</p>
         </div>
 
         @if (!Model.DeletedMemories.Any())
@@ -46,9 +48,9 @@ else
             <div class="trash-grid">
                 @foreach (var memory in Model.DeletedMemories)
                 {
-                    <article class="trash-card">
+                    <article class="trash-card trash-item">
                         <div class="trash-card-placeholder">
-                            <span>Không hiển thị ảnh trong thùng rác</span>
+                            <span>Ảnh tạm ẩn trong thùng rác</span>
                         </div>
                         <div class="trash-card-body">
                             <div class="trash-meta">
@@ -76,10 +78,11 @@ else
         }
     </section>
 
-    <section class="trash-section" aria-labelledby="deleted-albums-title">
+    <section class="trash-section trash-paper-section" aria-labelledby="deleted-albums-title">
         <div class="trash-section-heading">
             <p class="kicker">Bộ sưu tập đã xóa</p>
-            <h2 id="deleted-albums-title">Bộ sưu tập đã xóa</h2>
+            <h2 id="deleted-albums-title">Bộ sưu tập có thể khôi phục</h2>
+            <p>Khôi phục album sẽ đưa album trở lại danh sách, nhưng không tự khôi phục các kỷ niệm đã bị xóa riêng.</p>
         </div>
 
         @if (!Model.DeletedAlbums.Any())
@@ -91,7 +94,7 @@ else
             <div class="trash-grid">
                 @foreach (var album in Model.DeletedAlbums)
                 {
-                    <article class="trash-card">
+                    <article class="trash-card trash-item">
                         <div class="trash-card-placeholder">
                             <span>Bộ sưu tập riêng tư</span>
                         </div>
