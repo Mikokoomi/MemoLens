@@ -1,6 +1,10 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 abstract interface class TokenStorage {
+  Future<void> saveTokens({
+    required String accessToken,
+    required String refreshToken,
+  });
   Future<void> saveAccessToken(String token);
   Future<String?> readAccessToken();
   Future<void> deleteAccessToken();
@@ -17,6 +21,30 @@ class SecureTokenStorage implements TokenStorage {
   static const _accessTokenKey = 'memolens.mobile.access_token';
   static const _refreshTokenKey = 'memolens.mobile.refresh_token';
   final FlutterSecureStorage _storage;
+
+  @override
+  Future<void> saveTokens({
+    required String accessToken,
+    required String refreshToken,
+  }) async {
+    final previousAccessToken = await readAccessToken();
+    final previousRefreshToken = await readRefreshToken();
+
+    try {
+      await saveAccessToken(accessToken);
+      await saveRefreshToken(refreshToken);
+    } catch (_) {
+      await _restoreToken(_accessTokenKey, previousAccessToken);
+      await _restoreToken(_refreshTokenKey, previousRefreshToken);
+      rethrow;
+    }
+  }
+
+  Future<void> _restoreToken(String key, String? value) {
+    return value == null
+        ? _storage.delete(key: key)
+        : _storage.write(key: key, value: value);
+  }
 
   @override
   Future<void> saveAccessToken(String token) =>
@@ -39,5 +67,10 @@ class SecureTokenStorage implements TokenStorage {
   Future<void> deleteRefreshToken() => _storage.delete(key: _refreshTokenKey);
 
   @override
-  Future<void> clearTokens() => _storage.deleteAll();
+  Future<void> clearTokens() async {
+    await Future.wait([
+      _storage.delete(key: _accessTokenKey),
+      _storage.delete(key: _refreshTokenKey),
+    ]);
+  }
 }

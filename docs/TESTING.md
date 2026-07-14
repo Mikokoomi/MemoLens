@@ -168,7 +168,30 @@ Development E2E A/B cũng đã được chạy cho register/confirm/login, Memor
 
 Chi tiết evidence và kết quả command: [MOBILE_API_FINAL_QA.md](MOBILE_API_FINAL_QA.md).
 
-## 12. Roadmap test
+## 12. Phase 19B: Flutter authentication tests
+
+Flutter auth tests dùng fake API, fake secure token storage, custom Dio adapter và Riverpod provider override; không gọi backend Development hoặc LocalDB.
+
+- Model: parse login response đúng contract, từ chối response thiếu field và không lộ token qua `toString`.
+- Repository: lưu cặp token, không lưu khi login lỗi, refresh rotation, invalid refresh, backend offline, logout local và single-flight refresh.
+- Interceptor: Bearer chỉ cho protected route, retry một lần, nhiều `401` dùng một refresh, auth endpoint không recursion và refresh fail trả session invalid an toàn.
+- Controller: bootstrap không/có token, access hết hạn, refresh invalid, backend unavailable, login và logout.
+- Widget/router: Login ở 360/390/430, Register validation, password visibility, loading chống submit lặp, confirmation page, Home identity, route guards và Logout về Login.
+
+Tổng Flutter suite sau Phase 19B: **39 test passing**.
+
+Manual integration đã chạy trên AVD `MemoLens_API_36` với backend Development:
+
+- Register UI hiển thị đúng; API chặn login trước khi email được xác nhận.
+- Sau khi mở confirmation link trên web, Flutter login thành công và hiển thị đúng user hiện tại.
+- Force-stop/mở lại app vẫn khôi phục Home từ secure storage.
+- Khi backend tạm offline, Splash hiện trạng thái `Thử lại` và không đưa user về Login; sau khi backend chạy lại, retry khôi phục phiên cũ.
+- Logout đưa app về Login và vẫn giữ trạng thái logout sau restart.
+- Tài khoản/refresh token smoke đã được dọn khỏi LocalDB.
+
+Không chờ thủ công đủ 15 phút để access token hết hạn trên emulator. Refresh rotation, concurrent `401`, old-token reuse và refresh failure được bao phủ bởi automated Flutter tests cùng backend integration suite.
+
+## 13. Roadmap test
 
 1. **Phase 16G: Database Cleanup Tests**
    - Refresh token retention, unused tag và orphan image dry-run/quarantine khi các service đó được triển khai.

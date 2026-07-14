@@ -1039,3 +1039,20 @@ Phase tiếp theo đề xuất: **Phase 19A - Flutter Foundation**.
 - Đã build thành công debug APK. Artifact chỉ là output local, không commit vào repository.
 - Không thay đổi Flutter source, ASP.NET Core source, API contract, authentication, database schema hoặc migration trong bước xác thực toolchain này.
 
+## 57. Cập nhật Phase 19B: Flutter JWT Authentication and Session Management
+
+- Flutter đã có Login, Register, confirmation-required/resend, Logout và Home phiên đã xác thực theo backend contract freeze `5e28d36`.
+- Access/refresh token chỉ được lưu bằng `flutter_secure_storage`; rotation thay cả cặp token và session invalid xóa đúng các token của MemoLens.
+- Dio Bearer interceptor dùng single-flight refresh cho các `401` đồng thời, retry protected request tối đa một lần và không refresh auth/health endpoint.
+- Splash khôi phục phiên qua `account/me`; access hết hạn được refresh một lần. Backend offline giữ token và hiển thị trạng thái có thể thử lại.
+- `AuthController` Riverpod là nguồn auth state duy nhất; go_router bảo vệ `/home`, `/login`, `/register` và `/confirm-email`.
+- Confirmation link vẫn mở MVC web; không thêm deep link. Flutter forgot/reset password UI, Timeline, Memory CRUD, ảnh và Album vẫn chưa được triển khai.
+- Automated Flutter suite hiện có 39 test, không dùng backend thật.
+- Android manual smoke đã pass trên AVD `MemoLens_API_36`: Register UI, chặn login khi email chưa xác nhận, xác nhận qua web, login thật, khôi phục phiên sau khi mở lại app, giữ token khi backend tạm offline, retry khôi phục Home và logout bền vững sau restart.
+- APK debug khai báo quyền `android.permission.INTERNET`; HTTP local debug vẫn chỉ được cho phép tới host emulator `10.0.2.2` bằng network security config riêng cho Debug.
+- Tài khoản và refresh token tạo cho manual smoke đã được xóa khỏi LocalDB sau kiểm tra.
+- Không thay đổi ASP.NET controller, DTO, auth behavior, API contract, database schema hoặc migration.
+- Tài liệu: `mobile/memolens_app/docs/AUTHENTICATION.md`.
+
+Phase tiếp theo đề xuất: **Phase 19C - Flutter Timeline and Memory CRUD**.
+

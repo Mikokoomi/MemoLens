@@ -15,10 +15,14 @@ Flutter là mobile client riêng cho MemoLens. Client này dùng JWT API đã đ
 
 ## Phase 19B - JWT Authentication
 
-- Register, confirm email, resend confirmation, login, refresh, logout, forgot/reset password và account/me theo API contract đã khóa.
-- Lưu access/refresh token chỉ trong secure storage.
-- Thêm Bearer interceptor và refresh-token rotation an toàn.
-- Không log hoặc hiển thị token.
+- Đã triển khai Register, Login, resend confirmation, account/me, refresh rotation và Logout theo API contract đã khóa.
+- Access/refresh token chỉ được lưu trong `flutter_secure_storage`; không lưu token ở SharedPreferences hoặc route.
+- Bearer interceptor dùng một refresh operation chung cho các `401` đồng thời, retry request đúng một lần và không refresh auth endpoint.
+- Splash khôi phục phiên; backend offline giữ token và hiển thị trạng thái thử lại thay vì xóa phiên.
+- Riverpod là nguồn auth state duy nhất; go_router bảo vệ `/home` và tránh user đã đăng nhập quay lại Login/Register.
+- Confirmation link hiện vẫn mở MVC web; chưa có mobile deep link. Forgot/reset password UI được hoãn dù backend đã có API.
+- Không log hoặc hiển thị token, password hay Authorization header.
+- Chi tiết: `mobile/memolens_app/docs/AUTHENTICATION.md`.
 
 ## Phase 19C - Timeline và Memory CRUD
 
