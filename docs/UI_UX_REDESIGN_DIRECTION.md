@@ -305,3 +305,10 @@ Ghi chú: selectable themes có thể là hướng tương lai sau MVP, nhưng c
 - Create Memory ưu tiên cuộn được đến Tags, Images và action row mà không bị thanh điều hướng che.
 - Memory Details có trạng thái không ảnh gọn hơn trong section `Ảnh kèm theo`, bỏ nút `Quay lại` trùng ở cuối.
 - Đây là patch polish cuối cho UI mobile lõi, không thay đổi hành vi sản phẩm, auth, API, database hoặc migration.
+
+## 17. Phase 17L - Final UI Regression and Responsive QA
+
+- Đã chạy QA hồi quy cuối cho Paper Note UI ở 360x800, 390x844, 430x932, 768x1024, 1280x720 và 1440x900.
+- Đã kiểm tra guest/auth layout, mobile topbar, desktop sidebar, mobile bottom navigation, Home, auth pages, Timeline, Create/Edit/Details Memory, Albums, Trash, Settings và Privacy.
+- Không phát hiện defect cần sửa trong app thật: không horizontal overflow, không duplicate back action, không bottom nav che nội dung cuối và active navigation đúng ở các route được kiểm tra.
+- Phase này không redesign thêm, không đổi typography, màu, card style, route, auth, API, database hoặc migration.

@@ -68,7 +68,35 @@ Các test này không dùng LocalDB, không gửi email và không tạo dữ li
 - Image upload, private image endpoint và orphan-image cleanup.
 - Permanent delete, backup/restore và UI end-to-end.
 
-## 6. Roadmap test
+## 6. Manual UI regression QA
+
+Phase 17L đã chạy manual/browser regression QA cho Paper Note UI sau khi mobile core UI được khóa ở commit `999fbc8`.
+
+Đã kiểm tra các kích thước:
+
+- 360x800
+- 390x844
+- 430x932
+- 768x1024
+- 1280x720
+- 1440x900
+
+Phạm vi kiểm tra:
+
+- Guest Home, Login, Register, Forgot Password, Reset Password, Register Confirmation, Access Denied và Privacy.
+- Authenticated Home, Timeline, search/filter query states, Create/Edit/Details/Delete Memory, Albums, Album Create/Details/Edit/Delete/Add Memories, Trash, Settings, Edit Profile, Change Password và Privacy.
+- Mobile topbar, fixed mobile bottom navigation, desktop sidebar, active navigation state, safe-area spacing, zero-image Details state và final form actions.
+- HTTP smoke cho `/`, `/Account/Login`, `/Account/Register`, `/api/v1/health` và `/swagger/index.html` trong Development.
+
+Kết quả Phase 17L:
+
+- Không phát hiện horizontal overflow ở các kích thước đã kiểm tra.
+- Không phát hiện bottom navigation che nội dung cuối ở các route được kiểm tra.
+- Focus cuối form Create Memory và Change Password vẫn hiển thị phía trên mobile bottom navigation ở 390px.
+- Không phát hiện duplicate back action trong Memory Details.
+- Không có migration mới, không thay đổi backend/auth/API/database.
+
+## 7. Roadmap test
 
 1. **Phase 16F: Image Upload and Storage Tests**
    - Upload validation, physical private storage, missing file và cleanup failure paths.

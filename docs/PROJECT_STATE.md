@@ -939,3 +939,15 @@ Không thay đổi controller, auth, API, database, migration, route, form POST 
 - Đã bỏ nút `Quay lại` trùng ở cuối Details, giữ link quay lại phía trên.
 - Không thay đổi controller, route, POST behavior, auth, API, database, upload, private image serving hoặc migration.
 
+## 49. Cập nhật Phase 17L: Final UI Regression and Responsive QA
+
+- Đã hoàn thành QA hồi quy cuối cho Paper Note UI sau commit khóa mobile `999fbc8`.
+- Đã kiểm tra responsive ở 360x800, 390x844, 430x932, 768x1024, 1280x720 và 1440x900.
+- Guest pages được kiểm tra: Home, Login, Register, Forgot Password, Reset Password, Register Confirmation, Access Denied và Privacy.
+- Authenticated pages được kiểm tra: Home, Timeline, Timeline search/filter query states, Create Memory, Memory Details, Edit/Delete Memory, Albums, Album Create/Details/Edit/Delete/Add Memories, Trash, Settings, Edit Profile, Change Password và Privacy.
+- HTTP smoke xác nhận `/`, `/Account/Login`, `/Account/Register`, `/api/v1/health` và `/swagger/index.html` hoạt động trong Development.
+- Browser QA không phát hiện horizontal overflow, duplicate back action, bottom nav che nội dung cuối, route lỗi hoặc active navigation sai ở các màn đã kiểm tra.
+- Focus cuối form Create Memory và Change Password vẫn nằm trên bottom navigation ở 390px.
+- Không có defect UI thật cần sửa trong phase này; chỉ cập nhật tài liệu QA.
+- Không thay đổi controller, model, auth, API, database, route, form POST, validation, upload, private image serving hoặc migration.
+
