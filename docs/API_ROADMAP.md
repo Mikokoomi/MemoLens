@@ -298,3 +298,14 @@ Risks:
 8. Trash API.
 
 Moi group can co manual QA va sau do automated tests.
+
+## 7. Cập nhật Phase 18B: Memory CRUD API
+
+Phase 18B đã hoàn thành phần Memory API nền tảng cho mobile:
+
+- `GET /api/v1/memories` có pagination, search, feeling/tag/date filter và newest/oldest sort.
+- `GET /api/v1/memories/{id}`, `POST`, `PUT`, `DELETE` và `POST /api/v1/memories/{id}/restore` đã có.
+- Mọi endpoint yêu cầu JWT Bearer, chỉ query current user và không cho `Admin` bypass ownership.
+- DTO không trả `UserId`, image path hoặc đường dẫn vật lý. Detail chỉ trả authorized image content URL.
+- Delete là soft delete; restore khôi phục visibility và quyền xem ảnh riêng tư.
+- Image upload API chưa được thêm. Đây là scope của Phase 18C.

@@ -283,12 +283,15 @@ Current API foundation:
 
 Current API limitations:
 
-- No memory CRUD API yet.
 - No album CRUD API yet.
 - No image upload API yet.
 - No Flutter app yet.
 
 See `docs/API_FOUNDATION.md` for the current API shape, response format, Swagger notes, limitations, and future privacy rules.
+
+## Memory CRUD API
+
+Phase 18B adds JWT-protected private endpoints for list/detail/create/update/soft-delete/restore at `/api/v1/memories`. The API supports timeline filters and pagination, scopes every query to the current user, and never exposes private image paths. Image upload APIs remain intentionally deferred to the next phase. See [Memory API documentation](docs/MEMORY_API.md).
 
 ## API Authentication Design
 

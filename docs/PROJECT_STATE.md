@@ -966,3 +966,14 @@ Phase 18A đã bổ sung automated integration tests cho upload ảnh và quyề
 
 Không thay đổi UI Paper Note, controller/model production, auth/API/database schema, upload rule, private route design hoặc migration.
 
+## 51. Cập nhật Phase 18B: Memory CRUD API cho mobile
+
+- Đã thêm `GET/POST /api/v1/memories`, `GET/PUT/DELETE /api/v1/memories/{id}` và `POST /api/v1/memories/{id}/restore`.
+- Tất cả endpoint yêu cầu JWT Bearer và scope theo current user; role `Admin` không bypass private ownership.
+- List có database pagination, search, feeling/tag/date filter và newest/oldest sort.
+- Create/update dùng DTO, validation tiếng Việt và tags trim/dedupe/reuse; owner luôn lấy từ JWT.
+- Detail chỉ trả metadata ảnh cùng authorized content URL, không lộ `UserId`, `ImagePath` hay đường dẫn vật lý.
+- Delete là soft delete, giữ file ảnh; restore đưa memory và private image access trở lại trạng thái bình thường.
+- Không thêm image upload API, không thay đổi MVC/UI/auth-token architecture/database schema và không tạo migration.
+- Test suite có 48 test pass, bao phủ ownership, validation, pagination, response privacy, update, delete và restore của Memory API.
+

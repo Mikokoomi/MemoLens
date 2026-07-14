@@ -110,7 +110,17 @@ Kết quả Phase 17L:
 - Không phát hiện duplicate back action trong Memory Details.
 - Không có migration mới, không thay đổi backend/auth/API/database.
 
-## 7. Roadmap test
+## 8. Phase 18B: Memory API integration tests
+
+`MemoryApiIntegrationTests` dùng SQLite in-memory và test upload root tạm, không dùng LocalDB hoặc ảnh Development.
+
+- Kiểm tra JWT bắt buộc, create/validation và tags trim/dedupe.
+- Kiểm tra owner/Admin isolation, filters, sort và database pagination.
+- Kiểm tra detail không lộ private path, update giữ ảnh, soft delete giữ file và restore khôi phục private image access.
+
+Tổng số test hiện tại: **48**.
+
+## 9. Roadmap test
 
 1. **Phase 16G: Database Cleanup Tests**
    - Refresh token retention, unused tag và orphan image dry-run/quarantine khi các service đó được triển khai.
