@@ -951,3 +951,18 @@ Không thay đổi controller, auth, API, database, migration, route, form POST 
 - Không có defect UI thật cần sửa trong phase này; chỉ cập nhật tài liệu QA.
 - Không thay đổi controller, model, auth, API, database, route, form POST, validation, upload, private image serving hoặc migration.
 
+## 50. Cập nhật Phase 18A: Memory Image Upload and Access Integration Tests
+
+Phase 18A đã bổ sung automated integration tests cho upload ảnh và quyền truy cập ảnh riêng tư.
+
+- Thêm `MemoryImageIntegrationTests` chạy với SQLite in-memory và MVC test host hiện có.
+- File upload test được lưu trong content root tạm theo từng test factory, không dùng LocalDB và không ghi vào `App_Data/uploads` thật. Thư mục tạm được dọn trước/sau test và khi factory dispose.
+- Đã xác minh upload hợp lệ, nhiều ảnh, `.jpg`/`.jpeg`/`.png`/`.webp`, metadata, file vật lý private và endpoint ảnh authorized.
+- Đã xác minh extension không hợp lệ, file quá 5 MB và giới hạn tối đa 10 ảnh không để lại row/file dư hoặc làm thay đổi ảnh đã có.
+- User B và role `Admin` không thể bypass quyền owner để xem/xóa ảnh của User A; guest được redirect về Login.
+- Missing file trả `404` an toàn; direct static `/uploads/...` không phục vụ ảnh private; filename Unicode/path-like được giữ trong private root bằng tên file sinh tự động.
+- Soft delete memory vẫn giữ file vật lý nhưng ẩn endpoint ảnh; restore memory khôi phục quyền truy cập ảnh.
+- Tổng suite hiện có 32 test passing. Không phát hiện defect production cần sửa.
+
+Không thay đổi UI Paper Note, controller/model production, auth/API/database schema, upload rule, private route design hoặc migration.
+

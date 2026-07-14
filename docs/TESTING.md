@@ -63,10 +63,24 @@ Privacy/ownership integration tests hiện có:
 
 Các test này không dùng LocalDB, không gửi email và không tạo dữ liệu trong database Development.
 
+Image upload and private access integration tests (Phase 18A):
+
+- `MemoryImageIntegrationTests` chạy qua MVC actions thật cho Create/Edit/DeleteImage và authorized endpoint `/Images/MemoryImage/{id}`.
+- Test host vẫn dùng SQLite in-memory, nhưng `LocalImageStorageService` được khởi tạo với một content root tạm riêng cho từng `CustomWebApplicationFactory`. Vì vậy ảnh test chỉ nằm dưới thư mục tạm `MemoLens.Tests/<guid>/App_Data/uploads`, không bao giờ ghi vào `App_Data/uploads` của app Development.
+- Thư mục upload tạm được dọn trước và sau từng image test, đồng thời factory xóa toàn bộ content root tạm khi dispose.
+- Cover valid upload, nhiều ảnh, bốn extension được hỗ trợ (`.jpg`, `.jpeg`, `.png`, `.webp`), metadata `OriginalFileName`, tên file GUID sinh tự động và file vật lý private.
+- Cover extension không hợp lệ, file lớn hơn 5 MB và ảnh thứ 11; các trường hợp này không tạo row/file mới và giữ nguyên ảnh hợp lệ đã có.
+- Xác nhận owner xem được bytes qua endpoint có authorize; User B và cả role Admin đều nhận `404`; guest nhận redirect về Login.
+- Cover missing file, static URL `/uploads/...` không truy cập được, xóa một ảnh, forged delete cross-user, filename Unicode/repeated dots/path-like và containment trong private upload root.
+- Xác nhận soft delete memory chỉ ẩn ảnh, không xóa file vật lý; restore memory làm endpoint ảnh hoạt động lại.
+
+Sau Phase 18A, suite có 32 test tự động passing.
+
 ## 5. Chưa được cover
 
-- Image upload, private image endpoint và orphan-image cleanup.
 - Permanent delete, backup/restore và UI end-to-end.
+- Orphan-image cleanup và các service cleanup/quarantine theo chiến lược dữ liệu.
+- Image decoding/compression/thumbnail vì MVP hiện tại chưa có các tính năng đó.
 
 ## 6. Manual UI regression QA
 
@@ -98,11 +112,9 @@ Kết quả Phase 17L:
 
 ## 7. Roadmap test
 
-1. **Phase 16F: Image Upload and Storage Tests**
-   - Upload validation, physical private storage, missing file và cleanup failure paths.
-2. **Phase 16G: Database Cleanup Tests**
+1. **Phase 16G: Database Cleanup Tests**
    - Refresh token retention, unused tag và orphan image dry-run/quarantine khi các service đó được triển khai.
-3. **Sau đó: UI/end-to-end tests**
+2. **Sau đó: UI/end-to-end tests**
    - Các flow quan trọng trên browser sau khi API/MVC behavior ổn định.
-4. **Sau đó: Mobile API content tests**
+3. **Sau đó: Mobile API content tests**
    - Các endpoint memory, album, image và trash chỉ sau khi API CRUD riêng tư được thiết kế và triển khai.

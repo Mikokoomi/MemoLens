@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 
@@ -25,8 +26,24 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     private const string JwtSecretKey = "MemoLens-Testing-Only-Key-At-Least-32-Bytes-2026";
 
     private readonly SqliteConnection _connection = new("Data Source=:memory:");
+    private readonly string _testContentRootPath = Path.Combine(
+        Path.GetTempPath(),
+        "MemoLens.Tests",
+        Guid.NewGuid().ToString("N"));
 
     public TestEmailSender EmailSender => Services.GetRequiredService<TestEmailSender>();
+
+    public string TestUploadRootPath => Path.Combine(_testContentRootPath, "App_Data", "uploads");
+
+    public void ClearTestUploadStorage()
+    {
+        if (Directory.Exists(_testContentRootPath))
+        {
+            Directory.Delete(_testContentRootPath, recursive: true);
+        }
+
+        Directory.CreateDirectory(_testContentRootPath);
+    }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -57,6 +74,11 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             services.RemoveAll<IEmailSender>();
             services.AddSingleton<TestEmailSender>();
             services.AddSingleton<IEmailSender>(provider => provider.GetRequiredService<TestEmailSender>());
+
+            services.RemoveAll<IImageStorageService>();
+            services.AddSingleton<IImageStorageService>(_ => new LocalImageStorageService(
+                new IsolatedWebHostEnvironment(_testContentRootPath)));
+
             services.PostConfigure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -103,6 +125,11 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         if (disposing)
         {
             _connection.Dispose();
+
+            if (Directory.Exists(_testContentRootPath))
+            {
+                Directory.Delete(_testContentRootPath, recursive: true);
+            }
         }
 
         base.Dispose(disposing);
@@ -129,4 +156,25 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     }
 
     public sealed record CapturedEmail(string Email, string Subject, string HtmlMessage);
+
+    private sealed class IsolatedWebHostEnvironment : IWebHostEnvironment
+    {
+        public IsolatedWebHostEnvironment(string contentRootPath)
+        {
+            ContentRootPath = contentRootPath;
+            WebRootPath = Path.Combine(contentRootPath, "wwwroot");
+        }
+
+        public string ApplicationName { get; set; } = "MemoLens.Tests";
+
+        public IFileProvider WebRootFileProvider { get; set; } = new NullFileProvider();
+
+        public string WebRootPath { get; set; }
+
+        public string EnvironmentName { get; set; } = "Testing";
+
+        public string ContentRootPath { get; set; }
+
+        public IFileProvider ContentRootFileProvider { get; set; } = new NullFileProvider();
+    }
 }
