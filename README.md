@@ -52,7 +52,7 @@ Run the automated smoke tests with:
 dotnet test
 ```
 
-The test suite uses an isolated SQLite in-memory database and does not use LocalDB development data. It currently covers smoke checks, core API auth, and MVC privacy/ownership integration flows. See [docs/TESTING.md](docs/TESTING.md) for current coverage and the test roadmap.
+The test suite uses an isolated SQLite in-memory database and does not use LocalDB development data. It currently contains 90 passing tests covering smoke checks, MVC privacy/ownership, API auth, Memory, private image, Album, and final mobile API security/contract regression. See [docs/TESTING.md](docs/TESTING.md) and [docs/MOBILE_API_FINAL_QA.md](docs/MOBILE_API_FINAL_QA.md).
 
 ## Database Setup Notes
 
@@ -473,6 +473,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - Approved static Paper Note prototype ported into Razor layout and CSS, with Vietnamese desktop/mobile navigation and safe mobile bottom navigation spacing.
 - Private Memory API and JWT-protected Memory Image API added for future mobile clients.
 - Private Album CRUD and membership API added for future mobile clients. See [docs/ALBUM_API.md](docs/ALBUM_API.md).
+- Final mobile API security/contract QA completed for auth, Memory, private image, and Album; these contracts are ready to freeze for Flutter foundation. See [docs/MOBILE_API_FINAL_QA.md](docs/MOBILE_API_FINAL_QA.md).
 - No AI or social features.
 - No admin dashboard yet.
 

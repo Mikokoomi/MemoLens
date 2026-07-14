@@ -493,8 +493,8 @@ public class MemoriesController : ControllerBase
             return 1;
         }
 
-        var maximumPage = (int.MaxValue / pageSize) + 1;
-        return Math.Min(page.Value, maximumPage);
+        var maximumPage = ((long)int.MaxValue / pageSize) + 1;
+        return (int)Math.Min(page.Value, maximumPage);
     }
 
     private static IReadOnlyList<string> NormalizeTags(IReadOnlyList<string?>? tags)

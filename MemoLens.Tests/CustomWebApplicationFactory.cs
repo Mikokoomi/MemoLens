@@ -1,5 +1,7 @@
 using System.Collections.Concurrent;
 using System.Data;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using MemoLens.Data;
 using MemoLens.Models.Auth;
@@ -35,6 +37,48 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
     public string TestUploadRootPath => Path.Combine(_testContentRootPath, "App_Data", "uploads");
 
+    protected virtual string TestEnvironmentName => "Testing";
+
+    public string CreateTestAccessToken(
+        string? userId,
+        DateTime expiresAtUtc,
+        string? signingSecret = null,
+        string? email = null,
+        IReadOnlyCollection<string>? roles = null)
+    {
+        var claims = new List<Claim>
+        {
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
+
+        if (!string.IsNullOrWhiteSpace(userId))
+        {
+            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, userId));
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, userId));
+        }
+
+        if (!string.IsNullOrWhiteSpace(email))
+        {
+            claims.Add(new Claim(JwtRegisteredClaimNames.Email, email));
+        }
+
+        if (roles is not null)
+        {
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+        }
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingSecret ?? JwtSecretKey));
+        var token = new JwtSecurityToken(
+            issuer: JwtIssuer,
+            audience: JwtAudience,
+            claims: claims,
+            notBefore: expiresAtUtc.AddMinutes(-5),
+            expires: expiresAtUtc,
+            signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
     public void ClearTestUploadStorage()
     {
         if (Directory.Exists(_testContentRootPath))
@@ -47,7 +91,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseEnvironment("Testing");
+        builder.UseEnvironment(TestEnvironmentName);
         builder.ConfigureAppConfiguration((_, configuration) =>
         {
             configuration.AddInMemoryCollection(new Dictionary<string, string?>

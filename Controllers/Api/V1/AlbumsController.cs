@@ -50,7 +50,7 @@ public sealed class AlbumsController : ControllerBase
         }
 
         var pageSize = NormalizePageSize(queryParameters.PageSize);
-        var page = NormalizePage(queryParameters.Page);
+        var page = NormalizePage(queryParameters.Page, pageSize);
         var search = CleanOptionalText(queryParameters.Search);
 
         IQueryable<Album> albums = _context.Albums
@@ -140,11 +140,12 @@ public sealed class AlbumsController : ControllerBase
             return InvalidBearerToken();
         }
 
+        var pageSize = NormalizePageSize(queryParameters.PageSize);
         var details = await BuildDetailsResponseAsync(
             id,
             userId,
-            NormalizePage(queryParameters.Page),
-            NormalizePageSize(queryParameters.PageSize));
+            NormalizePage(queryParameters.Page, pageSize),
+            pageSize);
         if (details is null)
         {
             return AlbumNotFound();
@@ -589,7 +590,16 @@ public sealed class AlbumsController : ControllerBase
         };
     }
 
-    private static int NormalizePage(int? page) => Math.Max(page ?? 1, 1);
+    private static int NormalizePage(int? page, int pageSize)
+    {
+        if (!page.HasValue || page.Value < 1)
+        {
+            return 1;
+        }
+
+        var maximumPage = ((long)int.MaxValue / pageSize) + 1;
+        return (int)Math.Min(page.Value, maximumPage);
+    }
 
     private static int NormalizePageSize(int? pageSize) => Math.Clamp(pageSize ?? DefaultPageSize, 1, MaximumPageSize);
 

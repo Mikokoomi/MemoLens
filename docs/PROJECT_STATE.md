@@ -1006,3 +1006,18 @@ Phase tiếp theo đề xuất: **Phase 18D - Private Album CRUD API**.
 
 Phase tiếp theo đề xuất: **Phase 18E - Private Trash API**.
 
+## 54. Cập nhật Phase 18E: Complete Mobile API Security QA
+
+- Đã hoàn thành security, privacy, contract và regression QA cho API auth, account, Memory, private image và Album trước Flutter.
+- Thêm 8 integration test cho JWT malformed/sai chữ ký/hết hạn/thiếu user claim, MVC cookie boundary, HTTP error contract, pagination biên, refresh token hết hạn, sensitive fields và Swagger.
+- Tổng suite hiện có **90 test passing** với SQLite in-memory và upload root tạm.
+- Phát hiện và sửa lỗi tràn `int` trong tính offset pagination của Album API; đồng bộ phép tính `long` an toàn cho Memory/Album list và Album details.
+- Development E2E với User A/B xác nhận cross-owner Memory/Image/Album đều trả `404`, soft-delete/restore giữ đúng privacy, refresh rotation/reuse/logout hoạt động đúng.
+- Build sạch, NuGet vulnerability audit sạch, EF không có pending model changes.
+- Không thêm endpoint, không thay đổi auth architecture, response DTO, database schema hoặc migration.
+- Tài liệu QA chi tiết: `docs/MOBILE_API_FINAL_QA.md`.
+
+API auth, Memory, private image và Album được xem là contract freeze candidate cho Flutter foundation. Mobile Trash/Settings API vẫn chưa có và phải được coi là giới hạn hiện tại.
+
+Phase tiếp theo đề xuất: **Phase 19A - Flutter Foundation**.
+

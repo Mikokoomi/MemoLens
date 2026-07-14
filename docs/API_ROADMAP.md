@@ -341,3 +341,19 @@ Phase 18D đã hoàn thành backend API cho bộ sưu tập riêng tư:
 Contract chi tiết: [ALBUM_API.md](ALBUM_API.md).
 
 Phase tiếp theo đề xuất: **Phase 18E - Private Trash API**.
+
+## 10. Cập nhật Phase 18E: Mobile API Security and Contract Freeze QA
+
+Phase 18E không thêm endpoint mới. Phase này review và khóa QA cho API auth, account, Memory, private image và Album đã triển khai.
+
+- Bổ sung ma trận JWT lỗi/hết hạn/thiếu claim và xác nhận MVC cookie không authorize Bearer API.
+- Xác nhận User B và role `Admin` không bypass private ownership.
+- Xác nhận response không lộ owner key, token hash hoặc private image path.
+- Xác nhận malformed JSON, unsupported media type, sai method/route và pagination biên không trả HTML/stack trace.
+- Swagger Development-only có Bearer scheme, endpoint paths và multipart image upload.
+- Sửa lỗi overflow pagination được test chứng minh trong Memory/Album API mà không thay đổi contract hợp lệ.
+- Tổng suite sau QA: **90 test passing**.
+
+Contract freeze và evidence: [MOBILE_API_FINAL_QA.md](MOBILE_API_FINAL_QA.md).
+
+Mobile Trash API và Settings API chưa được triển khai. Phase tiếp theo đề xuất: **Phase 19A - Flutter Foundation**, chỉ tích hợp các contract đã được khóa.
