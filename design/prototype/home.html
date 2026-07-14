@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MemoLens - Home Prototype</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="home.html">MemoLens</a>
+      <nav class="side-nav" aria-label="Prototype navigation">
+        <a class="nav-item active" href="timeline.html"><span class="nav-icon icon-timeline"></span>Timeline</a>
+        <a class="nav-item" href="timeline.html"><span class="nav-icon icon-memory"></span>Memories</a>
+        <a class="nav-item" href="albums.html"><span class="nav-icon icon-album"></span>Albums</a>
+        <a class="nav-item" href="trash.html"><span class="nav-icon icon-trash"></span>Trash</a>
+        <a class="nav-item" href="settings.html"><span class="nav-icon icon-settings"></span>Settings</a>
+      </nav>
+    </aside>
+    <div>
+      <header class="topbar">
+        <a class="brand" href="home.html">MemoLens</a>
+        <span class="menu-dot">☰</span>
+      </header>
+      <main class="main">
+        <section class="home-hero">
+          <div class="hero-copy">
+            <h1 class="hero-title">Lưu giữ những kỷ niệm của bạn</h1>
+            <p>MemoLens giúp bạn lưu lại khoảnh khắc đáng nhớ trong một cuốn sổ ảnh riêng tư, ấm áp và chỉ thuộc về bạn.</p>
+            <div class="hero-actions">
+              <a class="btn primary" href="login.html">Đăng nhập</a>
+              <a class="btn" href="register.html">Tạo tài khoản</a>
+            </div>
+          </div>
+          <div class="collage" aria-label="Paper photo collage">
+            <div class="note-sheet"></div>
+            <div class="polaroid one tape"><div class="photo-fill photo-sunset"></div></div>
+            <div class="polaroid two tape"><div class="photo-fill photo-coffee"></div></div>
+            <div class="polaroid three tape"><div class="photo-fill photo-bike"></div></div>
+          </div>
+        </section>
+        <section class="feature-grid" aria-label="Tính năng chính">
+          <article class="feature-card paper-card tape">
+            <div class="feature-icon">◇</div>
+            <h3>Riêng tư</h3>
+            <p>Kỷ niệm chỉ dành cho bạn xem lại.</p>
+          </article>
+          <article class="feature-card paper-card tape">
+            <div class="feature-icon">♡</div>
+            <h3>Kỷ niệm</h3>
+            <p>Ghi lại câu chuyện, ngày và cảm xúc.</p>
+          </article>
+          <article class="feature-card paper-card tape">
+            <div class="feature-icon">▣</div>
+            <h3>Bộ sưu tập</h3>
+            <p>Sắp xếp ảnh theo chủ đề yêu thích.</p>
+          </article>
+        </section>
+      </main>
+    </div>
+  </div>
+  <nav class="mobile-nav" aria-label="Mobile prototype navigation">
+    <a class="active" href="timeline.html">Timeline</a>
+    <a href="timeline.html">Memory</a>
+    <a href="albums.html">Albums</a>
+    <a href="trash.html">Trash</a>
+    <a href="settings.html">Settings</a>
+  </nav>
+</body>
+</html>

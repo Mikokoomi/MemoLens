@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MemoLens - Album Details Prototype</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="home.html">MemoLens</a>
+      <nav class="side-nav">
+        <a class="nav-item" href="timeline.html"><span class="nav-icon icon-timeline"></span>Timeline</a>
+        <a class="nav-item" href="timeline.html"><span class="nav-icon icon-memory"></span>Memories</a>
+        <a class="nav-item active" href="albums.html"><span class="nav-icon icon-album"></span>Albums</a>
+        <a class="nav-item" href="trash.html"><span class="nav-icon icon-trash"></span>Trash</a>
+        <a class="nav-item" href="settings.html"><span class="nav-icon icon-settings"></span>Settings</a>
+      </nav>
+    </aside>
+    <div>
+      <header class="topbar"><a class="brand" href="home.html">MemoLens</a><span class="menu-dot">☰</span></header>
+      <main class="main">
+        <a class="btn" href="albums.html">← Quay lại Albums</a>
+        <header class="page-header" style="margin-top:18px;">
+          <div>
+            <h1 class="page-title">Chuyến đi Đà Lạt</h1>
+            <p class="subtitle">Những khoảnh khắc đáng nhớ ở thành phố ngàn hoa.</p>
+            <div class="meta-row" style="margin-top:16px;"><span class="chip">28 kỷ niệm</span><span class="chip">20/06/2024</span><span class="chip">Riêng tư</span></div>
+          </div>
+          <a class="btn primary" href="#">+ Thêm kỷ niệm</a>
+        </header>
+        <section class="search-row"><div class="search">⌕ Tìm kỷ niệm...</div><a class="btn" href="#">Lọc</a></section>
+        <section class="memory-grid">
+          <article class="photo-card tape"><div class="cover photo-rain"></div><h2>Sáng sớm bên hồ Xuân Hương</h2><div class="card-meta"><p>20/06/2024</p><span class="chip">Buổi sáng</span></div></article>
+          <article class="photo-card tape"><div class="cover photo-coffee"></div><h2>Quán cà phê nhỏ xinh</h2><div class="card-meta"><p>20/06/2024</p><span class="chip">Café</span></div></article>
+          <article class="photo-card tape"><div class="cover photo-mountain"></div><h2>Sương mù trên đồi thông</h2><div class="card-meta"><p>21/06/2024</p><span class="chip">Thiên nhiên</span></div></article>
+          <article class="photo-card tape"><div class="cover photo-bike"></div><h2>Vườn hoa cẩm tú cầu</h2><div class="card-meta"><p>21/06/2024</p><span class="chip">Check-in</span></div></article>
+          <article class="photo-card tape"><div class="cover photo-sunset"></div><h2>Góc nhỏ yên bình</h2><div class="card-meta"><p>21/06/2024</p><span class="chip">Yên bình</span></div></article>
+          <article class="photo-card tape"><div class="cover photo-mountain"></div><h2>Nhà thờ Con Gà</h2><div class="card-meta"><p>22/06/2024</p><span class="chip">Địa điểm</span></div></article>
+        </section>
+      </main>
+    </div>
+  </div>
+  <nav class="mobile-nav"><a href="timeline.html">Timeline</a><a href="timeline.html">Memory</a><a class="active" href="albums.html">Albums</a><a href="trash.html">Trash</a><a href="settings.html">Settings</a></nav>
+</body>
+</html>

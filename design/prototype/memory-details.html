@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MemoLens - Memory Details Prototype</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="home.html">MemoLens</a>
+      <nav class="side-nav">
+        <a class="nav-item" href="timeline.html"><span class="nav-icon icon-timeline"></span>Timeline</a>
+        <a class="nav-item active" href="timeline.html"><span class="nav-icon icon-memory"></span>Memories</a>
+        <a class="nav-item" href="albums.html"><span class="nav-icon icon-album"></span>Albums</a>
+        <a class="nav-item" href="trash.html"><span class="nav-icon icon-trash"></span>Trash</a>
+        <a class="nav-item" href="settings.html"><span class="nav-icon icon-settings"></span>Settings</a>
+      </nav>
+    </aside>
+    <div>
+      <header class="topbar"><a class="brand" href="home.html">MemoLens</a><span class="menu-dot">☰</span></header>
+      <main class="main">
+        <section class="detail-layout">
+          <a class="btn" href="timeline.html" style="justify-self:start;">← Quay lại</a>
+          <header>
+            <h1 class="page-title">Đà Lạt, ngày mưa</h1>
+            <div class="meta-row" style="margin-top:18px;"><span class="chip">20/06/2024</span><span class="chip">Bình yên</span><span class="chip">Đà Lạt, Lâm Đồng</span></div>
+          </header>
+          <section class="gallery">
+            <div class="detail-photo photo-mountain"></div>
+            <div class="detail-photo photo-rain"></div>
+            <div class="detail-photo photo-coffee"></div>
+            <div class="detail-photo photo-bike"></div>
+          </section>
+          <article class="story-card paper-card">
+            <h2>Câu chuyện</h2>
+            <p>Một ngày mưa nhẹ ở Đà Lạt. Không có kế hoạch gì đặc biệt, chỉ đơn giản là dạo chơi, hít thở không khí se lạnh và ngắm nhìn thành phố qua những ô cửa kính mờ.</p>
+            <p>Những khoảnh khắc bình yên như thế luôn khiến mình muốn lưu giữ lại.</p>
+            <div class="chip-row"><span class="chip">#dalat</span><span class="chip">#mua</span><span class="chip">#bìnhyên</span></div>
+            <div class="detail-actions">
+              <a class="btn" href="edit-memory.html">Sửa</a>
+              <a class="btn danger" href="#">Xóa</a>
+              <a class="btn primary" href="timeline.html">Quay lại</a>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+  </div>
+  <nav class="mobile-nav"><a href="timeline.html">Timeline</a><a class="active" href="timeline.html">Memory</a><a href="albums.html">Albums</a><a href="trash.html">Trash</a><a href="settings.html">Settings</a></nav>
+</body>
+</html>

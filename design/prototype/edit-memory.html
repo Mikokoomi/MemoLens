@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MemoLens - Edit Memory Prototype</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="home.html">MemoLens</a>
+      <nav class="side-nav">
+        <a class="nav-item" href="timeline.html"><span class="nav-icon icon-timeline"></span>Timeline</a>
+        <a class="nav-item active" href="timeline.html"><span class="nav-icon icon-memory"></span>Memories</a>
+        <a class="nav-item" href="albums.html"><span class="nav-icon icon-album"></span>Albums</a>
+        <a class="nav-item" href="trash.html"><span class="nav-icon icon-trash"></span>Trash</a>
+        <a class="nav-item" href="settings.html"><span class="nav-icon icon-settings"></span>Settings</a>
+      </nav>
+    </aside>
+    <div>
+      <header class="topbar"><a class="brand" href="home.html">MemoLens</a><span class="menu-dot">☰</span></header>
+      <main class="main">
+        <section class="form-shell">
+          <header class="page-header">
+            <div>
+              <h1 class="page-title">Chỉnh sửa kỷ niệm</h1>
+              <p class="subtitle">Lưu giữ những khoảnh khắc đáng nhớ.</p>
+            </div>
+            <a class="btn primary" href="#">Lưu thay đổi</a>
+          </header>
+          <form class="form-card paper-card tape">
+            <section class="form-section">
+              <div class="form-row">
+                <label class="field"><span>Tiêu đề</span><input class="input" value="Hoàng hôn bên biển"></label>
+                <label class="field"><span>Ngày</span><input class="input" value="15/06/2024"></label>
+                <label class="field"><span>Địa điểm</span><input class="input" value="Phan Thiết"></label>
+              </div>
+            </section>
+            <section class="form-section">
+              <h2>Câu chuyện</h2>
+              <textarea class="textarea">Một buổi chiều yên tĩnh bên bờ biển, gió nhẹ và hoàng hôn thật đẹp.</textarea>
+            </section>
+            <section class="form-section">
+              <h2>Thẻ</h2>
+              <div class="chip-row"><span class="chip">Hoàng hôn ×</span><span class="chip">Biển ×</span><span class="chip">Bình yên ×</span><span class="chip">+ Thêm thẻ</span></div>
+            </section>
+            <section class="form-section">
+              <h2>Ảnh kèm theo</h2>
+              <div class="edit-photos">
+                <div class="thumb photo-sunset"><span class="remove">×</span></div>
+                <div class="thumb photo-coffee"><span class="remove">×</span></div>
+                <div class="thumb photo-sunset"><span class="remove">×</span></div>
+                <div class="thumb photo-rain"><span class="remove">×</span></div>
+              </div>
+              <div class="upload-box" style="margin-top:18px;">Thêm ảnh khác</div>
+            </section>
+            <div class="form-actions"><a class="btn" href="memory-details.html">Hủy</a><button class="btn primary" type="button">Lưu thay đổi</button></div>
+          </form>
+        </section>
+      </main>
+    </div>
+  </div>
+  <nav class="mobile-nav"><a href="timeline.html">Timeline</a><a class="active" href="timeline.html">Memory</a><a href="albums.html">Albums</a><a href="trash.html">Trash</a><a href="settings.html">Settings</a></nav>
+</body>
+</html>

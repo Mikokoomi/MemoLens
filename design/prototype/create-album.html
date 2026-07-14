@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MemoLens - Create Album Prototype</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="home.html">MemoLens</a>
+      <nav class="side-nav">
+        <a class="nav-item" href="timeline.html"><span class="nav-icon icon-timeline"></span>Timeline</a>
+        <a class="nav-item" href="timeline.html"><span class="nav-icon icon-memory"></span>Memories</a>
+        <a class="nav-item active" href="albums.html"><span class="nav-icon icon-album"></span>Albums</a>
+        <a class="nav-item" href="trash.html"><span class="nav-icon icon-trash"></span>Trash</a>
+        <a class="nav-item" href="settings.html"><span class="nav-icon icon-settings"></span>Settings</a>
+      </nav>
+    </aside>
+    <div>
+      <header class="topbar"><a class="brand" href="home.html">MemoLens</a><span class="menu-dot">☰</span></header>
+      <main class="main">
+        <section class="form-shell">
+          <header class="page-header">
+            <div><h1 class="page-title">Tạo bộ sưu tập</h1><p class="subtitle">Tạo một bộ sưu tập mới để lưu giữ những khoảnh khắc đáng nhớ.</p></div>
+          </header>
+          <form class="form-card paper-card tape">
+            <section class="form-section">
+              <label class="field"><span>Tên bộ sưu tập</span><input class="input" placeholder="Nhập tên bộ sưu tập..."></label>
+            </section>
+            <section class="form-section">
+              <label class="field"><span>Mô tả ngắn</span><textarea class="textarea" style="min-height:100px;" placeholder="Viết vài dòng mô tả về bộ sưu tập này..."></textarea></label>
+            </section>
+            <section class="form-section">
+              <h2>Chọn kỷ niệm</h2>
+              <div class="upload-box">Bạn có thể thêm kỷ niệm vào bộ sưu tập sau khi tạo xong.</div>
+            </section>
+            <div class="form-actions"><a class="btn" href="albums.html">Hủy</a><button class="btn primary" type="button">Tạo bộ sưu tập</button></div>
+          </form>
+        </section>
+      </main>
+    </div>
+  </div>
+  <nav class="mobile-nav"><a href="timeline.html">Timeline</a><a href="timeline.html">Memory</a><a class="active" href="albums.html">Albums</a><a href="trash.html">Trash</a><a href="settings.html">Settings</a></nav>
+</body>
+</html>

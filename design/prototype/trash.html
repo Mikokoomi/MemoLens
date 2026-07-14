@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MemoLens - Trash Prototype</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="home.html">MemoLens</a>
+      <nav class="side-nav">
+        <a class="nav-item" href="timeline.html"><span class="nav-icon icon-timeline"></span>Timeline</a>
+        <a class="nav-item" href="timeline.html"><span class="nav-icon icon-memory"></span>Memories</a>
+        <a class="nav-item" href="albums.html"><span class="nav-icon icon-album"></span>Albums</a>
+        <a class="nav-item active" href="trash.html"><span class="nav-icon icon-trash"></span>Trash</a>
+        <a class="nav-item" href="settings.html"><span class="nav-icon icon-settings"></span>Settings</a>
+      </nav>
+    </aside>
+    <div>
+      <header class="topbar"><a class="brand" href="home.html">MemoLens</a><span class="menu-dot">☰</span></header>
+      <main class="main">
+        <header class="page-header"><div><h1 class="page-title">Thùng rác</h1><p class="subtitle">Các kỷ niệm và bộ sưu tập đã xóa được lưu tạm thời trước khi xử lý sau.</p></div></header>
+        <section class="trash-section paper-card">
+          <h2>Kỷ niệm đã xóa</h2>
+          <div class="trash-list">
+            <article class="trash-item"><div class="cover photo-sunset"></div><div><h3>Hoàng hôn bên biển</h3><p>Đã xóa: 18/06/2024 · Còn 12 ngày</p></div><span class="chip">Phan Thiết</span><a class="btn soft" href="#">Khôi phục</a></article>
+            <article class="trash-item"><div class="cover photo-coffee"></div><div><h3>Cà phê cuối tuần</h3><p>Đã xóa: 16/06/2024 · Còn 10 ngày</p></div><span class="chip">Sài Gòn</span><a class="btn soft" href="#">Khôi phục</a></article>
+            <article class="trash-item"><div class="cover photo-mountain"></div><div><h3>Đà Lạt, ngày mưa</h3><p>Đã xóa: 14/06/2024 · Còn 8 ngày</p></div><span class="chip">Đà Lạt</span><a class="btn soft" href="#">Khôi phục</a></article>
+          </div>
+        </section>
+        <section class="trash-section paper-card">
+          <h2>Bộ sưu tập đã xóa</h2>
+          <div class="trash-list">
+            <article class="trash-item"><div class="cover photo-mountain"></div><div><h3>Hành trình miền núi</h3><p>24 kỷ niệm · Còn 4 ngày</p></div><span class="chip">Album</span><a class="btn soft" href="#">Khôi phục</a></article>
+            <article class="trash-item"><div class="cover photo-sunset"></div><div><h3>Những buổi sáng</h3><p>12 kỷ niệm · Còn 2 ngày</p></div><span class="chip">Album</span><a class="btn soft" href="#">Khôi phục</a></article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <nav class="mobile-nav"><a href="timeline.html">Timeline</a><a href="timeline.html">Memory</a><a href="albums.html">Albums</a><a class="active" href="trash.html">Trash</a><a href="settings.html">Settings</a></nav>
+</body>
+</html>

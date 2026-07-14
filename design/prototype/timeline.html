@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MemoLens - Timeline Prototype</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="home.html">MemoLens</a>
+      <nav class="side-nav">
+        <a class="nav-item active" href="timeline.html"><span class="nav-icon icon-timeline"></span>Timeline</a>
+        <a class="nav-item" href="timeline.html"><span class="nav-icon icon-memory"></span>Memories</a>
+        <a class="nav-item" href="albums.html"><span class="nav-icon icon-album"></span>Albums</a>
+        <a class="nav-item" href="trash.html"><span class="nav-icon icon-trash"></span>Trash</a>
+        <a class="nav-item" href="settings.html"><span class="nav-icon icon-settings"></span>Settings</a>
+      </nav>
+    </aside>
+    <div>
+      <header class="topbar"><a class="brand" href="home.html">MemoLens</a><span class="menu-dot">☰</span></header>
+      <main class="main">
+        <header class="page-header">
+          <div>
+            <h1 class="page-title">Những kỷ niệm của bạn</h1>
+            <p class="subtitle">Lưu giữ những khoảnh khắc đáng nhớ.</p>
+          </div>
+          <a class="btn primary" href="create-memory.html">+ Tạo kỷ niệm</a>
+        </header>
+        <section class="search-row" aria-label="Tìm kiếm và bộ lọc">
+          <div class="search">⌕ Tìm kiếm kỷ niệm...</div>
+          <a class="btn" href="#">Bộ lọc</a>
+        </section>
+        <section class="memory-grid">
+          <article class="photo-card tape">
+            <a href="memory-details.html"><div class="cover photo-mountain"></div></a>
+            <h2>Đà Lạt, ngày mưa</h2>
+            <div class="card-meta"><p>20/06/2024</p><span class="chip">Đà Lạt</span></div>
+          </article>
+          <article class="photo-card tape">
+            <a href="memory-details.html"><div class="cover photo-sunset"></div></a>
+            <h2>Hoàng hôn bên biển</h2>
+            <div class="card-meta"><p>15/06/2024</p><span class="chip">Phan Thiết</span></div>
+          </article>
+          <article class="photo-card tape">
+            <a href="memory-details.html"><div class="cover photo-coffee"></div></a>
+            <h2>Cà phê cuối tuần</h2>
+            <div class="card-meta"><p>08/06/2024</p><span class="chip">Sài Gòn</span></div>
+          </article>
+          <article class="photo-card tape">
+            <a href="memory-details.html"><div class="cover photo-sunset"></div></a>
+            <h2>Buổi chiều yên bình</h2>
+            <div class="card-meta"><p>02/06/2024</p><span class="chip">Phú Quốc</span></div>
+          </article>
+          <article class="photo-card tape">
+            <a href="memory-details.html"><div class="cover photo-mountain"></div></a>
+            <h2>Chinh phục Fansipan</h2>
+            <div class="card-meta"><p>28/05/2024</p><span class="chip">Lào Cai</span></div>
+          </article>
+          <article class="photo-card tape">
+            <a href="memory-details.html"><div class="cover photo-bike"></div></a>
+            <h2>Đạp xe quanh phố</h2>
+            <div class="card-meta"><p>22/05/2024</p><span class="chip">Hà Nội</span></div>
+          </article>
+        </section>
+      </main>
+    </div>
+  </div>
+  <nav class="mobile-nav">
+    <a class="active" href="timeline.html">Timeline</a><a href="timeline.html">Memory</a><a href="albums.html">Albums</a><a href="trash.html">Trash</a><a href="settings.html">Settings</a>
+  </nav>
+</body>
+</html>
