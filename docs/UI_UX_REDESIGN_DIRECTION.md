@@ -263,6 +263,9 @@ Các component sau nên được định nghĩa dần trong Razor partials hoặ
 11. **Phase 17K.3: Fix Paper Note Scale, Typography and Card Layout**
    - Sửa scale chữ và mức độ dùng display font để bớt oversized/playful, làm paper background nhẹ hơn, cố định tỷ lệ ảnh memory card 4:3, làm search/filter compact hơn và chỉnh Create/Edit Memory thành form giấy tập trung hơn.
    - Trạng thái: đã implement trong Phase 17K.3 bằng Razor class refinement và CSS override cuối file. Không thay đổi controller, route, form POST, auth, API, database, migration hoặc product behavior.
+12. **Phase 17K.5: Port Approved Paper Note Prototype to Razor**
+   - Port prototype Paper Note đã duyệt vào layout Razor và lớp CSS thật: sidebar/bottom navigation tiếng Việt, typography Playpen Sans/Be Vietnam Pro, photo-note card, form giấy và safe-area cho mobile.
+   - Trạng thái: đã implement. Dữ liệu model thật, route, form POST, validation, ảnh riêng tư, auth, API, database và migration được giữ nguyên.
 
 Ghi chú: selectable themes có thể là hướng tương lai sau MVP, nhưng chưa thuộc Phase 17E. MemoLens hiện chỉ dùng Paper Note làm giao diện mặc định.
 

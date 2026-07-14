@@ -904,3 +904,14 @@ Không thay đổi:
 
 Phase tiếp theo được đề xuất là Phase 18: MVP release/demo preparation.
 
+## 45. Cập nhật Phase 17K.5: Port Approved Paper Note Prototype to Razor
+
+Phase 17K.5 đã port giao diện static prototype Paper Note đã duyệt vào MVC Razor thật.
+
+- `Views/Shared/_Layout.cshtml` dùng sidebar desktop và bottom navigation mobile bằng tiếng Việt, nhưng vẫn giữ nguyên link, route và trạng thái đăng nhập hiện có.
+- `wwwroot/css/site.css` áp dụng khung giấy ấm, typography Playpen Sans/Be Vietnam Pro, card ảnh 4:3, form Paper Note, album, thùng rác và cài đặt theo prototype đã duyệt.
+- Các trang vẫn lấy dữ liệu thật từ model hiện có; form `asp-for`, validation, anti-forgery, upload ảnh và endpoint ảnh riêng tư không bị thay đổi.
+- Bottom navigation mobile có safe-area padding để không che nội dung cuối trang.
+
+Không thay đổi controller, auth, API, database, migration, route, form POST hoặc logic quyền riêng tư.
+

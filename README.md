@@ -467,6 +467,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - Paper Note reference alignment added.
 - Finalized Paper Note UI reference and responsive QA added.
 - Final Paper Note typography and reference matching added.
+- Approved static Paper Note prototype ported into Razor layout and CSS, with Vietnamese desktop/mobile navigation and safe mobile bottom navigation spacing.
 - No AI or social features.
 - No admin dashboard yet.
 
