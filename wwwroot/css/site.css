@@ -6050,3 +6050,140 @@ body.memolens-shell {
 @media (max-width: 339.98px) {
   .prototype-hero-actions { grid-template-columns: 1fr; }
 }
+
+/* Phase 17K.5.3: final mobile scroll and details polish. */
+html,
+body {
+  scroll-padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px));
+}
+
+.prototype-detail-media {
+  margin-top: 26px;
+}
+
+.prototype-detail-media h2 {
+  margin: 0 0 12px;
+  color: #4a3324;
+  font-family: var(--ml-font-display);
+  font-size: 23px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.prototype-detail-media .prototype-detail-gallery {
+  margin-top: 0;
+}
+
+.prototype-gallery-empty {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  padding: 14px 16px;
+  border: 1px solid #e1d4c4;
+  border-radius: 10px;
+  color: #725f50;
+  background: rgba(255, 253, 248, .88);
+}
+
+.prototype-gallery-empty strong {
+  display: block;
+  color: #513c2d;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.prototype-gallery-empty span {
+  display: block;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.prototype-home .btn-primary {
+  box-shadow: 0 7px 16px rgba(96, 62, 31, .14);
+}
+
+@media (max-width: 920px) {
+  .app-main-paper {
+    padding-bottom: calc(170px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .prototype-home,
+  .prototype-timeline,
+  .prototype-memory-form-shell,
+  .prototype-memory-details,
+  .prototype-feature-grid,
+  .prototype-detail-media,
+  .prototype-story-card,
+  .prototype-detail-actions,
+  .prototype-form-actions,
+  .prototype-upload-box,
+  .prototype-form-section,
+  .prototype-memory-card,
+  .prototype-empty-state {
+    scroll-margin-bottom: 120px;
+  }
+
+  .mobile-bottom-nav {
+    min-height: 66px;
+    padding: 6px;
+    border-radius: 19px;
+  }
+
+  .mobile-bottom-nav a {
+    min-height: 46px;
+    padding: 3px 1px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .prototype-home,
+  .prototype-timeline,
+  .prototype-memory-form-shell,
+  .prototype-memory-details {
+    padding-bottom: calc(150px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .prototype-feature-grid {
+    padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .prototype-memory-form-shell {
+    padding-bottom: calc(180px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .prototype-memory-form input.form-control,
+  .prototype-memory-form select.form-select,
+  .prototype-memory-form textarea.form-control,
+  .prototype-upload-box input,
+  .prototype-form-actions,
+  .prototype-detail-actions {
+    scroll-margin-bottom: 130px;
+  }
+
+  .prototype-form-actions {
+    margin-bottom: calc(86px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .prototype-detail-media {
+    margin-top: 20px;
+  }
+
+  .prototype-detail-media h2 {
+    font-size: 20px;
+  }
+
+  .prototype-gallery-empty {
+    padding: 13px 14px;
+  }
+
+  .prototype-detail-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: calc(104px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .prototype-detail-actions .btn {
+    min-width: 0;
+    padding-inline: 10px;
+  }
+}

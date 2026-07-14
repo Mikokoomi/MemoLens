@@ -23,23 +23,33 @@
         </div>
     </header>
 
-    @if (hasImages)
-    {
-        <section class="prototype-detail-gallery" aria-label="Ảnh kèm theo">
-            @foreach (var image in Model.Images)
-            {
-                <figure class="prototype-detail-photo prototype-tape">
-                    <img src="@Url.Action("MemoryImage", "Images", new { id = image.Id })"
-                         alt="Ảnh trong kỷ niệm: @image.OriginalFileName"
-                         onerror="this.hidden=true; this.closest('.prototype-detail-photo').classList.add('is-missing');" />
-                    @if (!string.IsNullOrWhiteSpace(image.Caption))
-                    {
-                        <figcaption>@image.Caption</figcaption>
-                    }
-                </figure>
-            }
-        </section>
-    }
+    <section class="prototype-detail-media" aria-label="Ảnh kèm theo">
+        <h2>Ảnh kèm theo</h2>
+        @if (hasImages)
+        {
+            <div class="prototype-detail-gallery">
+                @foreach (var image in Model.Images)
+                {
+                    <figure class="prototype-detail-photo prototype-tape">
+                        <img src="@Url.Action("MemoryImage", "Images", new { id = image.Id })"
+                             alt="Ảnh trong kỷ niệm: @image.OriginalFileName"
+                             onerror="this.hidden=true; this.closest('.prototype-detail-photo').classList.add('is-missing');" />
+                        @if (!string.IsNullOrWhiteSpace(image.Caption))
+                        {
+                            <figcaption>@image.Caption</figcaption>
+                        }
+                    </figure>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="prototype-gallery-empty">
+                <strong>Chưa có ảnh trong kỷ niệm này.</strong>
+                <span>Bạn có thể thêm ảnh khi chỉnh sửa.</span>
+            </div>
+        }
+    </section>
 
     <article class="prototype-story-card">
         <h2>Câu chuyện</h2>
@@ -58,17 +68,8 @@
         <p class="prototype-time-note">Tạo lúc @Model.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm") · Cập nhật @Model.UpdatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</p>
     </article>
 
-    @if (!hasImages)
-    {
-        <section class="prototype-gallery-empty" aria-label="Chưa có ảnh">
-            <strong>Chưa có ảnh kèm theo</strong>
-            <span>Thêm ảnh khi chỉnh sửa kỷ niệm này.</span>
-        </section>
-    }
-
     <nav class="prototype-detail-actions" aria-label="Hành động với kỷ niệm">
         <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model.Id">Sửa</a>
         <a class="btn btn-outline-secondary" asp-action="Delete" asp-route-id="@Model.Id">Xóa</a>
-        <a class="btn btn-primary" asp-action="Index">Quay lại</a>
     </nav>
 </section>

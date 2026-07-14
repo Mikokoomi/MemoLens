@@ -298,3 +298,10 @@ Ghi chú: selectable themes có thể là hướng tương lai sau MVP, nhưng c
 - CTA, collage và feature cards của Home được kiểm tra lại tại khổ điện thoại chuẩn.
 - Timeline empty state gọn và nhẹ hơn; form Create ưu tiên cuộn đầy đủ và một cột cho nhóm ngữ cảnh.
 - Đây là patch responsive có mục tiêu, không phải một lần redesign mới.
+
+## 16. Phase 17K.5.3 - Vá cuối mobile navigation và Details
+
+- Bottom navigation vẫn cố định theo Paper Note nhưng nội dung mobile có thêm scroll padding, scroll margin và khoảng cuối an toàn.
+- Create Memory ưu tiên cuộn được đến Tags, Images và action row mà không bị thanh điều hướng che.
+- Memory Details có trạng thái không ảnh gọn hơn trong section `Ảnh kèm theo`, bỏ nút `Quay lại` trùng ở cuối.
+- Đây là patch polish cuối cho UI mobile lõi, không thay đổi hành vi sản phẩm, auth, API, database hoặc migration.

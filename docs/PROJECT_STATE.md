@@ -931,3 +931,11 @@ Không thay đổi controller, auth, API, database, migration, route, form POST 
 - Vùng form có khoảng cuộn và khoảng cuối trang đủ lớn để thẻ, ảnh và nút lưu không bị che bởi bottom navigation.
 - Không thay đổi backend, auth, API, database, validation, upload, private image serving hoặc migration.
 
+## 48. Cập nhật Phase 17K.5.3: Final Mobile Navigation and Details Polish
+
+- Đã giữ fixed Paper Note bottom navigation nhưng bổ sung scroll padding và scroll margin cho nội dung mobile, form fields, upload area và action rows.
+- Create Memory có thêm khoảng cuối để Tags, Images và nút lưu có thể cuộn lên trên bottom navigation.
+- Memory Details có section `Ảnh kèm theo` rõ ràng hơn; trạng thái không có ảnh dùng card nhỏ, tách dòng tiêu đề và mô tả.
+- Đã bỏ nút `Quay lại` trùng ở cuối Details, giữ link quay lại phía trên.
+- Không thay đổi controller, route, POST behavior, auth, API, database, upload, private image serving hoặc migration.
+
