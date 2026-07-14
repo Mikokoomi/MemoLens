@@ -881,7 +881,7 @@ select {
   .app-shell {
     width: min(768px, calc(100% - 24px));
     grid-template-columns: 1fr;
-    margin: 12px auto 86px;
+    margin: 12px auto calc(104px + env(safe-area-inset-bottom, 0px));
     border-radius: 24px;
   }
 
@@ -915,7 +915,7 @@ select {
   }
 
   .main {
-    padding: 22px 18px 96px;
+    padding: 22px 18px calc(140px + env(safe-area-inset-bottom, 0px));
   }
 
   .page-header {
@@ -924,7 +924,7 @@ select {
   }
 
   .page-title {
-    font-size: clamp(31px, 9vw, 38px);
+    font-size: clamp(30px, 8.4vw, 38px);
   }
 
   .subtitle {
@@ -938,7 +938,7 @@ select {
   }
 
   .hero-title {
-    font-size: clamp(36px, 12vw, 46px);
+    font-size: clamp(34px, 10.5vw, 42px);
   }
 
   .hero-copy p {
@@ -1054,8 +1054,9 @@ select {
     z-index: 20;
     left: 12px;
     right: 12px;
-    bottom: 12px;
-    height: 58px;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    min-height: 60px;
+    padding: 6px;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     border: 1px solid var(--line);
@@ -1069,14 +1070,21 @@ select {
     display: grid;
     place-items: center;
     color: #5f4c3c;
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: 700;
+    line-height: 1.1;
+    min-width: 0;
+    overflow: hidden;
+    padding: 0 4px;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .mobile-nav a.active {
     color: var(--accent);
     background: var(--accent-soft);
-    border-radius: 18px;
+    border-radius: 16px;
   }
 }
 
@@ -1089,9 +1097,20 @@ select {
   .auth-page {
     width: 100%;
     min-height: 100vh;
+    height: 100vh;
     margin: 0;
     border-width: 0;
     border-radius: 0;
+  }
+
+  .app-shell {
+    overflow: hidden;
+  }
+
+  .main {
+    height: calc(100vh - 68px - 84px - env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    padding-bottom: 28px;
   }
 
   .auth-page::before {
@@ -1114,7 +1133,32 @@ select {
   }
 
   .feature-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .feature-card {
+    min-height: auto;
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr);
+    align-items: center;
+    column-gap: 14px;
+    padding: 16px;
+    text-align: left;
+  }
+
+  .feature-card .feature-icon {
+    margin: 0;
+  }
+
+  .feature-card h3 {
+    grid-column: 2;
+    margin-bottom: 3px;
+  }
+
+  .feature-card p {
+    grid-column: 2;
+    font-size: 12px;
   }
 
   .photo-card h2,
