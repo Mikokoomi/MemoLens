@@ -292,3 +292,9 @@ Ghi chú: selectable themes có thể là hướng tương lai sau MVP, nhưng c
 - Bốn màn hình cốt lõi dùng lại markup Razor theo Paper Note prototype: Home, Timeline, Create Memory và Memory Details.
 - Ưu tiên khoảng cách, collage/polaroid, thẻ ảnh 4:3, form giấy tập trung và gallery dán ảnh.
 - Mobile dùng thương hiệu + menu tròn, bottom nav nhãn tiếng Việt và safe-area padding; không làm thay đổi hành vi sản phẩm.
+
+## 15. Phase 17K.5.2 - Vá mobile cốt lõi
+
+- CTA, collage và feature cards của Home được kiểm tra lại tại khổ điện thoại chuẩn.
+- Timeline empty state gọn và nhẹ hơn; form Create ưu tiên cuộn đầy đủ và một cột cho nhóm ngữ cảnh.
+- Đây là patch responsive có mục tiêu, không phải một lần redesign mới.

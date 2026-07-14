@@ -923,3 +923,11 @@ Không thay đổi controller, auth, API, database, migration, route, form POST 
 - Liên kết, form POST, ràng buộc, validation, upload ảnh riêng tư và endpoint ảnh có kiểm tra quyền không thay đổi.
 - Không có thay đổi backend, auth, API, database hoặc migration.
 
+## 47. Cập nhật Phase 17K.5.2: Final Core Mobile UI Patch
+
+- Header Home mobile dùng cùng thương hiệu và nút menu tròn như các màn riêng tư.
+- CTA Home vừa hai cột ở 360px-430px; collage ba ảnh được giới hạn trong vùng hiển thị để không tạo cuộn ngang.
+- Empty state Timeline dùng thẻ Paper Note nhẹ hơn; Create Memory xếp ngày, cảm xúc và địa điểm theo một cột trên điện thoại.
+- Vùng form có khoảng cuộn và khoảng cuối trang đủ lớn để thẻ, ảnh và nút lưu không bị che bởi bottom navigation.
+- Không thay đổi backend, auth, API, database, validation, upload, private image serving hoặc migration.
+
