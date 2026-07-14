@@ -8,96 +8,67 @@
     var hasImages = Model.Images.Any();
 }
 
-<section class="memory-detail-shell paper-shell">
-    <article class="memory-entry-card paper-card">
-        <div class="memory-entry-header">
-            <p class="kicker page-kicker">Kỷ niệm riêng tư</p>
-            <h1 class="page-title">@Model.Title</h1>
-            <p class="memory-entry-date">@Model.MemoryDate.ToString("dd/MM/yyyy")</p>
+<section class="prototype-memory-details">
+    <a class="prototype-back-link" asp-action="Index">← Quay lại</a>
+
+    <header class="prototype-detail-header">
+        <h1 class="prototype-page-title">@Model.Title</h1>
+        <div class="prototype-meta-chips" aria-label="Thông tin kỷ niệm">
+            <span>@Model.MemoryDate.ToString("dd/MM/yyyy")</span>
+            <span>@Model.Feeling</span>
+            @if (hasLocation)
+            {
+                <span>@Model.Location</span>
+            }
         </div>
+    </header>
 
-        <dl class="memory-entry-meta">
-            <div>
-                <dt>Cảm xúc</dt>
-                <dd>@Model.Feeling</dd>
-            </div>
-            <div>
-                <dt>Địa điểm</dt>
-                <dd>@(hasLocation ? Model.Location : "Chưa thêm")</dd>
-            </div>
-            <div>
-                <dt>Ảnh</dt>
-                <dd>@Model.Images.Count ảnh riêng tư</dd>
-            </div>
-        </dl>
-
-        <section class="memory-story" aria-labelledby="memory-story-heading">
-            <p class="kicker">Câu chuyện</p>
-            <h2 id="memory-story-heading">Câu chuyện</h2>
-            <p>@(hasStory ? Model.Story : "Chưa có câu chuyện cho kỷ niệm này. Khi quay lại chỉnh sửa, bạn có thể thêm vài dòng để ký ức này có nhiều ngữ cảnh hơn.")</p>
+    @if (hasImages)
+    {
+        <section class="prototype-detail-gallery" aria-label="Ảnh kèm theo">
+            @foreach (var image in Model.Images)
+            {
+                <figure class="prototype-detail-photo prototype-tape">
+                    <img src="@Url.Action("MemoryImage", "Images", new { id = image.Id })"
+                         alt="Ảnh trong kỷ niệm: @image.OriginalFileName"
+                         onerror="this.hidden=true; this.closest('.prototype-detail-photo').classList.add('is-missing');" />
+                    @if (!string.IsNullOrWhiteSpace(image.Caption))
+                    {
+                        <figcaption>@image.Caption</figcaption>
+                    }
+                </figure>
+            }
         </section>
+    }
+
+    <article class="prototype-story-card">
+        <h2>Câu chuyện</h2>
+        <p>@(hasStory ? Model.Story : "Chưa có câu chuyện cho kỷ niệm này. Bạn có thể thêm vài dòng khi chỉnh sửa.")</p>
 
         @if (hasTags)
         {
-            <div class="memory-entry-tags" aria-label="Thẻ của kỷ niệm">
+            <div class="prototype-tag-row" aria-label="Thẻ của kỷ niệm">
                 @foreach (var tag in Model.Tags)
                 {
-                    <span class="tag-pill">@tag</span>
+                    <span>@tag</span>
                 }
             </div>
         }
 
-        <p class="memory-time-note">
-            Tạo lúc @Model.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm") · Cập nhật @Model.UpdatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
-        </p>
+        <p class="prototype-time-note">Tạo lúc @Model.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm") · Cập nhật @Model.UpdatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</p>
     </article>
 
-    <section class="paper-note-panel memory-gallery-panel" aria-labelledby="memory-gallery-heading">
-        <div class="memory-gallery-heading">
-            <div>
-                <p class="kicker">Thư viện ảnh</p>
-                <h2 id="memory-gallery-heading">Ảnh kèm theo</h2>
-            </div>
-            @if (hasImages)
-            {
-                <span>@Model.Images.Count ảnh</span>
-            }
-        </div>
+    @if (!hasImages)
+    {
+        <section class="prototype-gallery-empty" aria-label="Chưa có ảnh">
+            <strong>Chưa có ảnh kèm theo</strong>
+            <span>Thêm ảnh khi chỉnh sửa kỷ niệm này.</span>
+        </section>
+    }
 
-        @if (!hasImages)
-        {
-            <div class="memory-gallery-empty">
-                <span class="empty-state-mark">Ảnh</span>
-                <div>
-                    <h3>Chưa có ảnh nào trong kỷ niệm này.</h3>
-                    <p>Bạn có thể thêm ảnh khi chỉnh sửa kỷ niệm. Ảnh sẽ tiếp tục được phục vụ qua endpoint riêng tư của MemoLens.</p>
-                </div>
-            </div>
-        }
-        else
-        {
-            <div class="gallery-grid">
-                @foreach (var image in Model.Images)
-                {
-                    <figure class="gallery-item photo-note-card tape">
-                        <div class="gallery-image-frame photo-note-cover">
-                            <img src="@Url.Action("MemoryImage", "Images", new { id = image.Id })"
-                                 alt="Ảnh trong kỷ niệm: @image.OriginalFileName"
-                                 onerror="this.hidden=true; this.closest('.gallery-item').classList.add('image-missing');" />
-                        </div>
-                        @if (!string.IsNullOrWhiteSpace(image.Caption))
-                        {
-                            <figcaption>@image.Caption</figcaption>
-                        }
-                    </figure>
-                }
-            </div>
-        }
-    </section>
-
-    <nav class="detail-actions" aria-label="Hành động với kỷ niệm">
-        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Sửa</a>
+    <nav class="prototype-detail-actions" aria-label="Hành động với kỷ niệm">
+        <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model.Id">Sửa</a>
         <a class="btn btn-outline-secondary" asp-action="Delete" asp-route-id="@Model.Id">Xóa</a>
-        <a class="btn btn-link" asp-action="Index">Quay lại</a>
+        <a class="btn btn-primary" asp-action="Index">Quay lại</a>
     </nav>
 </section>

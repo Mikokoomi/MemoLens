@@ -915,3 +915,11 @@ Phase 17K.5 đã port giao diện static prototype Paper Note đã duyệt vào 
 
 Không thay đổi controller, auth, API, database, migration, route, form POST hoặc logic quyền riêng tư.
 
+## 46. Cập nhật Phase 17K.5.1: Exact Mobile Prototype Port
+
+- Đã thay cấu trúc Razor của Trang chủ, Dòng thời gian, Tạo kỷ niệm và Chi tiết kỷ niệm để bám sát static Paper Note prototype.
+- Mobile có thương hiệu MemoLens và nút menu tròn; các hành động tài khoản vẫn giữ nguyên trong menu.
+- Thanh điều hướng dưới dùng nhãn tiếng Việt ngắn gọn, đúng trang đang chọn và có khoảng an toàn để không che nội dung.
+- Liên kết, form POST, ràng buộc, validation, upload ảnh riêng tư và endpoint ảnh có kiểm tra quyền không thay đổi.
+- Không có thay đổi backend, auth, API, database hoặc migration.
+

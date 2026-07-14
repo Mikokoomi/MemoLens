@@ -2,51 +2,47 @@
 
 @{
     ViewData["Title"] = "Tạo kỷ niệm";
+    var hasValidationErrors = ViewData.ModelState.Values.Any(entry => entry.Errors.Any());
 }
 
-<section class="memory-form-shell memory-writing-shell paper-shell">
-    <aside class="memory-form-intro paper-note-panel">
-        <p class="kicker page-kicker">Tạo kỷ niệm</p>
-        <h1 class="page-title">Tạo kỷ niệm</h1>
-        <p>Ghi lại khoảnh khắc, cảm xúc và câu chuyện của bạn.</p>
-        <div class="private-note">
-            <strong>Riêng tư mặc định</strong>
-            <span>Ảnh chỉ được phục vụ qua endpoint có kiểm tra quyền sở hữu.</span>
+<section class="prototype-memory-form-shell">
+    <header class="prototype-page-header prototype-form-header">
+        <div>
+            <h1 class="prototype-page-title">Tạo kỷ niệm</h1>
+            <p class="prototype-subtitle">Ghi lại khoảnh khắc, cảm xúc và câu chuyện của bạn.</p>
         </div>
-    </aside>
+    </header>
 
-    <form asp-action="Create" method="post" enctype="multipart/form-data" class="memory-form-card paper-card">
-        <div asp-validation-summary="All" class="text-danger validation-summary form-validation-note mb-3"></div>
+    <form asp-action="Create" method="post" enctype="multipart/form-data" class="prototype-memory-form prototype-tape">
+        @if (hasValidationErrors)
+        {
+            <div asp-validation-summary="All" class="prototype-validation-summary" role="alert"></div>
+        }
 
-        <section class="form-section" aria-labelledby="story-section-heading">
-            <div class="form-section-heading">
-                <p class="kicker">Câu chuyện</p>
-                <h2 id="story-section-heading">Hôm nay bạn muốn nhớ điều gì?</h2>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="Title" class="form-label"></label>
+        <section class="prototype-form-section">
+            <h2>Câu chuyện</h2>
+            <div class="prototype-field">
+                <label asp-for="Title"></label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-
-            <div class="mb-0">
-                <label asp-for="Story" class="form-label"></label>
-                <textarea asp-for="Story" class="form-control journal-textarea" rows="8"></textarea>
+            <div class="prototype-field">
+                <label asp-for="Story"></label>
+                <textarea asp-for="Story" class="form-control prototype-story-textarea" rows="7" placeholder="Hôm nay bạn muốn nhớ điều gì?"></textarea>
                 <span asp-validation-for="Story" class="text-danger"></span>
-                <div class="form-text">Viết ngắn cũng được, miễn là đúng cảm xúc của bạn.</div>
+                <small>Viết ngắn cũng được, miễn là đúng cảm xúc của bạn.</small>
             </div>
         </section>
 
-        <section class="form-section" aria-labelledby="time-section-heading">
-            <div class="form-section-heading">
-                <p class="kicker">Ngày / Cảm xúc / Địa điểm</p>
-                <h2 id="time-section-heading">Bối cảnh của kỷ niệm</h2>
-            </div>
-
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label asp-for="Feeling" class="form-label"></label>
+        <section class="prototype-form-section">
+            <div class="prototype-form-row">
+                <div class="prototype-field">
+                    <label asp-for="MemoryDate"></label>
+                    <input asp-for="MemoryDate" class="form-control" type="date" />
+                    <span asp-validation-for="MemoryDate" class="text-danger"></span>
+                </div>
+                <div class="prototype-field">
+                    <label asp-for="Feeling"></label>
                     <select asp-for="Feeling" class="form-select">
                         <option value="">Chọn cảm xúc</option>
                         @foreach (var feeling in Model.FeelingOptions)
@@ -56,45 +52,37 @@
                     </select>
                     <span asp-validation-for="Feeling" class="text-danger"></span>
                 </div>
-                <div class="col-md-6">
-                    <label asp-for="MemoryDate" class="form-label"></label>
-                    <input asp-for="MemoryDate" class="form-control" type="date" />
-                    <span asp-validation-for="MemoryDate" class="text-danger"></span>
+                <div class="prototype-field">
+                    <label asp-for="Location"></label>
+                    <input asp-for="Location" class="form-control" placeholder="Nhập địa điểm" />
+                    <span asp-validation-for="Location" class="text-danger"></span>
                 </div>
             </div>
+        </section>
 
-            <div class="mt-3">
-                <label asp-for="Location" class="form-label"></label>
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location" class="text-danger"></span>
+        <section class="prototype-form-section">
+            <div class="prototype-field">
+                <label asp-for="TagsText"></label>
+                <input asp-for="TagsText" class="form-control" placeholder="Thêm thẻ (ví dụ: du lịch, bạn bè...)" />
+                <span asp-validation-for="TagsText" class="text-danger"></span>
+                <small>Ngăn cách các thẻ bằng dấu phẩy.</small>
             </div>
         </section>
 
-        <section class="form-section" aria-labelledby="tags-section-heading">
-            <div class="form-section-heading">
-                <p class="kicker">Thẻ</p>
-                <h2 id="tags-section-heading">Gợi nhớ nhanh sau này</h2>
-            </div>
-
-            <label asp-for="TagsText" class="form-label"></label>
-            <input asp-for="TagsText" class="form-control" placeholder="thực tập, gia đình, cà phê" />
-            <span asp-validation-for="TagsText" class="text-danger"></span>
-            <div class="form-text">Ngăn cách các thẻ bằng dấu phẩy.</div>
-        </section>
-
-        <section class="form-section upload-note" aria-labelledby="photos-section-heading">
-            <div class="form-section-heading">
-                <p class="kicker">Ảnh</p>
-                <h2 id="photos-section-heading">Thêm ảnh vào kỷ niệm</h2>
-            </div>
-
-            <label asp-for="NewImages" class="form-label"></label>
-            <input asp-for="NewImages" class="form-control" type="file" multiple accept=".jpg,.jpeg,.png,.webp" />
+        <section class="prototype-form-section">
+            <h2>Ảnh</h2>
+            <label class="prototype-upload-box" asp-for="NewImages">
+                <span>
+                    <strong>Thêm ảnh vào kỷ niệm</strong>
+                    <small>Kéo thả hoặc chọn ảnh từ thiết bị</small>
+                </span>
+                <input asp-for="NewImages" class="form-control" type="file" multiple accept=".jpg,.jpeg,.png,.webp" />
+            </label>
             <span asp-validation-for="NewImages" class="text-danger"></span>
-            <div class="form-text">Tối đa 10 ảnh, mỗi ảnh tối đa 5MB. Hỗ trợ JPG, PNG, WEBP.</div>
+            <small>Tối đa 10 ảnh, mỗi ảnh tối đa 5MB. Hỗ trợ JPG, PNG, WEBP.</small>
         </section>
 
-        <div class="form-actions">
+        <div class="prototype-form-actions">
             <a class="btn btn-outline-secondary" asp-action="Index">Hủy</a>
             <button type="submit" class="btn btn-primary">Lưu kỷ niệm</button>
         </div>

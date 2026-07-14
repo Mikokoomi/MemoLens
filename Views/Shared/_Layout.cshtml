@@ -11,9 +11,9 @@
     var profileInitial = string.IsNullOrWhiteSpace(displayName) ? "M" : displayName.Substring(0, 1).ToUpperInvariant();
     string ActiveNav(string controller) => string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase) ? "is-active" : "";
     var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
-    string ActiveNavAction(string controller, string action) =>
-        string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase) &&
-        string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase) ? "is-active" : "";
+    var isTimelinePage = string.Equals(currentController, "Memories", StringComparison.OrdinalIgnoreCase) &&
+        string.Equals(currentAction, "Index", StringComparison.OrdinalIgnoreCase);
+    var isMemoryPage = string.Equals(currentController, "Memories", StringComparison.OrdinalIgnoreCase) && !isTimelinePage;
 }
 
 <!DOCTYPE html>
@@ -96,13 +96,13 @@
                 <span>MemoLens</span>
             </a>
             <nav class="desktop-sidebar-nav">
-                <a class="@ActiveNav("Memories")" asp-controller="Memories" asp-action="Index">
+                <a class="@(isTimelinePage ? "is-active" : "")" asp-controller="Memories" asp-action="Index">
                     <span class="sidebar-mark" aria-hidden="true">
                         <svg viewBox="0 0 24 24" focusable="false"><path d="M4 13a8 8 0 1 1 16 0"/><path d="M8 13a4 4 0 0 1 8 0"/><path d="M12 13v5"/><path d="M8 18h8"/></svg>
                     </span>
                     <span>Dòng thời gian</span>
                 </a>
-                <a class="@ActiveNavAction("Memories", "Create")" asp-controller="Memories" asp-action="Create">
+                <a class="@(isMemoryPage ? "is-active" : "")" asp-controller="Memories" asp-action="Create">
                     <span class="sidebar-mark" aria-hidden="true">
                         <svg viewBox="0 0 24 24" focusable="false"><path d="M6 4h9l3 3v13H6z"/><path d="M15 4v4h4"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>
                     </span>
@@ -133,6 +133,27 @@
             </div>
         </aside>
 
+        <header class="mobile-topbar" aria-label="Điều hướng MemoLens">
+            <a class="mobile-topbar-brand" asp-controller="Home" asp-action="Index">MemoLens</a>
+            <details class="mobile-account-menu">
+                <summary aria-label="Mở menu">☰</summary>
+                <div class="mobile-account-panel">
+                    @if (isSignedIn)
+                    {
+                        <a asp-controller="Settings" asp-action="Index">@displayName</a>
+                        <form asp-controller="Account" asp-action="Logout" method="post">
+                            <button type="submit">Đăng xuất</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Login">Đăng nhập</a>
+                        <a asp-controller="Account" asp-action="Register">Tạo tài khoản</a>
+                    }
+                </div>
+            </details>
+        </header>
+
         <div class="container page-content">
             <main role="main" class="pb-4 app-main-paper">
                 <div class="desktop-profile-row">
@@ -157,8 +178,8 @@
     @if (isSignedIn)
     {
         <nav class="mobile-bottom-nav" aria-label="Điều hướng nhanh">
-            <a class="@ActiveNavAction("Memories", "Index")" asp-controller="Memories" asp-action="Index">Dòng</a>
-            <a class="@ActiveNavAction("Memories", "Create")" asp-controller="Memories" asp-action="Create">Kỷ niệm</a>
+            <a class="@(isTimelinePage ? "is-active" : "")" asp-controller="Memories" asp-action="Index">Dòng</a>
+            <a class="@(isMemoryPage ? "is-active" : "")" asp-controller="Memories" asp-action="Create">Kỷ niệm</a>
             <a class="@ActiveNav("Albums")" asp-controller="Albums" asp-action="Index">Bộ sưu tập</a>
             <a class="@ActiveNav("Trash")" asp-controller="Trash" asp-action="Index">Rác</a>
             <a class="@ActiveNav("Settings")" asp-controller="Settings" asp-action="Index">Cài đặt</a>

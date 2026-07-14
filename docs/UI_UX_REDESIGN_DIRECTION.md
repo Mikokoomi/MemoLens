@@ -286,3 +286,9 @@ Ghi chú: selectable themes có thể là hướng tương lai sau MVP, nhưng c
 - `dotnet test` pass.
 - NuGet vulnerability audit sạch.
 - Product identity private-first vẫn rõ ràng.
+
+## 14. Phase 17K.5.1 - Port chính xác prototype mobile
+
+- Bốn màn hình cốt lõi dùng lại markup Razor theo Paper Note prototype: Home, Timeline, Create Memory và Memory Details.
+- Ưu tiên khoảng cách, collage/polaroid, thẻ ảnh 4:3, form giấy tập trung và gallery dán ảnh.
+- Mobile dùng thương hiệu + menu tròn, bottom nav nhãn tiếng Việt và safe-area padding; không làm thay đổi hành vi sản phẩm.

@@ -2,80 +2,46 @@
     ViewData["Title"] = "Trang chủ";
 }
 
-<section class="journal-hero paper-shell">
-    <div class="journal-hero-copy">
-        <p class="kicker page-kicker">Nhật ký ảnh riêng tư</p>
-        <h1 class="page-title">Lưu giữ những kỷ niệm của bạn.</h1>
-        <p>
-            MemoLens giúp bạn giữ ảnh, câu chuyện, cảm xúc và bộ sưu tập kỷ niệm trong một không gian riêng.
-        </p>
-        <div class="journal-actions">
-            <a class="btn btn-primary btn-lg" asp-controller="Account" asp-action="Login">Đăng nhập</a>
-            <a class="btn btn-outline-secondary btn-lg" asp-controller="Account" asp-action="Register">Tạo tài khoản</a>
+<section class="prototype-home">
+    <div class="prototype-home-hero">
+        <div class="prototype-hero-copy">
+            <h1 class="prototype-hero-title">Lưu giữ những kỷ niệm của bạn</h1>
+            <p>MemoLens giúp bạn lưu lại khoảnh khắc đáng nhớ trong một cuốn sổ ảnh riêng tư, ấm áp và chỉ thuộc về bạn.</p>
+            <div class="prototype-hero-actions">
+                <a class="btn btn-primary" asp-controller="Account" asp-action="Login">Đăng nhập</a>
+                <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="Register">Tạo tài khoản</a>
+            </div>
         </div>
-        <div class="trust-note">
-            <strong>Riêng tư mặc định.</strong>
-            <span>Mỗi tài khoản chỉ xem được ký ức, ảnh, album và thùng rác của chính mình.</span>
+
+        <div class="prototype-collage" aria-label="Ba tấm ảnh kỷ niệm trên trang giấy">
+            <div class="prototype-note-sheet" aria-hidden="true"></div>
+            <div class="prototype-polaroid prototype-polaroid-one prototype-tape"><span></span></div>
+            <div class="prototype-polaroid prototype-polaroid-two prototype-tape"><span></span></div>
+            <div class="prototype-polaroid prototype-polaroid-three prototype-tape"><span></span></div>
         </div>
     </div>
 
-    <aside class="journal-card hero-memory-card paper-card" aria-label="Bản xem trước kỷ niệm riêng tư">
-        <div class="journal-card-topline">
-            <span>Bản nháp riêng tư</span>
-            <span>Hôm nay</span>
-        </div>
-        <div class="journal-photo-strip" aria-hidden="true">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <h2>Một buổi sáng nhẹ nhàng đáng nhớ</h2>
-        <p>
-            Thêm một vài dòng về điều đã xảy ra, cảm giác lúc đó, nơi chốn và những chi tiết nhỏ làm bức ảnh trở nên có ý nghĩa.
-        </p>
-        <div class="journal-pill-row">
-            <span>Bình yên</span>
-            <span>Ở nhà</span>
-            <span>Gia đình</span>
-        </div>
-    </aside>
-</section>
-
-<section class="soft-section" aria-labelledby="private-journal-title">
-    <div class="section-heading">
-        <p class="kicker">Không gian cá nhân</p>
-        <h2 id="private-journal-title">Nhẹ nhàng, riêng tư, dễ nhìn lại.</h2>
-        <p>Ảnh, câu chuyện, cảm xúc, timeline và album cá nhân ở cùng một nơi.</p>
-    </div>
-
-    <div class="journal-grid">
-        <article class="journal-card">
-            <span class="feature-number">01</span>
-            <h3>Riêng tư</h3>
-            <p>Kỷ niệm chỉ thuộc về tài khoản của bạn.</p>
+    <section class="prototype-feature-grid" aria-label="Điểm chính của MemoLens">
+        <article class="prototype-feature-card prototype-tape">
+            <span class="prototype-feature-icon" aria-hidden="true">◇</span>
+            <div>
+                <h2>Riêng tư</h2>
+                <p>Kỷ niệm chỉ dành cho bạn xem lại.</p>
+            </div>
         </article>
-        <article class="journal-card">
-            <span class="feature-number">02</span>
-            <h3>Kỷ niệm</h3>
-            <p>Ghi lại khoảnh khắc đáng nhớ theo cách của riêng bạn.</p>
+        <article class="prototype-feature-card prototype-tape">
+            <span class="prototype-feature-icon" aria-hidden="true">♡</span>
+            <div>
+                <h2>Kỷ niệm</h2>
+                <p>Ghi lại câu chuyện, ngày và cảm xúc.</p>
+            </div>
         </article>
-        <article class="journal-card">
-            <span class="feature-number">03</span>
-            <h3>Bộ sưu tập</h3>
-            <p>Sắp xếp ký ức theo chủ đề, địa điểm và thời gian.</p>
+        <article class="prototype-feature-card prototype-tape">
+            <span class="prototype-feature-icon" aria-hidden="true">▣</span>
+            <div>
+                <h2>Bộ sưu tập</h2>
+                <p>Sắp xếp ảnh theo chủ đề yêu thích.</p>
+            </div>
         </article>
-    </div>
-</section>
-
-<section class="soft-section compact" aria-labelledby="school-project-title">
-    <div class="journal-card project-note-card">
-        <div>
-            <p class="kicker">MVP rõ ràng</p>
-            <h2 id="school-project-title">Một đồ án web app thực tế, dễ giải thích.</h2>
-        </div>
-        <p>
-            MemoLens dùng ASP.NET Core MVC, Identity, Entity Framework Core, SQL Server và Bootstrap.
-            Giao diện hiện ưu tiên mobile-first và vẫn giữ phạm vi MVP riêng tư, không thêm AI hay tính năng mạng xã hội.
-        </p>
-    </div>
+    </section>
 </section>
