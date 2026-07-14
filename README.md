@@ -472,6 +472,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - Final Paper Note typography and reference matching added.
 - Approved static Paper Note prototype ported into Razor layout and CSS, with Vietnamese desktop/mobile navigation and safe mobile bottom navigation spacing.
 - Private Memory API and JWT-protected Memory Image API added for future mobile clients.
+- Private Album CRUD and membership API added for future mobile clients. See [docs/ALBUM_API.md](docs/ALBUM_API.md).
 - No AI or social features.
 - No admin dashboard yet.
 

@@ -135,11 +135,26 @@ Tổng số test hiện tại: **48**.
 
 Tổng số test hiện tại: **64**, tất cả dùng test database/storage tách biệt khỏi Development.
 
-## 10. Roadmap test
+## 10. Phase 18D: Private Album API integration tests
+
+`AlbumApiIntegrationTests` dùng SQLite in-memory và private upload root tạm như các API test hiện có.
+
+- JWT bắt buộc cho toàn bộ 8 Album/membership endpoint.
+- Create/update trim dữ liệu, validation tiếng Việt và không nhận owner/membership từ body create.
+- List owner-scoped, search, sort, database pagination và authorized cover URL.
+- Details phân trang memory, sắp xếp mới nhất, trả tags/image summary và ẩn memory đã xóa mềm.
+- User B và role `Admin` không bypass Album ownership.
+- Batch add dedupe/idempotent; ID thiếu, cross-owner hoặc deleted làm toàn batch rollback trước khi ghi.
+- Remove chỉ xóa `AlbumMemory`, giữ memory, image row và file vật lý.
+- Soft delete/restore giữ toàn bộ membership; deleted memory tiếp tục bị ẩn sau restore album.
+
+Tổng số test hiện tại: **82**, không dùng LocalDB hoặc upload storage Development.
+
+## 11. Roadmap test
 
 1. **Phase 16G: Database Cleanup Tests**
    - Refresh token retention, unused tag và orphan image dry-run/quarantine khi các service đó được triển khai.
 2. **Sau đó: UI/end-to-end tests**
    - Các flow quan trọng trên browser sau khi API/MVC behavior ổn định.
-3. **Sau đó: Album/Trash API integration tests**
-   - Ownership, relationship và soft-delete/restore cho các API mobile tiếp theo.
+3. **Sau đó: Trash API integration tests**
+   - Ownership, trash list, restore và permanent-delete boundaries cho API mobile tiếp theo.

@@ -991,3 +991,18 @@ Không thay đổi UI Paper Note, controller/model production, auth/API/database
 
 Phase tiếp theo đề xuất: **Phase 18D - Private Album CRUD API**.
 
+## 53. Cập nhật Phase 18D: Private Album CRUD API
+
+- Đã thêm JWT API list/details/create/update/soft-delete/restore cho Album.
+- Đã thêm batch add và remove membership giữa Album và Memory.
+- List hỗ trợ database pagination, search theo title/description và sort `newest`, `oldest`, `name`.
+- Details có danh sách memory phân trang, sắp xếp ổn định theo `MemoryDate` mới nhất và ẩn memory đã xóa mềm.
+- Cover chỉ trả `imageId` cùng authorized URL `/api/v1/images/{id}/content`, không lộ private path.
+- Batch add validate đầy đủ trước khi ghi; ID thiếu, đã xóa hoặc cross-owner trả `404` và không tạo membership một phần.
+- Album soft delete/restore giữ nguyên memory, ảnh, file và membership; permanent delete chưa được triển khai.
+- Ownership được scope theo current JWT user; role `Admin` không bypass nội dung riêng tư.
+- Đã thêm 18 integration test; tổng suite hiện có 82 test passing.
+- Không thay đổi MVC/auth hiện có, database schema và không tạo migration.
+
+Phase tiếp theo đề xuất: **Phase 18E - Private Trash API**.
+

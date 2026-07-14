@@ -325,3 +325,19 @@ Phase 18C đã hoàn thành API ảnh riêng tư cho mobile:
 Chi tiết contract: [MEMORY_IMAGE_API.md](MEMORY_IMAGE_API.md).
 
 Phase tiếp theo đề xuất: **Phase 18D - Private Album CRUD API**.
+
+## 9. Cập nhật Phase 18D: Private Album CRUD API
+
+Phase 18D đã hoàn thành backend API cho bộ sưu tập riêng tư:
+
+- JWT CRUD: `GET/POST /api/v1/albums`, `GET/PUT/DELETE /api/v1/albums/{id}` và `POST /api/v1/albums/{id}/restore`.
+- Membership: `POST /api/v1/albums/{id}/memories` và `DELETE /api/v1/albums/{id}/memories/{memoryId}`.
+- List và details đều có database pagination; list hỗ trợ search và sort.
+- Batch add validate toàn bộ trước khi ghi, dedupe ID và không tạo cập nhật một phần.
+- Album soft delete/restore giữ memory, ảnh, file và membership; memory đang bị xóa mềm vẫn ẩn.
+- User khác và role `Admin` không bypass ownership.
+- Không thay đổi MVC, schema hoặc migration.
+
+Contract chi tiết: [ALBUM_API.md](ALBUM_API.md).
+
+Phase tiếp theo đề xuất: **Phase 18E - Private Trash API**.
