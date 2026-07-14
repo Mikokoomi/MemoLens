@@ -12,6 +12,13 @@ MemoLens is not a social network. It has no public feed, likes, comments, follow
 - ASP.NET Core Identity
 - Bootstrap
 - GitHub
+- Flutter (mobile foundation tại `mobile/memolens_app`)
+
+## Flutter Mobile Foundation
+
+Phase 19A khởi tạo Flutter client ở `mobile/memolens_app` cho Android và iOS, sử dụng Riverpod, go_router, Dio và secure storage. Flutter dùng `API_BASE_URL` qua `--dart-define`; Android emulator mặc định là `http://10.0.2.2:5296` thay vì `localhost`.
+
+Flutter/Dart đã dùng: `Flutter 3.38.7` và `Dart 3.10.7`. Android SDK cần được cấu hình để chạy emulator hoặc build APK; iOS build cần macOS/Xcode. Hướng dẫn đầy đủ ở [mobile/README.md](mobile/README.md) và roadmap ở [docs/FLUTTER_ROADMAP.md](docs/FLUTTER_ROADMAP.md).
 
 ## How to Run Locally
 
@@ -474,6 +481,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - Private Memory API and JWT-protected Memory Image API added for future mobile clients.
 - Private Album CRUD and membership API added for future mobile clients. See [docs/ALBUM_API.md](docs/ALBUM_API.md).
 - Final mobile API security/contract QA completed for auth, Memory, private image, and Album; these contracts are ready to freeze for Flutter foundation. See [docs/MOBILE_API_FINAL_QA.md](docs/MOBILE_API_FINAL_QA.md).
+- Flutter mobile foundation initialized at `mobile/memolens_app`; JWT authentication and private feature integration are intentionally deferred to the next phases.
 - No AI or social features.
 - No admin dashboard yet.
 

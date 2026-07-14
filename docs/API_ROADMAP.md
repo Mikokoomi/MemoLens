@@ -1,5 +1,12 @@
 # MemoLens - API Roadmap
 
+## Update Phase 19A: Flutter Foundation
+
+- Flutter client duoc khoi tao tai `mobile/memolens_app`; backend contract sau `5e28d36` khong thay doi.
+- Foundation chi co config URL, Dio client, secure token storage abstraction, routing va health diagnostics Development.
+- JWT authentication, Bearer interceptor, refresh-token flow va goi API private se bat dau tai **Phase 19B**.
+- Lo trinh chi tiet: [FLUTTER_ROADMAP.md](FLUTTER_ROADMAP.md).
+
 ## 1. Vi sao can Web API truoc Flutter app
 
 Flutter mobile app can giao tiep voi backend qua HTTP API ro rang. MVC views hien tai phuc vu browser, nhung mobile app can JSON endpoints de:

@@ -1021,3 +1021,13 @@ API auth, Memory, private image và Album được xem là contract freeze candi
 
 Phase tiếp theo đề xuất: **Phase 19A - Flutter Foundation**.
 
+## 55. Cập nhật Phase 19A: Flutter Mobile Foundation
+
+- Đã tạo Flutter project tại `mobile/memolens_app` với Android/iOS source, Material 3, null safety và namespace `com.memolens`.
+- Foundation dùng `flutter_riverpod`, `go_router`, `dio`, `flutter_secure_storage`, `intl` và Paper Note widgets/theme tokens tái sử dụng.
+- `API_BASE_URL` dùng compile-time `String.fromEnvironment`; fallback Android emulator là `http://10.0.2.2:5296`.
+- Có Splash, Login và Home placeholder; chỉ health check Development gọi `GET /api/v1/health` và backend offline hiển thị lỗi an toàn.
+- Chưa triển khai JWT login, token storage thực tế, Bearer interceptor, Timeline, CRUD, ảnh, Album, Trash hoặc Settings mobile.
+- Backend vẫn giữ contract freeze tại commit `5e28d36`; không thay đổi controller, DTO, schema hay migration.
+- Flutter 3.38.7/Dart 3.10.7 được dùng. Android SDK hiện chưa được cấu hình trên máy, nên APK/emulator build cần hoàn tất sau khi cài/cấu hình Android SDK.
+
