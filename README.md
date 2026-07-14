@@ -291,7 +291,7 @@ See `docs/API_FOUNDATION.md` for the current API shape, response format, Swagger
 
 ## Memory CRUD API
 
-Phase 18B adds JWT-protected private endpoints for list/detail/create/update/soft-delete/restore at `/api/v1/memories`. The API supports timeline filters and pagination, scopes every query to the current user, and never exposes private image paths. Image upload APIs remain intentionally deferred to the next phase. See [Memory API documentation](docs/MEMORY_API.md).
+Phase 18B adds JWT-protected private endpoints for list/detail/create/update/soft-delete/restore at `/api/v1/memories`. Phase 18C adds private batch image upload, authorized image content, and single-image deletion for mobile. Every query is scoped to the current user; image responses never expose storage paths. See [Memory API documentation](docs/MEMORY_API.md) and [Memory Image API documentation](docs/MEMORY_IMAGE_API.md).
 
 ## API Authentication Design
 
@@ -471,6 +471,7 @@ MemoLens trims spaces, ignores empty tags, reuses existing tags when possible, a
 - Finalized Paper Note UI reference and responsive QA added.
 - Final Paper Note typography and reference matching added.
 - Approved static Paper Note prototype ported into Razor layout and CSS, with Vietnamese desktop/mobile navigation and safe mobile bottom navigation spacing.
+- Private Memory API and JWT-protected Memory Image API added for future mobile clients.
 - No AI or social features.
 - No admin dashboard yet.
 

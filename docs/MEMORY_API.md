@@ -98,11 +98,11 @@ Chi tiết trả tags và metadata ảnh an toàn:
   "id": 31,
   "originalFileName": "hoang-hon.jpg",
   "uploadedAt": "2026-07-01T08:00:00Z",
-  "contentUrl": "/Images/MemoryImage/31"
+  "contentUrl": "/api/v1/images/31/content"
 }
 ```
 
-Không có `UserId`, `ImagePath`, đường dẫn vật lý, password hash hay token trong response. `contentUrl` là endpoint ảnh riêng tư hiện có. API upload/quản lý ảnh cho mobile được để lại cho Phase 18C.
+Không có `UserId`, `ImagePath`, đường dẫn vật lý, password hash hay token trong response. `contentUrl` là endpoint JWT riêng tư cho mobile; client phải gửi Bearer token khi tải bytes. Upload/xóa ảnh được mô tả trong [MEMORY_IMAGE_API.md](MEMORY_IMAGE_API.md).
 
 ## Xóa mềm và khôi phục
 
@@ -122,7 +122,7 @@ Validation trả `400` theo format `ApiValidationErrorResponse`:
 }
 ```
 
-Không có migration hay thay đổi schema trong Phase 18B.
+Không có migration hay thay đổi schema trong Phase 18B/18C.
 
 ## Kiểm thử
 
@@ -132,4 +132,4 @@ Không có migration hay thay đổi schema trong Phase 18B.
 dotnet test
 ```
 
-Phase đề xuất tiếp theo: **Phase 18C - Memory Image API cho mobile**.
+Phase đề xuất tiếp theo: **Phase 18D - Private Album CRUD API**.

@@ -60,9 +60,23 @@ public class LocalImageStorageService : IImageStorageService
 
         var filePath = Path.Combine(uploadFolder, safeFileName);
 
-        await using (var stream = File.Create(filePath))
+        try
         {
+            await using var stream = new FileStream(
+                filePath,
+                FileMode.CreateNew,
+                FileAccess.Write,
+                FileShare.None);
             await file.CopyToAsync(stream);
+        }
+        catch
+        {
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            throw;
         }
 
         return new ImageUploadResult

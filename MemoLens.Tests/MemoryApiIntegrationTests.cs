@@ -216,7 +216,7 @@ public class MemoryApiIntegrationTests : IClassFixture<CustomWebApplicationFacto
         var imageJson = document.RootElement.GetProperty("data").GetProperty("images")[0];
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Assert.Equal($"/Images/MemoryImage/{image.Id}", imageJson.GetProperty("contentUrl").GetString());
+        Assert.Equal($"/api/v1/images/{image.Id}/content", imageJson.GetProperty("contentUrl").GetString());
         Assert.DoesNotContain(image.ImagePath, body, StringComparison.Ordinal);
         Assert.DoesNotContain("userId", body, StringComparison.OrdinalIgnoreCase);
 
@@ -297,7 +297,7 @@ public class MemoryApiIntegrationTests : IClassFixture<CustomWebApplicationFacto
 
         using var restoredDetails = await ownerClient.GetAsync($"/api/v1/memories/{memory.Id}");
         Assert.Equal(HttpStatusCode.OK, restoredDetails.StatusCode);
-        Assert.Contains($"/Images/MemoryImage/{image.Id}", await restoredDetails.Content.ReadAsStringAsync());
+        Assert.Contains($"/api/v1/images/{image.Id}/content", await restoredDetails.Content.ReadAsStringAsync());
 
         using var cookieClient = await CreateCookieClientAsync(owner);
         using var imageResponse = await cookieClient.GetAsync($"/Images/MemoryImage/{image.Id}");

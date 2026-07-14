@@ -120,11 +120,26 @@ Kết quả Phase 17L:
 
 Tổng số test hiện tại: **48**.
 
-## 9. Roadmap test
+## 9. Phase 18C: Private Memory Image API integration tests
+
+`MemoryImageApiIntegrationTests` tiếp tục dùng SQLite in-memory và private upload root tạm theo test factory.
+
+- JWT bắt buộc cho upload, content và delete.
+- Owner access; User B và role `Admin` không bypass ownership.
+- Upload một/nhiều file `.jpg`, `.jpeg`, `.png`, `.webp`; metadata an toàn, tên file GUID và JWT content URL.
+- No-file, extension sai, file trên 5 MB, vượt 10 ảnh và mixed invalid batch không tạo row/file mới.
+- Content trả đúng bytes/MIME và `Cache-Control: private, no-store`; missing file, deleted memory và cross-owner trả `404`.
+- Restore memory khôi phục image access.
+- Delete chỉ xóa ảnh được chọn; missing physical file vẫn xóa row; gọi lại trả `404`.
+- Memory API detail không còn trả MVC cookie URL hoặc private storage path.
+
+Tổng số test hiện tại: **64**, tất cả dùng test database/storage tách biệt khỏi Development.
+
+## 10. Roadmap test
 
 1. **Phase 16G: Database Cleanup Tests**
    - Refresh token retention, unused tag và orphan image dry-run/quarantine khi các service đó được triển khai.
 2. **Sau đó: UI/end-to-end tests**
    - Các flow quan trọng trên browser sau khi API/MVC behavior ổn định.
-3. **Sau đó: Mobile API content tests**
-   - Các endpoint memory, album, image và trash chỉ sau khi API CRUD riêng tư được thiết kế và triển khai.
+3. **Sau đó: Album/Trash API integration tests**
+   - Ownership, relationship và soft-delete/restore cho các API mobile tiếp theo.

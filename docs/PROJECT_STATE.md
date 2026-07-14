@@ -977,3 +977,17 @@ Không thay đổi UI Paper Note, controller/model production, auth/API/database
 - Không thêm image upload API, không thay đổi MVC/UI/auth-token architecture/database schema và không tạo migration.
 - Test suite có 48 test pass, bao phủ ownership, validation, pagination, response privacy, update, delete và restore của Memory API.
 
+## 52. Cập nhật Phase 18C: Private Memory Image API
+
+- Đã thêm JWT API upload ảnh theo batch, xem bytes riêng tư và xóa một ảnh cho mobile.
+- Upload chỉ áp dụng cho memory thuộc current user và chưa soft-delete; tối đa 10 ảnh, 5 MB/file, hỗ trợ JPG/JPEG/PNG/WEBP.
+- Toàn batch được validate trước khi lưu; lỗi storage/database rollback và dọn file đã ghi.
+- Image content dùng `/api/v1/images/{id}/content`, trả cache `private, no-store` và không lộ private path.
+- User B và role `Admin` không bypass ownership; deleted/missing/cross-owner đều trả `404`.
+- MVC `/Images/MemoryImage/{id}` và cookie auth không thay đổi.
+- Đã sửa shared storage để xóa file dở dang nếu quá trình copy upload thất bại.
+- Test suite có 64 test pass với SQLite in-memory và upload root tạm.
+- Không thay đổi database schema và không tạo migration.
+
+Phase tiếp theo đề xuất: **Phase 18D - Private Album CRUD API**.
+

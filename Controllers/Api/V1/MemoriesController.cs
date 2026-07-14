@@ -2,6 +2,7 @@ using System.Security.Claims;
 using MemoLens.Data;
 using MemoLens.Models;
 using MemoLens.Models.Api;
+using MemoLens.Models.Api.Images;
 using MemoLens.Models.Api.Memories;
 using MemoLens.Models.Memories;
 using MemoLens.Services;
@@ -547,7 +548,7 @@ public class MemoriesController : ControllerBase
                     Id = image.Id,
                     OriginalFileName = image.OriginalFileName,
                     UploadedAt = image.UploadedAt,
-                    ContentUrl = $"/Images/MemoryImage/{image.Id}"
+                    ContentUrl = MemoryImageApiRoutes.Content(image.Id)
                 })
                 .ToList(),
             CreatedAt = memory.CreatedAt,

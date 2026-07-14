@@ -309,3 +309,19 @@ Phase 18B đã hoàn thành phần Memory API nền tảng cho mobile:
 - DTO không trả `UserId`, image path hoặc đường dẫn vật lý. Detail chỉ trả authorized image content URL.
 - Delete là soft delete; restore khôi phục visibility và quyền xem ảnh riêng tư.
 - Image upload API chưa được thêm. Đây là scope của Phase 18C.
+
+## 8. Cập nhật Phase 18C: Private Memory Image API
+
+Phase 18C đã hoàn thành API ảnh riêng tư cho mobile:
+
+- `POST /api/v1/memories/{memoryId}/images` nhận multipart field `files`, tối đa 10 ảnh/memory và 5 MB/file.
+- `GET /api/v1/images/{imageId}/content` stream ảnh qua JWT với `private, no-store`.
+- `DELETE /api/v1/memories/{memoryId}/images/{imageId}` xóa đúng một row/file.
+- Upload validate toàn batch trước khi lưu; lỗi ghi file/database rollback và dọn file đã tạo.
+- User B và role `Admin` đều nhận `404` khi thử truy cập dữ liệu không thuộc mình.
+- Memory detail đã chuyển `contentUrl` từ MVC cookie route sang JWT API route.
+- MVC image endpoint vẫn giữ nguyên cho web app; không có schema change hay migration.
+
+Chi tiết contract: [MEMORY_IMAGE_API.md](MEMORY_IMAGE_API.md).
+
+Phase tiếp theo đề xuất: **Phase 18D - Private Album CRUD API**.

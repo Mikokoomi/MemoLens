@@ -7,6 +7,7 @@ using MemoLens.Models.Auth;
 using MemoLens.Models.Email;
 using MemoLens.Services;
 using MemoLens.Services.Auth;
+using MemoLens.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -183,6 +184,7 @@ builder.Services.AddSwaggerGen(options =>
             Array.Empty<string>()
         }
     });
+    options.OperationFilter<MemoryImageUploadOperationFilter>();
 });
 
 var app = builder.Build();
