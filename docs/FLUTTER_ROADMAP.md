@@ -11,6 +11,7 @@ Flutter là mobile client riêng cho MemoLens. Client này dùng JWT API đã đ
 - Có Paper Note theme foundation, Splash, Login placeholder, Home placeholder và health diagnostics Development.
 - Đọc `API_BASE_URL` bằng `--dart-define`; Android emulator mặc định dùng `http://10.0.2.2:5296`.
 - Chưa lưu token, chưa có Bearer interceptor, chưa có gọi private API ngoài health check.
+- Android toolchain Windows đã được xác thực: Android SDK API 36, Build Tools 36.0.0, Platform Tools, Emulator, NDK 28.2.13676358 và JBR của Android Studio. `flutter doctor`, analyze, test và debug APK đều đã chạy thành công.
 
 ## Phase 19B - JWT Authentication
 

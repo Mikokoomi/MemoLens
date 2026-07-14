@@ -1029,5 +1029,13 @@ Phase tiếp theo đề xuất: **Phase 19A - Flutter Foundation**.
 - Có Splash, Login và Home placeholder; chỉ health check Development gọi `GET /api/v1/health` và backend offline hiển thị lỗi an toàn.
 - Chưa triển khai JWT login, token storage thực tế, Bearer interceptor, Timeline, CRUD, ảnh, Album, Trash hoặc Settings mobile.
 - Backend vẫn giữ contract freeze tại commit `5e28d36`; không thay đổi controller, DTO, schema hay migration.
-- Flutter 3.38.7/Dart 3.10.7 được dùng. Android SDK hiện chưa được cấu hình trên máy, nên APK/emulator build cần hoàn tất sau khi cài/cấu hình Android SDK.
+- Flutter 3.38.7/Dart 3.10.7 được dùng.
+
+## 56. Cập nhật Phase 19A: Android Toolchain Verification
+
+- Đã cài và xác thực Android SDK cho Flutter trên Windows: Platform `android-36`, Build Tools `36.0.0`, Platform Tools, Android Emulator và NDK side-by-side `28.2.13676358`.
+- Flutter dùng JBR đi kèm Android Studio; Android SDK licenses đã được chấp nhận và `flutter doctor -v` không còn lỗi.
+- `dart format --set-exit-if-changed lib test`, `flutter analyze` và toàn bộ 13 Flutter tests đều pass.
+- Đã build thành công debug APK. Artifact chỉ là output local, không commit vào repository.
+- Không thay đổi Flutter source, ASP.NET Core source, API contract, authentication, database schema hoặc migration trong bước xác thực toolchain này.
 
