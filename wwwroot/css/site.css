@@ -6008,7 +6008,7 @@ body.memolens-shell {
   .prototype-page-title { font-size: clamp(38px, 10vw, 42px); }
   .prototype-hero-copy > p,
   .prototype-subtitle { margin-top: 12px; font-size: 14px; line-height: 1.65; }
-  .prototype-hero-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+  .prototype-hero-actions { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 20px; }
   .prototype-hero-actions .btn { min-width: 0; padding-inline: 10px; font-size: 14px; }
   .prototype-collage { min-height: 252px; }
   .prototype-note-sheet { top: 30px; right: 10%; width: 155px; height: 174px; }
