@@ -61,3 +61,9 @@ Flutter là mobile client riêng cho MemoLens. Client này dùng JWT API đã đ
 
 - Android API 36 verified the private image picker, create-then-upload, byte loading, deletion, restart/session restore and cross-account isolation.
 - The deterministic backend-offline handoff after a successful text save remains an explicit manual regression item; no Album work begins from this QA note.
+
+### Phase 19D.2 - Deterministic upload retry QA
+
+- A QA-only Flutter entrypoint injects one safe image-upload availability failure after normal text persistence. It is a separate `-t lib/qa/partial_upload_retry_qa.dart` target and cannot alter `main.dart` or Release behavior.
+- Focused tests verify Create/Edit partial success, one Create/Update call, same-ID Retry, duplicate Retry prevention, Continue-without-images and account-change disposal.
+- The Android API 36 QA target compiled and opened. A final interactive Photo Picker retry run remains required before formally freezing Phase 19D; no Phase 19E work begins automatically.

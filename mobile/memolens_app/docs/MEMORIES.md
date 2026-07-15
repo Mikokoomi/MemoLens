@@ -51,3 +51,9 @@ Tren Android emulator, backend Development chay o may host duoc truy cap qua `10
 - After app restart, the authenticated session restored and Timeline loaded the created Memory again.
 - Account switching cleared Timeline state: User B saw no User A Memory.
 - The exact offline create/update-success then upload-failure timing remains a pending deterministic manual regression; it was not represented as a completed E2E result.
+
+## Phase 19D.2 - Partial-success retry boundary
+
+- Create and Edit now retain the server-confirmed Memory only while their current form is active. A Retry uses that retained ID and skips the already-successful text operation.
+- If the user chooses **Tiếp tục không có ảnh**, MemoLens opens the saved Memory without an image retry. The in-memory selected files are intentionally discarded when the form is left; they are never persisted across logout, account switches or app restarts.
+- A user/account change clears the retained ID and selected-image UI state, so a new session cannot inherit private pending images from the prior session.

@@ -13,9 +13,10 @@ import '../../../core/widgets/paper_page.dart';
 import '../../../core/widgets/primary_button.dart';
 import '../../../core/widgets/secondary_button.dart';
 import '../application/memory_controllers.dart';
+import '../application/memory_image_save_flow.dart';
+import '../../authentication/application/auth_controller.dart';
 import '../data/models/memory_models.dart';
 import '../data/memory_image_repository.dart';
-import '../data/memory_repository.dart';
 import 'widgets/private_memory_image.dart';
 
 class CreateMemoryPage extends ConsumerStatefulWidget {
@@ -25,11 +26,21 @@ class CreateMemoryPage extends ConsumerStatefulWidget {
 }
 
 class _CreateMemoryPageState extends ConsumerState<CreateMemoryPage> {
-  int? _createdMemoryId;
+  final _imageSaveFlow = MemoryImageSaveFlow();
+
+  @override
+  void dispose() {
+    _imageSaveFlow.clear();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(memoryFormControllerProvider);
+    final userId = ref.watch(
+      authControllerProvider.select((auth) => auth.user?.id),
+    );
+    _imageSaveFlow.resetForUser(userId);
     return Scaffold(
       appBar: AppBar(title: const Text('Tạo kỷ niệm')),
       body: PaperPage(
@@ -48,34 +59,43 @@ class _CreateMemoryPageState extends ConsumerState<CreateMemoryPage> {
               existingImageCount: 0,
               isSaving: state.isSaving,
               error: state.error,
+              accountId: userId,
               onSave: (draft, images) async {
-                var details = _createdMemoryId == null
-                    ? await ref
-                          .read(memoryFormControllerProvider.notifier)
-                          .create(draft)
-                    : await ref
-                          .read(memoryRepositoryProvider)
-                          .getMemory(_createdMemoryId!);
-                if (details == null) return;
-                _createdMemoryId ??= details.id;
-                if (images.isNotEmpty) {
-                  await ref
-                      .read(memoryImageRepositoryProvider)
-                      .uploadImages(details.id, images);
-                  details = await ref
-                      .read(memoryRepositoryProvider)
-                      .getMemory(details.id);
-                }
-                if (context.mounted) {
+                final result = await _imageSaveFlow.saveAndUpload(
+                  userId: userId,
+                  images: images,
+                  saveText: () => ref
+                      .read(memoryFormControllerProvider.notifier)
+                      .create(draft),
+                  uploadImages: (memoryId, pendingImages) async {
+                    await ref
+                        .read(memoryImageRepositoryProvider)
+                        .uploadImages(memoryId, pendingImages);
+                    return ref
+                        .read(memoryRepositoryProvider)
+                        .getMemory(memoryId);
+                  },
+                );
+                final details = result.details;
+                if (result.isComplete && details != null && context.mounted) {
                   ref.read(timelineControllerProvider.notifier).upsert(details);
                   context.go('/memories/${details.id}');
                 }
+                return result;
               },
+              onContinueWithoutImages: () => _continueWithoutImages(context),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _continueWithoutImages(BuildContext context) async {
+    final details = _imageSaveFlow.continueWithoutImages();
+    if (details == null || !context.mounted) return;
+    ref.read(timelineControllerProvider.notifier).upsert(details);
+    context.go('/memories/${details.id}');
   }
 }
 
@@ -87,7 +107,7 @@ class EditMemoryPage extends ConsumerStatefulWidget {
 }
 
 class _EditMemoryPageState extends ConsumerState<EditMemoryPage> {
-  MemoryDetails? _savedDetails;
+  final _imageSaveFlow = MemoryImageSaveFlow();
 
   @override
   void initState() {
@@ -100,8 +120,18 @@ class _EditMemoryPageState extends ConsumerState<EditMemoryPage> {
   }
 
   @override
+  void dispose() {
+    _imageSaveFlow.clear();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final state = ref.watch(memoryFormControllerProvider);
+    final userId = ref.watch(
+      authControllerProvider.select((auth) => auth.user?.id),
+    );
+    _imageSaveFlow.resetForUser(userId);
     return Scaffold(
       appBar: AppBar(title: const Text('Chỉnh sửa kỷ niệm')),
       body: PaperPage(
@@ -120,35 +150,47 @@ class _EditMemoryPageState extends ConsumerState<EditMemoryPage> {
                 isSaving: state.isSaving,
                 label: 'Lưu thay đổi',
                 error: state.error,
+                accountId: userId,
                 onSave: (draft, images) async {
-                  final details =
-                      _savedDetails ??
+                  final result = await _imageSaveFlow.saveAndUpload(
+                    userId: userId,
+                    images: images,
+                    saveText: () => ref
+                        .read(memoryFormControllerProvider.notifier)
+                        .update(widget.id, draft),
+                    uploadImages: (memoryId, pendingImages) async {
                       await ref
-                          .read(memoryFormControllerProvider.notifier)
-                          .update(widget.id, draft);
-                  if (details == null) return;
-                  _savedDetails ??= details;
-
-                  var updated = details;
-                  if (images.isNotEmpty) {
-                    await ref
-                        .read(memoryImageRepositoryProvider)
-                        .uploadImages(widget.id, images);
-                    updated = await ref
-                        .read(memoryRepositoryProvider)
-                        .getMemory(widget.id);
-                  }
-                  ref.read(timelineControllerProvider.notifier).upsert(updated);
-                  ref
-                      .read(memoryDetailsControllerProvider.notifier)
-                      .replace(updated);
-                  if (context.mounted) {
+                          .read(memoryImageRepositoryProvider)
+                          .uploadImages(memoryId, pendingImages);
+                      return ref
+                          .read(memoryRepositoryProvider)
+                          .getMemory(memoryId);
+                    },
+                  );
+                  final updated = result.details;
+                  if (result.isComplete && updated != null && context.mounted) {
+                    ref
+                        .read(timelineControllerProvider.notifier)
+                        .upsert(updated);
+                    ref
+                        .read(memoryDetailsControllerProvider.notifier)
+                        .replace(updated);
                     context.go('/memories/${updated.id}');
                   }
+                  return result;
                 },
+                onContinueWithoutImages: () => _continueWithoutImages(context),
               ),
       ),
     );
+  }
+
+  Future<void> _continueWithoutImages(BuildContext context) async {
+    final details = _imageSaveFlow.continueWithoutImages();
+    if (details == null || !context.mounted) return;
+    ref.read(timelineControllerProvider.notifier).upsert(details);
+    ref.read(memoryDetailsControllerProvider.notifier).replace(details);
+    context.go('/memories/${details.id}');
   }
 }
 
@@ -427,13 +469,21 @@ class _MemoryForm extends StatefulWidget {
     required this.existingImageCount,
     required this.isSaving,
     required this.onSave,
+    required this.onContinueWithoutImages,
+    required this.accountId,
     this.label = 'Lưu kỷ niệm',
     this.error,
   });
   final MemoryDraft? initial;
   final int existingImageCount;
   final bool isSaving;
-  final Future<void> Function(MemoryDraft, List<SelectedMemoryImage>) onSave;
+  final Future<MemoryImageSaveResult> Function(
+    MemoryDraft,
+    List<SelectedMemoryImage>,
+  )
+  onSave;
+  final Future<void> Function() onContinueWithoutImages;
+  final String? accountId;
   final String label;
   final String? error;
   @override
@@ -452,6 +502,7 @@ class _MemoryFormState extends State<_MemoryForm> {
   final List<SelectedMemoryImage> _selectedImages = [];
   String? _imageError;
   bool _isUploadingImages = false;
+  bool _hasPartialImageSuccess = false;
   @override
   void initState() {
     super.initState();
@@ -473,6 +524,16 @@ class _MemoryFormState extends State<_MemoryForm> {
     super.dispose();
   }
 
+  @override
+  void didUpdateWidget(covariant _MemoryForm oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.accountId != widget.accountId) {
+      _selectedImages.clear();
+      _imageError = null;
+      _hasPartialImageSuccess = false;
+    }
+  }
+
   Future<void> _datePicker() async {
     final picked = await showDatePicker(
       context: context,
@@ -485,7 +546,11 @@ class _MemoryFormState extends State<_MemoryForm> {
   }
 
   Future<void> _submit() async {
-    if (!_key.currentState!.validate()) return;
+    if (_isUploadingImages ||
+        widget.isSaving ||
+        !_key.currentState!.validate()) {
+      return;
+    }
     final tags = <String>{};
     for (final tag in _tags.text.split(',')) {
       if (tag.trim().isNotEmpty) tags.add(tag.trim());
@@ -495,7 +560,7 @@ class _MemoryFormState extends State<_MemoryForm> {
       _imageError = null;
     });
     try {
-      await widget.onSave(
+      final result = await widget.onSave(
         MemoryDraft(
           title: _title.text,
           story: _story.text,
@@ -506,14 +571,29 @@ class _MemoryFormState extends State<_MemoryForm> {
         ),
         List.unmodifiable(_selectedImages),
       );
-    } on MemoryRequestException catch (error) {
-      if (mounted) setState(() => _imageError = error.safeMessage);
-    } catch (_) {
       if (mounted) {
-        setState(
-          () => _imageError =
-              'Ky niem da duoc luu nhung khong the tai anh. Vui long thu lai.',
-        );
+        setState(() {
+          _hasPartialImageSuccess = result.isPartialSuccess;
+          _imageError = result.isPartialSuccess ? result.message : null;
+          if (result.isComplete) _selectedImages.clear();
+        });
+      }
+    } finally {
+      if (mounted) setState(() => _isUploadingImages = false);
+    }
+  }
+
+  Future<void> _continueWithoutImages() async {
+    if (_isUploadingImages || !_hasPartialImageSuccess) return;
+    setState(() => _isUploadingImages = true);
+    try {
+      await widget.onContinueWithoutImages();
+      if (mounted) {
+        setState(() {
+          _selectedImages.clear();
+          _hasPartialImageSuccess = false;
+          _imageError = null;
+        });
       }
     } finally {
       if (mounted) setState(() => _isUploadingImages = false);
@@ -637,6 +717,26 @@ class _MemoryFormState extends State<_MemoryForm> {
                     style: const TextStyle(color: AppColors.danger),
                   ),
                 ),
+              if (_hasPartialImageSuccess) ...[
+                const SizedBox(height: AppSpacing.sm),
+                Wrap(
+                  spacing: AppSpacing.sm,
+                  runSpacing: AppSpacing.sm,
+                  children: [
+                    FilledButton.icon(
+                      onPressed: _isUploadingImages ? null : _submit,
+                      icon: const Icon(Icons.refresh),
+                      label: const Text('Thử lại tải ảnh'),
+                    ),
+                    OutlinedButton(
+                      onPressed: _isUploadingImages
+                          ? null
+                          : _continueWithoutImages,
+                      child: const Text('Tiếp tục không có ảnh'),
+                    ),
+                  ],
+                ),
+              ],
               if (_selectedImages.isNotEmpty) ...[
                 const SizedBox(height: AppSpacing.sm),
                 Wrap(

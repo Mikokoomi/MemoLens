@@ -210,3 +210,22 @@ Flutter tests cover supported extension handling, 5 MB client validation, safe f
 - The full suite remains isolated from Development LocalDB. Backend tests continue to use their existing test setup.
 - A deterministic test for backend offline exactly between text persistence and multipart upload is still missing. It must preserve selected local images and retry only against the existing Memory ID before the workflow is called fully frozen.
 - Final Phase 19D.1 verification: 62 Flutter tests pass, Flutter analyzer is clean, debug APK builds, and the backend remains at 90 passing tests with a clean NuGet vulnerability audit.
+
+## Phase 19D.2 deterministic partial-success tests
+
+`test/memories/memory_image_save_flow_test.dart` adds six state-transition tests with handwritten callbacks and no Development database:
+
+- Create text succeeds once, first upload fails, Retry succeeds with the same Memory ID.
+- Continue without images neither re-creates the Memory nor retries upload.
+- Edit text update succeeds once; Retry only uploads the selected batch.
+- Normal text-save failure never becomes partial image success.
+- A second simultaneous Retry is ignored.
+- Changing accounts clears retained private pending state before a new save.
+
+The Flutter suite now has **68 tests**. `flutter analyze`, normal `flutter build apk --debug` and the separate QA-target APK build pass. The QA target can be run only explicitly:
+
+```powershell
+flutter run -t lib/qa/partial_upload_retry_qa.dart
+```
+
+It fails the first selected upload in that process only, delegates Retry to the real API repository, and is not part of the normal app entrypoint or Release behavior. Android API 36 boot verification passed; the final manual picker/retry walkthrough remains an open device check rather than an assumed result.

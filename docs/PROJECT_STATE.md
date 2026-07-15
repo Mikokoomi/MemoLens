@@ -1080,3 +1080,11 @@ Phase 19C co the freeze sau patch nay. Phase tiep theo de xuat: **Phase 19D - Pr
 - Flutter analyzer sạch, 62 Flutter test pass, debug APK build thành công. Backend vẫn build sạch, 90 test pass, audit NuGet sạch và chỉ có 5 migration hiện hữu.
 - Hai user QA, refresh token, Memory/image row, file local và media emulator tạm đã được xóa sau kiểm tra.
 - Không thay đổi Album, backend API, schema hoặc migration. Handoff offline chính xác sau text-save nhưng trước multipart upload chưa được tái lập xác định trong E2E này và vẫn là kiểm tra thủ công cần làm trước khi freeze hoàn toàn.
+
+## 61. Cập nhật Phase 19D.2: Deterministic Image Partial-Success and Retry QA
+
+- Flutter có state flow hẹp cho khoảng chuyển tiếp sau khi text Create/Edit thành công nhưng multipart ảnh lỗi. UI báo rõ text đã lưu, giữ preview để Retry và cho phép tiếp tục không ảnh.
+- Retry dùng cùng Memory ID và không gửi lại `POST` hoặc `PUT`; 6 regression tests kiểm tra create/edit counts, same-ID retry, chống double-submit, Continue, lỗi text thông thường và xóa state khi đổi tài khoản.
+- QA-only entrypoint ở `mobile/memolens_app/lib/qa` inject lỗi unavailable đúng một lần. `main.dart` không import entrypoint này; normal/Release không có failure behavior hoặc control QA.
+- Flutter analyzer sạch, full suite **68 tests** pass, normal debug APK và QA-target debug APK đều build. Backend giữ **90 tests**, audit NuGet sạch và 5 migrations hiện hữu.
+- Android API 36 đã boot QA target. Manual Photo Picker partial-success/retry chưa hoàn tất qua automation hiện tại, vì vậy Phase 19D chưa được đánh dấu freeze hoàn toàn. Không có Album, API, schema hay migration thay đổi.

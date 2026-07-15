@@ -40,3 +40,11 @@ There is no image crop, edit, reorder, manual cover, permanent disk cache, offli
 - Final verification finished with 62 Flutter tests passing, analyzer clean and a rebuilt debug APK. Temporary QA accounts, tokens, Memory/image rows, local generated files and emulator media were removed after the run.
 
 The deterministic offline boundary between a successful text write and a multipart upload was not force-stopped during this QA run. The create/edit flow keeps selected images on the active form and reuses the created/saved Memory ID, but that exact backend-offline handoff remains a required follow-up manual regression before declaring the image workflow fully frozen.
+
+## Phase 19D.2 - Deterministic partial-success and retry
+
+- `MemoryImageSaveFlow` has explicit idle, text-save, image-upload, partial-success, retry and complete states. A successful text request retains its returned Memory ID only for the active form/session.
+- A failed image upload now shows a safe partial-success message with **Thử lại tải ảnh** and **Tiếp tục không có ảnh**. The selected local previews remain for Retry and are cleared only after upload succeeds or after the user leaves through Continue.
+- Retry never repeats the successful `POST`/`PUT`: focused regression tests assert one text request, two upload attempts and the same Memory ID for both upload attempts. Continue makes no automatic background retry and creates no offline queue.
+- `lib/qa/partial_upload_retry_qa.dart` is a separate QA target that replaces only the image repository and fails its first upload with a safe unavailable error. It is not imported by `main.dart`; normal and Release builds keep the real repository.
+- The QA target built and booted on Android API 36. Its interactive Photo Picker retry pass still needs one supported manual-device run before Phase 19D can be declared fully frozen; no unverified Android result is recorded as passed.
