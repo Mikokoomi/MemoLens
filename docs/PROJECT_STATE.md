@@ -1088,3 +1088,10 @@ Phase 19C co the freeze sau patch nay. Phase tiep theo de xuat: **Phase 19D - Pr
 - QA-only entrypoint ở `mobile/memolens_app/lib/qa` inject lỗi unavailable đúng một lần. `main.dart` không import entrypoint này; normal/Release không có failure behavior hoặc control QA.
 - Flutter analyzer sạch, full suite **68 tests** pass, normal debug APK và QA-target debug APK đều build. Backend giữ **90 tests**, audit NuGet sạch và 5 migrations hiện hữu.
 - Android API 36 đã boot QA target. Manual Photo Picker partial-success/retry chưa hoàn tất qua automation hiện tại, vì vậy Phase 19D chưa được đánh dấu freeze hoàn toàn. Không có Album, API, schema hay migration thay đổi.
+
+## 62. Cập nhật Phase 19D và Phase 19P: Architecture Planning Package
+
+- **Phase 19D:** feature complete và automated verified với 68 Flutter tests tại baseline. Manual Android Photo Picker partial-success/retry smoke vẫn pending vì API 36 emulator bị native splash/black-screen rendering; không ghi nhận manual pass khi chưa kiểm tra được.
+- **Phase 19P:** tạo gói tài liệu kiến trúc/sitemap/user flows/wireframes/data/storage/decision register tại `docs/` và Draw.io ở `design/architecture/`. Đây chỉ là planning; không có code, API, schema hay migration thay đổi.
+- **Phase 19E chưa bắt đầu.** Albums, Trash, Settings và final Flutter Paper Note UI vẫn là phạm vi tương lai.
+- Mọi production storage/database, hosting, navigation, lifecycle và backup decision lớn phải có approval rõ ràng trước khi triển khai.

@@ -67,3 +67,9 @@ Flutter là mobile client riêng cho MemoLens. Client này dùng JWT API đã đ
 - A QA-only Flutter entrypoint injects one safe image-upload availability failure after normal text persistence. It is a separate `-t lib/qa/partial_upload_retry_qa.dart` target and cannot alter `main.dart` or Release behavior.
 - Focused tests verify Create/Edit partial success, one Create/Update call, same-ID Retry, duplicate Retry prevention, Continue-without-images and account-change disposal.
 - The Android API 36 QA target compiled and opened. A final interactive Photo Picker retry run remains required before formally freezing Phase 19D; no Phase 19E work begins automatically.
+
+## Phase 19P - Product Architecture, Sitemap, Wireframes and Data Planning
+
+- Phase 19D is feature complete and automated verified (68 Flutter tests at baseline); the manual Android Photo Picker partial-success/retry smoke remains pending because the API 36 emulator is blocked by native splash/black-screen rendering.
+- Planning package: `docs/PRODUCT_ARCHITECTURE.md`, `MOBILE_SITEMAP.md`, `MOBILE_USER_FLOWS.md`, `MOBILE_WIREFRAMES.md`, `DATA_ARCHITECTURE.md`, storage/lifecycle/map/decision documents and `design/architecture/MemoLens_Product_Architecture.drawio`.
+- Phase 19E has **not** started. A draft future sequence exists only for discussion; navigation, production storage/database, backup and lifecycle decisions require explicit owner approval before implementation.
