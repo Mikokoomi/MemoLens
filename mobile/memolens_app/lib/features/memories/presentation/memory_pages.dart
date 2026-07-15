@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_spacing.dart';
 import '../../../core/widgets/error_view.dart';
@@ -11,11 +14,21 @@ import '../../../core/widgets/primary_button.dart';
 import '../../../core/widgets/secondary_button.dart';
 import '../application/memory_controllers.dart';
 import '../data/models/memory_models.dart';
+import '../data/memory_image_repository.dart';
+import '../data/memory_repository.dart';
+import 'widgets/private_memory_image.dart';
 
-class CreateMemoryPage extends ConsumerWidget {
+class CreateMemoryPage extends ConsumerStatefulWidget {
   const CreateMemoryPage({super.key});
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CreateMemoryPage> createState() => _CreateMemoryPageState();
+}
+
+class _CreateMemoryPageState extends ConsumerState<CreateMemoryPage> {
+  int? _createdMemoryId;
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(memoryFormControllerProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('Tạo kỷ niệm')),
@@ -32,13 +45,28 @@ class CreateMemoryPage extends ConsumerWidget {
             const SizedBox(height: AppSpacing.lg),
             _MemoryForm(
               initial: null,
+              existingImageCount: 0,
               isSaving: state.isSaving,
               error: state.error,
-              onSave: (draft) async {
-                final details = await ref
-                    .read(memoryFormControllerProvider.notifier)
-                    .create(draft);
-                if (details != null && context.mounted) {
+              onSave: (draft, images) async {
+                var details = _createdMemoryId == null
+                    ? await ref
+                          .read(memoryFormControllerProvider.notifier)
+                          .create(draft)
+                    : await ref
+                          .read(memoryRepositoryProvider)
+                          .getMemory(_createdMemoryId!);
+                if (details == null) return;
+                _createdMemoryId ??= details.id;
+                if (images.isNotEmpty) {
+                  await ref
+                      .read(memoryImageRepositoryProvider)
+                      .uploadImages(details.id, images);
+                  details = await ref
+                      .read(memoryRepositoryProvider)
+                      .getMemory(details.id);
+                }
+                if (context.mounted) {
                   ref.read(timelineControllerProvider.notifier).upsert(details);
                   context.go('/memories/${details.id}');
                 }
@@ -59,6 +87,8 @@ class EditMemoryPage extends ConsumerStatefulWidget {
 }
 
 class _EditMemoryPageState extends ConsumerState<EditMemoryPage> {
+  MemoryDetails? _savedDetails;
+
   @override
   void initState() {
     super.initState();
@@ -86,21 +116,34 @@ class _EditMemoryPageState extends ConsumerState<EditMemoryPage> {
               )
             : _MemoryForm(
                 initial: MemoryDraft.fromDetails(state.details!),
+                existingImageCount: state.details!.images.length,
                 isSaving: state.isSaving,
                 label: 'Lưu thay đổi',
                 error: state.error,
-                onSave: (draft) async {
-                  final details = await ref
-                      .read(memoryFormControllerProvider.notifier)
-                      .update(widget.id, draft);
-                  if (details != null && context.mounted) {
-                    ref
-                        .read(timelineControllerProvider.notifier)
-                        .upsert(details);
-                    ref
-                        .read(memoryDetailsControllerProvider.notifier)
-                        .replace(details);
-                    context.go('/memories/${details.id}');
+                onSave: (draft, images) async {
+                  final details =
+                      _savedDetails ??
+                      await ref
+                          .read(memoryFormControllerProvider.notifier)
+                          .update(widget.id, draft);
+                  if (details == null) return;
+                  _savedDetails ??= details;
+
+                  var updated = details;
+                  if (images.isNotEmpty) {
+                    await ref
+                        .read(memoryImageRepositoryProvider)
+                        .uploadImages(widget.id, images);
+                    updated = await ref
+                        .read(memoryRepositoryProvider)
+                        .getMemory(widget.id);
+                  }
+                  ref.read(timelineControllerProvider.notifier).upsert(updated);
+                  ref
+                      .read(memoryDetailsControllerProvider.notifier)
+                      .replace(updated);
+                  if (context.mounted) {
+                    context.go('/memories/${updated.id}');
                   }
                 },
               ),
@@ -175,7 +218,11 @@ class _MemoryDetailsPageState extends ConsumerState<MemoryDetailsPage> {
               ],
             ),
             const SizedBox(height: AppSpacing.md),
-            _GallerySummary(images: details.images),
+            _GallerySummary(
+              images: details.images,
+              onDelete: (imageId) =>
+                  _confirmImageDelete(context, details.id, imageId),
+            ),
             const SizedBox(height: AppSpacing.md),
             PaperCard(
               child: Column(
@@ -275,11 +322,52 @@ class _MemoryDetailsPageState extends ConsumerState<MemoryDetailsPage> {
       );
     }
   }
+
+  Future<void> _confirmImageDelete(
+    BuildContext context,
+    int memoryId,
+    int imageId,
+  ) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Xóa ảnh này?'),
+        content: const Text(
+          'Chỉ ảnh đã chọn bị xóa. Kỷ niệm và các ảnh khác vẫn được giữ lại.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: const Text('Hủy'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(dialogContext, true),
+            child: const Text('Xóa ảnh'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+    final deleted = await ref
+        .read(memoryDetailsControllerProvider.notifier)
+        .deleteImage(memoryId, imageId);
+    if (deleted && context.mounted) {
+      ref.invalidate(privateImageBytesProvider(imageId));
+      final details = ref.read(memoryDetailsControllerProvider).details;
+      if (details != null) {
+        ref.read(timelineControllerProvider.notifier).upsert(details);
+      }
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Đã xóa ảnh.')));
+    }
+  }
 }
 
 class _GallerySummary extends StatelessWidget {
-  const _GallerySummary({required this.images});
+  const _GallerySummary({required this.images, required this.onDelete});
   final List<MemoryImageMetadata> images;
+  final Future<void> Function(int imageId) onDelete;
   @override
   Widget build(BuildContext context) => PaperCard(
     child: Column(
@@ -290,26 +378,36 @@ class _GallerySummary extends StatelessWidget {
         if (images.isEmpty)
           const Text('Chưa có ảnh trong kỷ niệm này.')
         else
-          Wrap(
-            spacing: AppSpacing.sm,
-            runSpacing: AppSpacing.sm,
-            children: images
-                .map(
-                  (image) => Container(
-                    width: 82,
-                    height: 82,
-                    decoration: BoxDecoration(
-                      color: AppColors.surfaceMuted,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.border),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: AppSpacing.sm,
+              crossAxisSpacing: AppSpacing.sm,
+            ),
+            itemCount: images.length,
+            itemBuilder: (context, index) {
+              final image = images[index];
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    PrivateMemoryImage(imageId: image.id),
+                    Positioned(
+                      top: 4,
+                      right: 4,
+                      child: IconButton.filledTonal(
+                        onPressed: () => onDelete(image.id),
+                        icon: const Icon(Icons.delete_outline),
+                        tooltip: 'Xoa anh',
+                      ),
                     ),
-                    child: const Icon(
-                      Icons.photo_outlined,
-                      color: AppColors.teal,
-                    ),
-                  ),
-                )
-                .toList(growable: false),
+                  ],
+                ),
+              );
+            },
           ),
         const SizedBox(height: AppSpacing.xs),
         Text(
@@ -326,14 +424,16 @@ class _GallerySummary extends StatelessWidget {
 class _MemoryForm extends StatefulWidget {
   const _MemoryForm({
     required this.initial,
+    required this.existingImageCount,
     required this.isSaving,
     required this.onSave,
     this.label = 'Lưu kỷ niệm',
     this.error,
   });
   final MemoryDraft? initial;
+  final int existingImageCount;
   final bool isSaving;
-  final Future<void> Function(MemoryDraft) onSave;
+  final Future<void> Function(MemoryDraft, List<SelectedMemoryImage>) onSave;
   final String label;
   final String? error;
   @override
@@ -348,6 +448,10 @@ class _MemoryFormState extends State<_MemoryForm> {
   late final TextEditingController _tags;
   late String _feeling;
   late DateTime _date;
+  final _picker = ImagePicker();
+  final List<SelectedMemoryImage> _selectedImages = [];
+  String? _imageError;
+  bool _isUploadingImages = false;
   @override
   void initState() {
     super.initState();
@@ -386,16 +490,80 @@ class _MemoryFormState extends State<_MemoryForm> {
     for (final tag in _tags.text.split(',')) {
       if (tag.trim().isNotEmpty) tags.add(tag.trim());
     }
-    await widget.onSave(
-      MemoryDraft(
-        title: _title.text,
-        story: _story.text,
-        feeling: _feeling,
-        memoryDate: _date,
-        location: _location.text,
-        tags: tags.toList(growable: false),
-      ),
-    );
+    setState(() {
+      _isUploadingImages = true;
+      _imageError = null;
+    });
+    try {
+      await widget.onSave(
+        MemoryDraft(
+          title: _title.text,
+          story: _story.text,
+          feeling: _feeling,
+          memoryDate: _date,
+          location: _location.text,
+          tags: tags.toList(growable: false),
+        ),
+        List.unmodifiable(_selectedImages),
+      );
+    } on MemoryRequestException catch (error) {
+      if (mounted) setState(() => _imageError = error.safeMessage);
+    } catch (_) {
+      if (mounted) {
+        setState(
+          () => _imageError =
+              'Ky niem da duoc luu nhung khong the tai anh. Vui long thu lai.',
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isUploadingImages = false);
+    }
+  }
+
+  Future<void> _pickImages() async {
+    final remaining =
+        maxMemoryImages - widget.existingImageCount - _selectedImages.length;
+    if (remaining <= 0) {
+      setState(
+        () => _imageError = 'Ban chi co the chon toi da $maxMemoryImages anh.',
+      );
+      return;
+    }
+    final files = await _picker.pickMultiImage();
+    if (files.isEmpty || !mounted) return;
+    final selected = <SelectedMemoryImage>[];
+    for (final file in files) {
+      try {
+        final image = await SelectedMemoryImage.fromXFile(file);
+        final invalid = image.validationMessage(
+          existingCount:
+              widget.existingImageCount +
+              _selectedImages.length +
+              selected.length,
+        );
+        final duplicate = [..._selectedImages, ...selected].any(
+          (entry) =>
+              entry.displayName == image.displayName &&
+              entry.byteLength == image.byteLength,
+        );
+        if (invalid != null) {
+          setState(() => _imageError = invalid);
+        } else if (duplicate) {
+          setState(
+            () => _imageError = 'Anh ${image.displayName} da duoc chon.',
+          );
+        } else {
+          selected.add(image);
+        }
+      } catch (_) {
+        if (mounted) {
+          setState(() => _imageError = 'Khong the doc mot anh da chon.');
+        }
+      }
+    }
+    if (mounted && selected.isNotEmpty) {
+      setState(() => _selectedImages.addAll(selected.take(remaining)));
+    }
   }
 
   @override
@@ -440,6 +608,59 @@ class _MemoryFormState extends State<_MemoryForm> {
                   hintText: 'Điều gì làm bạn muốn lưu lại hôm nay?',
                 ),
               ),
+            ],
+          ),
+        ),
+        const SizedBox(height: AppSpacing.md),
+        PaperCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text('Anh', style: Theme.of(context).textTheme.titleLarge),
+              const SizedBox(height: AppSpacing.xs),
+              Text(
+                'Còn ${maxMemoryImages - widget.existingImageCount - _selectedImages.length} chỗ trống. Ảnh chỉ được tải lên sau khi bạn lưu kỷ niệm.',
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              OutlinedButton.icon(
+                onPressed: widget.isSaving || _isUploadingImages
+                    ? null
+                    : _pickImages,
+                icon: const Icon(Icons.add_photo_alternate_outlined),
+                label: const Text('Chon anh tu thiet bi'),
+              ),
+              if (_imageError != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: AppSpacing.sm),
+                  child: Text(
+                    _imageError!,
+                    style: const TextStyle(color: AppColors.danger),
+                  ),
+                ),
+              if (_selectedImages.isNotEmpty) ...[
+                const SizedBox(height: AppSpacing.sm),
+                Wrap(
+                  spacing: AppSpacing.sm,
+                  runSpacing: AppSpacing.sm,
+                  children: _selectedImages
+                      .asMap()
+                      .entries
+                      .map(
+                        (entry) => _SelectedImageTile(
+                          image: entry.value,
+                          onRemove: () => setState(
+                            () => _selectedImages.removeAt(entry.key),
+                          ),
+                        ),
+                      )
+                      .toList(growable: false),
+                ),
+              ],
+              if (_isUploadingImages)
+                const Padding(
+                  padding: EdgeInsets.only(top: AppSpacing.sm),
+                  child: LinearProgressIndicator(),
+                ),
             ],
           ),
         ),
@@ -541,6 +762,67 @@ class _MemoryFormState extends State<_MemoryForm> {
           ],
         ),
         const SizedBox(height: AppSpacing.xl),
+      ],
+    ),
+  );
+}
+
+class _SelectedImageTile extends StatefulWidget {
+  const _SelectedImageTile({required this.image, required this.onRemove});
+  final SelectedMemoryImage image;
+  final VoidCallback onRemove;
+
+  @override
+  State<_SelectedImageTile> createState() => _SelectedImageTileState();
+}
+
+class _SelectedImageTileState extends State<_SelectedImageTile> {
+  late final Future<Uint8List> _bytes;
+
+  @override
+  void initState() {
+    super.initState();
+    _bytes = widget.image.file.readAsBytes();
+  }
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+    width: 92,
+    child: Column(
+      children: [
+        SizedBox(
+          width: 92,
+          height: 92,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                FutureBuilder<Uint8List>(
+                  future: _bytes,
+                  builder: (context, snapshot) => snapshot.hasData
+                      ? LocalMemoryImagePreview(bytes: snapshot.data!)
+                      : const ColoredBox(color: AppColors.surfaceMuted),
+                ),
+                Positioned(
+                  top: 2,
+                  right: 2,
+                  child: IconButton.filledTonal(
+                    onPressed: widget.onRemove,
+                    icon: const Icon(Icons.close),
+                    tooltip: 'Bo anh da chon',
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          widget.image.displayName,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
       ],
     ),
   );

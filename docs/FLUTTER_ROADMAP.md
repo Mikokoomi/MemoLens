@@ -51,3 +51,8 @@ Flutter là mobile client riêng cho MemoLens. Client này dùng JWT API đã đ
 - Da sua bootstrap Splash/session cho Android: guest roi Splash vao Login, secure-storage failure/timeout hien thi retry va khong xoa token khi backend offline.
 - Android E2E da xac nhan session restore, create/detail/edit/soft delete Memory va isolation User A/User B. Flutter suite hien co 55 tests passing.
 - Client DELETE chap nhan standard success-only response cua backend; khong co API/schema/migration change.
+## Phase 19D - Private Memory Images
+
+- Flutter selects local gallery images with `image_picker`, validates the same count/size/extension limits as the API, and uploads only after a Memory has an ID.
+- Private content is loaded as JWT-authenticated bytes, not public URLs. Gallery, Timeline cover and confirmed individual delete are supported without a permanent disk cache.
+- No Album, API contract, schema or migration change is included.

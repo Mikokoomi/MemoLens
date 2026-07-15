@@ -199,3 +199,6 @@ Không chờ thủ công đủ 15 phút để access token hết hạn trên emu
    - Các flow quan trọng trên browser sau khi API/MVC behavior ổn định.
 3. **Sau đó: Trash API integration tests**
    - Ownership, trash list, restore và permanent-delete boundaries cho API mobile tiếp theo.
+## Phase 19D Flutter image tests
+
+Flutter tests cover supported extension handling, 5 MB client validation, safe filename display and frozen upload metadata parsing. Existing auth and Memory tests remain part of the full Flutter suite. Android picker behavior requires a device/emulator smoke test because automated tests do not open a real gallery.

@@ -114,3 +114,6 @@ Settings và Trash sẽ được làm sau khi backend có API riêng cho các fl
 - Debug APK builds and a clean Android install exits Splash to Login correctly.
 - Android smoke covers session restore plus private Memory create, detail, edit, soft delete and User A/User B isolation.
 - The Flutter client does not add or change backend API contracts, database schema or migrations in this phase.
+## Phase 19D private images
+
+Flutter uses `image_picker` for gallery selection and the existing authenticated Dio client for private upload/content/delete endpoints. Images are kept only in temporary memory while the page is active; there is no public URL or permanent mobile disk cache. See [MEMORY_IMAGES.md](memolens_app/docs/MEMORY_IMAGES.md).

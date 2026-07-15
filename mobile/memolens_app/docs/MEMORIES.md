@@ -38,3 +38,9 @@ Tren Android emulator, backend Development chay o may host duoc truy cap qua `10
 - Da xac nhan tai khoan User B khong thay Memory cua User A sau logout va dang nhap lai. Timeline state duoc xoa khi logout/doi tai khoan.
 - Khong co anh hoac Album nao duoc tao trong Phase nay. Trash UI, restore qua UI, va image flow thuoc cac phase sau.
 - Toan bo tai khoan, Memory, tag va refresh-token tam dung cho smoke da duoc xoa sau khi kiem thu.
+## Phase 19D - Private images
+
+- Memory forms can select multiple local images, preview them, remove selections and validate extension, 5 MB size and remaining image slots before upload.
+- Details load private image bytes through the JWT Dio client and show a responsive two-column gallery. Timeline uses the private cover image when `coverImageId` exists.
+- Upload happens only after create/update text operations. Individual deletion requires confirmation and accepts the backend success-only DELETE envelope.
+- See `MEMORY_IMAGES.md` for privacy, lifecycle and known limitations.

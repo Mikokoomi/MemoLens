@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../app/providers.dart';
 import '../../authentication/application/auth_controller.dart';
 import '../data/memory_repository.dart';
+import '../data/memory_image_repository.dart';
 import '../data/models/memory_models.dart';
 
 final memoryRepositoryProvider = Provider<MemoryRepository>(
@@ -180,10 +181,12 @@ class MemoryDetailsState {
 
 class MemoryDetailsController extends Notifier<MemoryDetailsState> {
   late final MemoryRepository _repository;
+  late final MemoryImageRepository _imageRepository;
   int _version = 0;
   @override
   MemoryDetailsState build() {
     _repository = ref.watch(memoryRepositoryProvider);
+    _imageRepository = ref.watch(memoryImageRepositoryProvider);
     return const MemoryDetailsState();
   }
 
@@ -222,6 +225,41 @@ class MemoryDetailsController extends Notifier<MemoryDetailsState> {
       state = state.copyWith(
         isDeleting: false,
         error: 'Không thể chuyển kỷ niệm vào thùng rác.',
+      );
+      return false;
+    }
+  }
+
+  Future<bool> deleteImage(int memoryId, int imageId) async {
+    if (state.isDeleting || state.details == null) return false;
+    state = state.copyWith(isDeleting: true, clearError: true);
+    try {
+      await _imageRepository.deleteImage(memoryId, imageId);
+      final details = state.details!;
+      final updated = MemoryDetails(
+        id: details.id,
+        title: details.title,
+        story: details.story,
+        feeling: details.feeling,
+        memoryDate: details.memoryDate,
+        location: details.location,
+        tags: details.tags,
+        images: details.images
+            .where((image) => image.id != imageId)
+            .toList(growable: false),
+        createdAt: details.createdAt,
+        updatedAt: details.updatedAt,
+      );
+      state = MemoryDetailsState(details: updated);
+      ref.invalidate(privateImageBytesProvider(imageId));
+      return true;
+    } on MemoryRequestException catch (error) {
+      state = state.copyWith(isDeleting: false, error: error.safeMessage);
+      return false;
+    } catch (_) {
+      state = state.copyWith(
+        isDeleting: false,
+        error: 'Khong the xoa anh luc nay.',
       );
       return false;
     }

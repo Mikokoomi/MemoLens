@@ -10,6 +10,7 @@ import '../../../core/widgets/paper_page.dart';
 import '../../authentication/application/auth_controller.dart';
 import '../application/memory_controllers.dart';
 import '../data/models/memory_models.dart';
+import 'widgets/private_memory_image.dart';
 
 class TimelinePage extends ConsumerStatefulWidget {
   const TimelinePage({super.key});
@@ -300,7 +301,7 @@ class _MemoryListCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _ImagePlaceholder(count: item.imageCount),
+          _TimelineCover(item: item),
           const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
@@ -361,27 +362,31 @@ class _MemoryListCard extends StatelessWidget {
   );
 }
 
-class _ImagePlaceholder extends StatelessWidget {
-  const _ImagePlaceholder({required this.count});
-  final int count;
+class _TimelineCover extends StatelessWidget {
+  const _TimelineCover({required this.item});
+  final MemoryListItem item;
+
   @override
   Widget build(BuildContext context) => Container(
     width: 76,
     height: 76,
+    clipBehavior: Clip.antiAlias,
     decoration: BoxDecoration(
       color: AppColors.surfaceMuted,
       borderRadius: BorderRadius.circular(12),
       border: Border.all(color: AppColors.border),
     ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Icon(Icons.photo_library_outlined, color: AppColors.teal),
-        Text(
-          count == 0 ? 'Chưa có ảnh' : '$count ảnh',
-          style: Theme.of(context).textTheme.labelSmall,
-        ),
-      ],
-    ),
+    child: item.coverImageId == null
+        ? Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.photo_library_outlined, color: AppColors.teal),
+              Text(
+                item.imageCount == 0 ? 'Chưa có ảnh' : '${item.imageCount} ảnh',
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+            ],
+          )
+        : PrivateMemoryImage(imageId: item.coverImageId!),
   );
 }
