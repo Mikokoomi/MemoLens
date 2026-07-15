@@ -1,16 +1,15 @@
-# memolens_app
+# MemoLens Flutter
 
-MemoLens private photo journal mobile application
+Mobile client rieng tu cho MemoLens, mot photo journal/memory diary, khong phai mang xa hoi.
 
-## Getting Started
+## Hien trang
 
-This project is a starting point for a Flutter application.
+Phase 19C co JWT session, Timeline, Memory detail, tao/sua/xoa mem Memory, tim kiem, loc va phan trang. Anh chi parse metadata/placeholder; upload va hien thi anh private se lam o Phase 19D.
 
-A few resources to get you started if this is your first Flutter project:
+```powershell
+flutter pub get
+flutter run --dart-define=API_BASE_URL=http://10.0.2.2:5296
+flutter test
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Xem [MEMORIES.md](docs/MEMORIES.md) cho API scope, privacy boundary va gioi han hien tai.

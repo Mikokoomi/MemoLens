@@ -8,7 +8,8 @@ import '../features/authentication/application/auth_state.dart';
 import '../features/authentication/presentation/email_confirmation_page.dart';
 import '../features/authentication/presentation/login_page.dart';
 import '../features/authentication/presentation/register_page.dart';
-import '../features/home/presentation/home_placeholder_page.dart';
+import '../features/memories/presentation/memory_pages.dart';
+import '../features/memories/presentation/timeline_page.dart';
 import '../features/splash/presentation/splash_page.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -32,8 +33,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (auth.status == AuthStatus.registrationPendingConfirmation) {
         return location == '/confirm-email' ? null : '/confirm-email';
       }
-      if (location == '/' || location == '/home') return '/login';
-      return null;
+      if (location == '/' || isAuthPage) return null;
+      return '/login';
     },
     routes: [
       GoRoute(path: '/', builder: (context, state) => const SplashPage()),
@@ -46,9 +47,42 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/confirm-email',
         builder: (context, state) => const EmailConfirmationPage(),
       ),
+      GoRoute(path: '/home', builder: (context, state) => const TimelinePage()),
       GoRoute(
-        path: '/home',
-        builder: (context, state) => const HomePlaceholderPage(),
+        path: '/memories/create',
+        builder: (context, state) => const CreateMemoryPage(),
+      ),
+      GoRoute(
+        path: '/memories/:id/edit',
+        builder: (context, state) {
+          final id = int.tryParse(state.pathParameters['id'] ?? '');
+          return id == null
+              ? Scaffold(
+                  body: ErrorView(
+                    title: 'Kỷ niệm không hợp lệ',
+                    message: 'Liên kết kỷ niệm không hợp lệ.',
+                    actionLabel: 'Về dòng thời gian',
+                    onAction: () => context.go('/home'),
+                  ),
+                )
+              : EditMemoryPage(id: id);
+        },
+      ),
+      GoRoute(
+        path: '/memories/:id',
+        builder: (context, state) {
+          final id = int.tryParse(state.pathParameters['id'] ?? '');
+          return id == null
+              ? Scaffold(
+                  body: ErrorView(
+                    title: 'Kỷ niệm không hợp lệ',
+                    message: 'Liên kết kỷ niệm không hợp lệ.',
+                    actionLabel: 'Về dòng thời gian',
+                    onAction: () => context.go('/home'),
+                  ),
+                )
+              : MemoryDetailsPage(id: id);
+        },
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

@@ -10,9 +10,11 @@ import 'package:memolens_app/features/authentication/data/auth_repository.dart';
 import 'package:memolens_app/features/authentication/presentation/email_confirmation_page.dart';
 import 'package:memolens_app/features/authentication/presentation/login_page.dart';
 import 'package:memolens_app/features/authentication/presentation/register_page.dart';
-import 'package:memolens_app/features/home/presentation/home_placeholder_page.dart';
+import 'package:memolens_app/features/memories/application/memory_controllers.dart';
+import 'package:memolens_app/features/memories/presentation/timeline_page.dart';
 
 import 'helpers/auth_fakes.dart';
+import 'helpers/memory_fakes.dart';
 
 void main() {
   testWidgets('App starts inside ProviderScope', (tester) async {
@@ -118,21 +120,27 @@ void main() {
     expect(find.text('Quay lại đăng nhập'), findsOneWidget);
   });
 
-  testWidgets('authenticated Home displays safe identity', (tester) async {
+  testWidgets('authenticated Home displays the private timeline', (
+    tester,
+  ) async {
     final harness = _WidgetHarness();
     addTearDown(harness.dispose);
     await harness.container
         .read(authControllerProvider.notifier)
         .login(email: 'user@example.test', password: 'MemoLens1');
-    await _pumpPage(tester, harness, const HomePlaceholderPage());
+    await _pumpPage(tester, harness, const TimelinePage());
 
-    expect(find.textContaining('Người dùng thử'), findsOneWidget);
-    expect(find.text('Đăng xuất'), findsOneWidget);
+    await tester.pump();
+    expect(find.text('Dòng thời gian'), findsOneWidget);
+    expect(find.text('Buổi chiều bình yên'), findsOneWidget);
   });
 
   testWidgets('route guard blocks Home when unauthenticated', (tester) async {
     final harness = _WidgetHarness();
     addTearDown(harness.dispose);
+    await harness.container
+        .read(authControllerProvider.notifier)
+        .initializeSession();
     final router = harness.container.read(routerProvider);
     router.go('/home');
 
@@ -142,7 +150,8 @@ void main() {
         child: const MemoLensApp(),
       ),
     );
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
 
     expect(find.byType(LoginPage), findsOneWidget);
   });
@@ -168,7 +177,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.byType(HomePlaceholderPage), findsOneWidget);
+    expect(find.byType(TimelinePage), findsOneWidget);
   });
 
   testWidgets('logout clears session and returns to Login', (tester) async {
@@ -184,6 +193,8 @@ void main() {
         child: const MemoLensApp(),
       ),
     );
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(PopupMenuButton<String>));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Đăng xuất'));
     await tester.pumpAndSettle();
@@ -216,12 +227,16 @@ class _WidgetHarness {
   _WidgetHarness() {
     repository = AuthRepository(api: api, storage: storage);
     container = ProviderContainer(
-      overrides: [authRepositoryProvider.overrideWithValue(repository)],
+      overrides: [
+        authRepositoryProvider.overrideWithValue(repository),
+        memoryRepositoryProvider.overrideWithValue(memoryRepository),
+      ],
     );
   }
 
   final FakeAuthApi api = FakeAuthApi();
   final FakeTokenStorage storage = FakeTokenStorage();
+  final FakeMemoryRepository memoryRepository = FakeMemoryRepository();
   late final AuthRepository repository;
   late final ProviderContainer container;
 
