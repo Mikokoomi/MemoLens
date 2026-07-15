@@ -20,6 +20,16 @@ void main() {
     );
   });
 
+  test('rejects a selection when the memory already has ten images', () async {
+    expect(
+      (await select(
+        'eleventh.jpg',
+        8,
+      )).validationMessage(existingCount: maxMemoryImages),
+      contains('10'),
+    );
+  });
+
   test('strips path-like source names from the display name', () async {
     final image = await select('C:\\private\\nested\\ky-niem.jpg', 8);
     expect(image.displayName, 'ky-niem.jpg');

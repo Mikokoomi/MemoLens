@@ -27,3 +27,16 @@ Android uses the operating-system image picker and does not request broad storag
 ## Limits
 
 There is no image crop, edit, reorder, manual cover, permanent disk cache, offline sync or full-screen editor. Upload failures are retried manually to avoid duplicate multipart requests.
+
+## Phase 19D.1 - Android E2E and regression QA
+
+- QA ran on Android API 36 against the Development backend through `http://10.0.2.2:5296`.
+- The system Photo Picker opened without broad media-storage permission. Cancel, reopening, local-preview removal and multiple selection were exercised.
+- Real WEBP and JPG selections uploaded through create-then-upload. Client tests cover JPG, JPEG, PNG and WEBP; an over-5-MB selection was rejected before upload and the ten-image boundary has a regression test.
+- Details loaded bytes through authenticated Dio. The content endpoint returned an image MIME type with `Cache-Control: private, no-store`; no public URL, token, storage path or `ImagePath` was rendered.
+- Image delete was exercised with cancel and confirm. The deleted image returned `404`, the remaining image returned `200`, and repeated delete returned a safe `404`.
+- User A logout followed by User B login did not retain User A's Timeline item or private image access. A forged User B request for User A's image returned `404`.
+- A confirmed gallery helper-text defect was fixed: it no longer says images will appear later when they are already visible.
+- Final verification finished with 62 Flutter tests passing, analyzer clean and a rebuilt debug APK. Temporary QA accounts, tokens, Memory/image rows, local generated files and emulator media were removed after the run.
+
+The deterministic offline boundary between a successful text write and a multipart upload was not force-stopped during this QA run. The create/edit flow keeps selected images on the active form and reuses the created/saved Memory ID, but that exact backend-offline handoff remains a required follow-up manual regression before declaring the image workflow fully frozen.

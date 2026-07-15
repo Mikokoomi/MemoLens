@@ -44,3 +44,10 @@ Tren Android emulator, backend Development chay o may host duoc truy cap qua `10
 - Details load private image bytes through the JWT Dio client and show a responsive two-column gallery. Timeline uses the private cover image when `coverImageId` exists.
 - Upload happens only after create/update text operations. Individual deletion requires confirmation and accepts the backend success-only DELETE envelope.
 - See `MEMORY_IMAGES.md` for privacy, lifecycle and known limitations.
+
+## Phase 19D.1 - Android image QA
+
+- Android API 36 smoke confirmed one create action created one Memory, then uploaded selected private images to that returned ID.
+- After app restart, the authenticated session restored and Timeline loaded the created Memory again.
+- Account switching cleared Timeline state: User B saw no User A Memory.
+- The exact offline create/update-success then upload-failure timing remains a pending deterministic manual regression; it was not represented as a completed E2E result.

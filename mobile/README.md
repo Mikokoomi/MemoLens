@@ -117,3 +117,7 @@ Settings và Trash sẽ được làm sau khi backend có API riêng cho các fl
 ## Phase 19D private images
 
 Flutter uses `image_picker` for gallery selection and the existing authenticated Dio client for private upload/content/delete endpoints. Images are kept only in temporary memory while the page is active; there is no public URL or permanent mobile disk cache. See [MEMORY_IMAGES.md](memolens_app/docs/MEMORY_IMAGES.md).
+
+## Phase 19D.1 Android image QA
+
+Android API 36 E2E verified the system picker, real create-then-upload, authenticated private byte loading, image deletion, session restoration and User A/User B isolation. The Flutter suite has focused image-boundary and private-image refresh coverage. See [MEMORY_IMAGES.md](memolens_app/docs/MEMORY_IMAGES.md) for verified scope and the remaining deterministic offline-upload handoff check.

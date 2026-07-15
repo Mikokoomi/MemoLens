@@ -1070,3 +1070,13 @@ Phase 19C co the freeze sau patch nay. Phase tiep theo de xuat: **Phase 19D - Pr
 - Da them image picker, local preview, client validation, create-then-upload, private byte gallery, Timeline cover va xoa tung anh co xac nhan cho Flutter.
 - Flutter su dung authenticated Dio co refresh interceptor hien co; khong dung public URL, cookie MVC hay persistent disk cache.
 - Khong thay doi ASP.NET API contract, auth architecture, schema hoac migration. Album tiep tuc defer sang Phase 19E.
+
+## 60. Cập nhật Phase 19D.1: Android Image E2E and Regression QA
+
+- Android API 36 đã xác nhận Android Photo Picker, tạo Memory rồi tải nhiều ảnh riêng tư, gallery byte qua JWT, xóa từng ảnh và User A/User B isolation.
+- Endpoint content của ảnh private được kiểm tra với Bearer token, MIME ảnh và `Cache-Control: private, no-store`; không dùng public URL, cookie MVC hay disk cache lâu dài.
+- Thêm regression cho giới hạn 10 ảnh, Bearer trên content request và single-flight refresh cho các image request đồng thời.
+- Sửa một lỗi UI thực tế: helper text gallery không còn nói ảnh sẽ hiển thị ở giai đoạn sau khi gallery đã render ảnh.
+- Flutter analyzer sạch, 62 Flutter test pass, debug APK build thành công. Backend vẫn build sạch, 90 test pass, audit NuGet sạch và chỉ có 5 migration hiện hữu.
+- Hai user QA, refresh token, Memory/image row, file local và media emulator tạm đã được xóa sau kiểm tra.
+- Không thay đổi Album, backend API, schema hoặc migration. Handoff offline chính xác sau text-save nhưng trước multipart upload chưa được tái lập xác định trong E2E này và vẫn là kiểm tra thủ công cần làm trước khi freeze hoàn toàn.

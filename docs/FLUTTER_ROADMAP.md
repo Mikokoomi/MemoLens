@@ -56,3 +56,8 @@ Flutter là mobile client riêng cho MemoLens. Client này dùng JWT API đã đ
 - Flutter selects local gallery images with `image_picker`, validates the same count/size/extension limits as the API, and uploads only after a Memory has an ID.
 - Private content is loaded as JWT-authenticated bytes, not public URLs. Gallery, Timeline cover and confirmed individual delete are supported without a permanent disk cache.
 - No Album, API contract, schema or migration change is included.
+
+### Phase 19D.1 - Android Image QA
+
+- Android API 36 verified the private image picker, create-then-upload, byte loading, deletion, restart/session restore and cross-account isolation.
+- The deterministic backend-offline handoff after a successful text save remains an explicit manual regression item; no Album work begins from this QA note.

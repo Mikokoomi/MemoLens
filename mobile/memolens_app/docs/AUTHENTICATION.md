@@ -103,3 +103,7 @@ Manual smoke không chờ đủ access-token lifetime 15 phút. Refresh rotation
 - Bootstrap session co gioi han 10 giay. Loi secure storage hoac backend timeout chuyen sang trang thai retry an toan, khong xoa token chi vi backend tam thoi khong ket noi duoc.
 - Regression tests bao phu storage rong, storage loi, timeout, retry, valid session, router Splash, logout va doi tai khoan. Khong log access token, refresh token hay mat khau.
 - Android smoke da xac nhan cai moi thoat Splash sang Login; phien hop le khoi phuc vao Timeline sau khi mo lai app.
+
+## Phase 19D.1 private image requests
+
+Private image content remains a protected Dio request, not an image URL. Regression tests explicitly cover a Bearer header for `/api/v1/images/{id}/content` and simultaneous image `401` responses sharing the existing single-flight refresh. Android QA also confirmed that logging out before signing in as another account did not reveal the earlier account's private image or Timeline state.

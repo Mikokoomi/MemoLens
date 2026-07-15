@@ -20,6 +20,16 @@ void main() {
     expect(adapter.requests[1].headers['Authorization'], isNull);
   });
 
+  test('private image content request carries the bearer token', () async {
+    final session = _FakeSession(accessToken: 'access');
+    final adapter = _RecordingAdapter((_) => 200);
+    final dio = _createDio(session, adapter);
+
+    await dio.get<Object>('/api/v1/images/42/content');
+
+    expect(adapter.requests.single.headers['Authorization'], 'Bearer access');
+  });
+
   test('expired protected request refreshes and retries once', () async {
     final session = _FakeSession(accessToken: 'old', refreshedToken: 'new');
     final adapter = _RecordingAdapter(
@@ -53,6 +63,28 @@ void main() {
 
     expect(responses.map((response) => response.statusCode), everyElement(200));
     expect(session.refreshCount, 1);
+  });
+
+  test('simultaneous private image 401 requests share one refresh', () async {
+    final session = _FakeSession(
+      accessToken: 'old',
+      refreshedToken: 'new',
+      refreshDelay: const Duration(milliseconds: 20),
+    );
+    final adapter = _RecordingAdapter(
+      (request) => request.headers['Authorization'] == 'Bearer new' ? 200 : 401,
+    );
+    final dio = _createDio(session, adapter);
+
+    final responses = await Future.wait([
+      dio.get<Object>('/api/v1/images/1/content'),
+      dio.get<Object>('/api/v1/images/2/content'),
+      dio.get<Object>('/api/v1/images/3/content'),
+    ]);
+
+    expect(responses.map((response) => response.statusCode), everyElement(200));
+    expect(session.refreshCount, 1);
+    expect(adapter.requests, hasLength(6));
   });
 
   test('refresh endpoint 401 never recursively refreshes', () async {

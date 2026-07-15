@@ -202,3 +202,11 @@ Không chờ thủ công đủ 15 phút để access token hết hạn trên emu
 ## Phase 19D Flutter image tests
 
 Flutter tests cover supported extension handling, 5 MB client validation, safe filename display and frozen upload metadata parsing. Existing auth and Memory tests remain part of the full Flutter suite. Android picker behavior requires a device/emulator smoke test because automated tests do not open a real gallery.
+
+## Phase 19D.1 Android image regression QA
+
+- Flutter regression tests add the ten-image boundary and image-content Bearer/single-flight refresh coverage.
+- Android API 36 smoke exercised the real system picker, over-5-MB client rejection, create-then-upload, private content loading, cancellation/confirm deletion, restart/session restore and User A/User B isolation.
+- The full suite remains isolated from Development LocalDB. Backend tests continue to use their existing test setup.
+- A deterministic test for backend offline exactly between text persistence and multipart upload is still missing. It must preserve selected local images and retry only against the existing Memory ID before the workflow is called fully frozen.
+- Final Phase 19D.1 verification: 62 Flutter tests pass, Flutter analyzer is clean, debug APK builds, and the backend remains at 90 passing tests with a clean NuGet vulnerability audit.

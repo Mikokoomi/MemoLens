@@ -412,8 +412,8 @@ class _GallerySummary extends StatelessWidget {
         const SizedBox(height: AppSpacing.xs),
         Text(
           images.isEmpty
-              ? 'Bạn có thể thêm ảnh khi chỉnh sửa. Tải ảnh sẽ được bổ sung ở giai đoạn sau.'
-              : '${images.length} ảnh đã được lưu. Ảnh sẽ được hiển thị trong giai đoạn sau.',
+              ? 'Bạn có thể thêm ảnh khi chỉnh sửa.'
+              : '${images.length} ảnh đã được lưu.',
           style: Theme.of(context).textTheme.bodySmall,
         ),
       ],
