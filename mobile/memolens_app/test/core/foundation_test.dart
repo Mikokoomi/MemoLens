@@ -51,6 +51,10 @@ class _FakeTokenStorage implements TokenStorage {
   String? _refresh;
 
   @override
+  Future<StoredTokens> readTokens() async =>
+      StoredTokens(accessToken: _access, refreshToken: _refresh);
+
+  @override
   Future<void> saveTokens({
     required String accessToken,
     required String refreshToken,

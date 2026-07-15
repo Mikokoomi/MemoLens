@@ -31,3 +31,10 @@ flutter run --dart-define=API_BASE_URL=http://10.0.2.2:5296
 ```
 
 Tren Android emulator, backend Development chay o may host duoc truy cap qua `10.0.2.2`. Khong dung URL anh public va khong ghi token/password/story rieng tu vao log.
+## Phase 19C.1 - Android Memory E2E
+
+- Da kiem thu tren Android emulator voi tai khoan tam da xac nhan: tao Memory, xem Details, sua metadata va soft delete. Sau delete, Timeline cap nhat ve empty state.
+- Phat hien client parser yeu cau `data` map cho ca DELETE response, trong khi backend dung response `success/message` hop le khong co `data`. Repository da co request void rieng de chap nhan response thanh cong nay; khong doi API contract.
+- Da xac nhan tai khoan User B khong thay Memory cua User A sau logout va dang nhap lai. Timeline state duoc xoa khi logout/doi tai khoan.
+- Khong co anh hoac Album nao duoc tao trong Phase nay. Trash UI, restore qua UI, va image flow thuoc cac phase sau.
+- Toan bo tai khoan, Memory, tag va refresh-token tam dung cho smoke da duoc xoa sau khi kiem thu.

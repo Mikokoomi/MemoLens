@@ -46,3 +46,8 @@ Flutter là mobile client riêng cho MemoLens. Client này dùng JWT API đã đ
 
 - Settings và Trash chỉ bắt đầu khi API backend tương ứng được thiết kế, triển khai và QA.
 - Sau MVP có thể cân nhắc thumbnails/compression, export data và permanent delete theo quyết định privacy riêng.
+## Phase 19C.1 - Splash va Android Memory E2E
+
+- Da sua bootstrap Splash/session cho Android: guest roi Splash vao Login, secure-storage failure/timeout hien thi retry va khong xoa token khi backend offline.
+- Android E2E da xac nhan session restore, create/detail/edit/soft delete Memory va isolation User A/User B. Flutter suite hien co 55 tests passing.
+- Client DELETE chap nhan standard success-only response cua backend; khong co API/schema/migration change.

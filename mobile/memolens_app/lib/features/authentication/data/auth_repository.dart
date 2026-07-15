@@ -14,6 +14,10 @@ abstract interface class AuthSessionCoordinator {
   Future<void> clearInvalidSession();
 }
 
+class AuthStorageException implements Exception {
+  const AuthStorageException();
+}
+
 class AuthRepository implements AuthSessionCoordinator {
   AuthRepository({required AuthApi api, required TokenStorage storage})
     : _api = api,
@@ -31,8 +35,9 @@ class AuthRepository implements AuthSessionCoordinator {
   Stream<void> get sessionExpired => _sessionExpiredController.stream;
 
   Future<AuthenticatedUser?> initializeSession() async {
-    final accessToken = await _storage.readAccessToken();
-    final refreshToken = await _storage.readRefreshToken();
+    final storedTokens = await _readStoredTokens();
+    final accessToken = storedTokens.accessToken;
+    final refreshToken = storedTokens.refreshToken;
 
     if (accessToken == null && refreshToken == null) return null;
     if (accessToken == null || refreshToken == null) {
@@ -53,6 +58,14 @@ class AuthRepository implements AuthSessionCoordinator {
 
     final tokens = await refreshTokens();
     return tokens?.user;
+  }
+
+  Future<StoredTokens> _readStoredTokens() async {
+    try {
+      return await _storage.readTokens();
+    } catch (_) {
+      throw const AuthStorageException();
+    }
   }
 
   Future<AuthenticatedUser> login({

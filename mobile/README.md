@@ -108,3 +108,9 @@ Automated tests không cần backend thật. Khi chạy app, Splash xác thực 
 - Phase 19E: Albums.
 
 Settings và Trash sẽ được làm sau khi backend có API riêng cho các flow đó.
+## Phase 19C.1 verification
+
+- Flutter analyzer passes and the automated suite has 55 passing tests.
+- Debug APK builds and a clean Android install exits Splash to Login correctly.
+- Android smoke covers session restore plus private Memory create, detail, edit, soft delete and User A/User B isolation.
+- The Flutter client does not add or change backend API contracts, database schema or migrations in this phase.

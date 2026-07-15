@@ -1,10 +1,41 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:memolens_app/app/providers.dart';
+import 'package:memolens_app/features/authentication/data/auth_repository.dart';
 import 'package:memolens_app/features/memories/application/memory_controllers.dart';
 import 'package:memolens_app/features/memories/data/models/memory_models.dart';
+import 'package:memolens_app/features/authentication/application/auth_controller.dart';
+
+import '../helpers/auth_fakes.dart';
 import '../helpers/memory_fakes.dart';
 
 void main() {
+  test('account switch clears the previous timeline state', () async {
+    final authRepository = AuthRepository(
+      api: FakeAuthApi(),
+      storage: FakeTokenStorage(),
+    );
+    final container = ProviderContainer(
+      overrides: [
+        authRepositoryProvider.overrideWithValue(authRepository),
+        memoryRepositoryProvider.overrideWithValue(FakeMemoryRepository()),
+      ],
+    );
+    addTearDown(() async {
+      container.dispose();
+      await authRepository.dispose();
+    });
+
+    final controller = container.read(timelineControllerProvider.notifier);
+    await container
+        .read(authControllerProvider.notifier)
+        .login(email: 'user@example.test', password: 'MemoLens1');
+    controller.upsert(sampleMemory);
+    expect(container.read(timelineControllerProvider).items, isNotEmpty);
+
+    await container.read(authControllerProvider.notifier).logout();
+    expect(container.read(timelineControllerProvider).items, isEmpty);
+  });
   test(
     'timeline loads, filters, and updates optimistically after create',
     () async {

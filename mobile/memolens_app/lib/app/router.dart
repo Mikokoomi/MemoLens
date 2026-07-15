@@ -33,7 +33,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (auth.status == AuthStatus.registrationPendingConfirmation) {
         return location == '/confirm-email' ? null : '/confirm-email';
       }
-      if (location == '/' || isAuthPage) return null;
+      if (auth.status == AuthStatus.failure) {
+        return location == '/' ? null : '/';
+      }
+      if (isAuthPage) return null;
       return '/login';
     },
     routes: [

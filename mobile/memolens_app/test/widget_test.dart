@@ -30,6 +30,45 @@ void main() {
     expect(find.byType(MemoLensApp), findsOneWidget);
   });
 
+  testWidgets('empty secure storage exits Splash and opens Login', (
+    tester,
+  ) async {
+    final harness = _WidgetHarness();
+    addTearDown(harness.dispose);
+
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: harness.container,
+        child: const MemoLensApp(),
+      ),
+    );
+    await tester.pump();
+    await tester.pump();
+
+    expect(find.byType(LoginPage), findsOneWidget);
+  });
+
+  testWidgets('valid stored session exits Splash directly to Timeline', (
+    tester,
+  ) async {
+    final harness = _WidgetHarness()
+      ..storage.accessToken = 'access'
+      ..storage.refreshToken = 'refresh';
+    addTearDown(harness.dispose);
+
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: harness.container,
+        child: const MemoLensApp(),
+      ),
+    );
+    await tester.pump();
+    await tester.pump();
+
+    expect(find.byType(TimelinePage), findsOneWidget);
+    expect(find.byType(LoginPage), findsNothing);
+  });
+
   for (final width in [360.0, 390.0, 430.0]) {
     testWidgets('Login renders at ${width.toInt()} without overflow', (
       tester,

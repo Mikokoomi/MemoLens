@@ -28,6 +28,17 @@ class FakeTokenStorage implements TokenStorage {
   String? refreshToken;
   int clearCount = 0;
   int savePairCount = 0;
+  int readTokensCount = 0;
+  Object? readTokensError;
+  Completer<StoredTokens>? readTokensCompleter;
+
+  @override
+  Future<StoredTokens> readTokens() async {
+    readTokensCount++;
+    if (readTokensError case final error?) throw error;
+    if (readTokensCompleter case final completer?) return completer.future;
+    return StoredTokens(accessToken: accessToken, refreshToken: refreshToken);
+  }
 
   @override
   Future<void> saveTokens({

@@ -44,7 +44,7 @@ class ApiMemoryRepository implements MemoryRepository {
       );
   @override
   Future<void> deleteMemory(int id) async {
-    await _request(() => _dio.delete<dynamic>('/api/v1/memories/$id'));
+    await _requestVoid(() => _dio.delete<dynamic>('/api/v1/memories/$id'));
   }
 
   @override
@@ -82,6 +82,27 @@ class ApiMemoryRepository implements MemoryRepository {
         ApiException.fromStatusCode(error.response?.statusCode),
         message: body['message'] as String?,
         validationErrors: validation,
+      );
+    }
+  }
+
+  Future<void> _requestVoid(Future<Response<dynamic>> Function() call) async {
+    try {
+      final response = await call();
+      final envelope = Map<String, dynamic>.from(response.data as Map);
+      if (envelope['success'] != true) {
+        throw const ApiException(
+          ApiErrorType.malformedResponse,
+          'Dá»¯ liá»‡u tráº£ vá» tá»« MemoLens chÆ°a há»£p lá»‡.',
+        );
+      }
+    } on DioException catch (error) {
+      final body = error.response?.data is Map
+          ? Map<String, dynamic>.from(error.response!.data as Map)
+          : const <String, dynamic>{};
+      throw MemoryRequestException(
+        ApiException.fromStatusCode(error.response?.statusCode),
+        message: body['message'] as String?,
       );
     }
   }

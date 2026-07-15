@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memolens_app/app/providers.dart';
 import 'package:memolens_app/core/network/api_exception.dart';
+import 'package:memolens_app/core/storage/secure_token_storage.dart';
 import 'package:memolens_app/features/authentication/application/auth_controller.dart';
 import 'package:memolens_app/features/authentication/application/auth_state.dart';
 import 'package:memolens_app/features/authentication/data/auth_api_exception.dart';
@@ -87,6 +90,62 @@ void main() {
     expect(harness.state.status, AuthStatus.temporarilyUnavailable);
     expect(harness.storage.accessToken, 'access');
   });
+
+  test('secure storage error becomes retryable unavailable state', () async {
+    final harness = _Harness()..storage.readTokensError = StateError('storage');
+    addTearDown(harness.dispose);
+
+    await harness.controller.initializeSession();
+
+    expect(harness.state.status, AuthStatus.temporarilyUnavailable);
+  });
+
+  test(
+    'secure storage timeout becomes retryable unavailable state',
+    () async {
+      final harness = _Harness()
+        ..storage.readTokensCompleter = Completer<StoredTokens>();
+      addTearDown(harness.dispose);
+
+      await harness.controller.initializeSession();
+
+      expect(harness.state.status, AuthStatus.temporarilyUnavailable);
+    },
+    timeout: const Timeout(Duration(seconds: 12)),
+  );
+
+  test(
+    'retry initialization succeeds after temporary storage failure',
+    () async {
+      final harness = _Harness()
+        ..storage.readTokensError = StateError('storage');
+      addTearDown(harness.dispose);
+      await harness.controller.initializeSession();
+
+      harness.storage
+        ..readTokensError = null
+        ..accessToken = 'access'
+        ..refreshToken = 'refresh';
+      await harness.controller.retryInitialization();
+
+      expect(harness.state.status, AuthStatus.authenticated);
+    },
+  );
+
+  test(
+    'session initialization only starts once until an explicit retry',
+    () async {
+      final harness = _Harness();
+      addTearDown(harness.dispose);
+
+      await Future.wait([
+        harness.controller.initializeSession(),
+        harness.controller.initializeSession(),
+      ]);
+
+      expect(harness.storage.readTokensCount, 1);
+    },
+  );
 
   test('login success transitions to authenticated', () async {
     final harness = _Harness();

@@ -1056,3 +1056,12 @@ Phase tiếp theo đề xuất: **Phase 19A - Flutter Foundation**.
 
 Phase tiếp theo đề xuất: **Phase 19C - Flutter Timeline and Memory CRUD**.
 
+## 58. Cap nhat Phase 19C.1: Flutter Splash va Android Memory E2E
+
+- Da sua route redirect giu ung dung o Splash khi bootstrap session ket thuc voi guest state; cai moi Android nay vao Login dung cach.
+- Session bootstrap doc cap token an toan mot lan, xu ly loi secure storage va timeout bang trang thai retry, giu token khi backend tam thoi offline.
+- Da sua Flutter Memory DELETE parser de chap nhan standard success-only envelope cua backend. Khong thay doi API contract.
+- Flutter co 55 tests passing; Android debug APK build duoc va Android smoke xac nhan session restore, create/detail/edit/soft delete Memory va isolation User A/User B.
+- Khong thay doi ASP.NET Core source, API contract, auth architecture, database schema hoac migration. Khong them image hay Album feature.
+
+Phase 19C co the freeze sau patch nay. Phase tiep theo de xuat: **Phase 19D - Private Image Upload/Display**.

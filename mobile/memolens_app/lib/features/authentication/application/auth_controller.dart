@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/providers.dart';
@@ -32,12 +33,29 @@ class AuthController extends Notifier<AuthState> {
     if (_initializationStarted && !force) return;
     _initializationStarted = true;
     state = const AuthState.initializing();
+    _log('session initialization started');
 
     try {
-      final user = await _repository.initializeSession();
+      final user = await _repository.initializeSession().timeout(
+        const Duration(seconds: 10),
+      );
       state = user == null
           ? const AuthState.unauthenticated()
           : AuthState(status: AuthStatus.authenticated, user: user);
+      _log('session initialization completed: ${state.status.name}');
+    } on TimeoutException {
+      state = const AuthState(
+        status: AuthStatus.temporarilyUnavailable,
+        message:
+            'Không thể kiểm tra phiên đăng nhập kịp thời. Vui lòng thử lại.',
+      );
+      _log('session initialization timed out');
+    } on AuthStorageException {
+      state = const AuthState(
+        status: AuthStatus.temporarilyUnavailable,
+        message: 'Chưa thể đọc phiên đăng nhập an toàn. Vui lòng thử lại.',
+      );
+      _log('secure storage could not be read');
     } on AuthApiException catch (error) {
       if (error.reason == AuthFailureReason.unavailable) {
         state = AuthState(
@@ -52,6 +70,7 @@ class AuthController extends Notifier<AuthState> {
         status: AuthStatus.failure,
         message: 'Không thể khởi tạo phiên đăng nhập an toàn.',
       );
+      _log('session initialization failed safely');
     }
   }
 
@@ -141,4 +160,8 @@ class AuthController extends Notifier<AuthState> {
   }
 
   void showLogin() => state = const AuthState.unauthenticated();
+
+  void _log(String message) {
+    if (kDebugMode) debugPrint('[MemoLens auth] $message');
+  }
 }
