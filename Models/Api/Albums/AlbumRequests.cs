@@ -28,6 +28,9 @@ public class CreateAlbumRequest
 
     [StringLength(500, ErrorMessage = "Mô tả không được dài quá 500 ký tự.")]
     public string? Description { get; init; }
+
+    // Optional initial membership is persisted atomically with the new Album.
+    public IReadOnlyList<int>? MemoryIds { get; init; }
 }
 
 public sealed class UpdateAlbumRequest : CreateAlbumRequest

@@ -160,6 +160,28 @@ public sealed class AlbumsController : ControllerBase
             return ValidationFailure(validationErrors);
         }
 
+        var memoryIds = request.MemoryIds?.Distinct().ToList() ?? [];
+        if (memoryIds.Any(memoryId => memoryId <= 0))
+        {
+            return MemoryNotFound();
+        }
+
+        if (memoryIds.Count > 0)
+        {
+            var validMemoryIds = await _context.Memories
+                .AsNoTracking()
+                .Where(memory =>
+                    memoryIds.Contains(memory.Id) &&
+                    memory.UserId == userId &&
+                    !memory.IsDeleted)
+                .Select(memory => memory.Id)
+                .ToListAsync();
+            if (validMemoryIds.Count != memoryIds.Count)
+            {
+                return MemoryNotFound();
+            }
+        }
+
         var now = DateTime.UtcNow;
         var album = new Album
         {
@@ -171,6 +193,14 @@ public sealed class AlbumsController : ControllerBase
         };
 
         _context.Albums.Add(album);
+        if (memoryIds.Count > 0)
+        {
+            album.AlbumMemories = memoryIds.Select(memoryId => new AlbumMemory
+            {
+                MemoryId = memoryId,
+                AddedAt = now
+            }).ToList();
+        }
         await _context.SaveChangesAsync();
 
         var details = await BuildDetailsResponseAsync(album.Id, userId, 1, DefaultPageSize);

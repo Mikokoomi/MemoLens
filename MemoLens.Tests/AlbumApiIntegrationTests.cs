@@ -76,8 +76,7 @@ public sealed class AlbumApiIntegrationTests : IClassFixture<CustomWebApplicatio
         using var response = await client.PostAsJsonAsync("/api/v1/albums", new
         {
             title = "  Những chuyến đi  ",
-            description = "  Các ký ức riêng.  ",
-            memoryIds = new[] { 999 }
+            description = "  Các ký ức riêng.  "
         });
         var body = await response.Content.ReadAsStringAsync();
         using var document = JsonDocument.Parse(body);
@@ -97,6 +96,49 @@ public sealed class AlbumApiIntegrationTests : IClassFixture<CustomWebApplicatio
         var album = await dbContext.Albums.Include(item => item.AlbumMemories).SingleAsync(item => item.Id == albumId);
         Assert.Equal(owner.Id, album.UserId);
         Assert.Empty(album.AlbumMemories);
+    }
+
+    [Fact]
+    public async Task Create_WithInitialMemories_PersistsAlbumAndOwnedActiveMembershipsAtomically()
+    {
+        var owner = await CreateUserAsync("Owner");
+        var first = await CreateMemoryAsync(owner, "Một", DateTime.UtcNow.Date);
+        var second = await CreateMemoryAsync(owner, "Hai", DateTime.UtcNow.Date.AddDays(-1));
+        using var client = await CreateBearerClientAsync(owner);
+
+        using var response = await client.PostAsJsonAsync("/api/v1/albums", new
+        {
+            title = "Tạo cùng kỷ niệm",
+            memoryIds = new[] { first.Id, first.Id, second.Id }
+        });
+
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        using var document = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+        Assert.Equal(2, document.RootElement.GetProperty("data").GetProperty("memoryCount").GetInt32());
+
+        var albumId = document.RootElement.GetProperty("data").GetProperty("id").GetInt32();
+        using var scope = _factory.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        Assert.Equal(2, await dbContext.AlbumMemories.CountAsync(item => item.AlbumId == albumId));
+    }
+
+    [Fact]
+    public async Task Create_WithInvalidInitialMemory_DoesNotPersistAlbum()
+    {
+        var owner = await CreateUserAsync("Owner");
+        var valid = await CreateMemoryAsync(owner, "Hợp lệ", DateTime.UtcNow.Date);
+        using var client = await CreateBearerClientAsync(owner);
+
+        using var response = await client.PostAsJsonAsync("/api/v1/albums", new
+        {
+            title = "Không được tạo",
+            memoryIds = new[] { valid.Id, 999999 }
+        });
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        using var scope = _factory.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        Assert.False(await dbContext.Albums.AnyAsync(item => item.UserId == owner.Id && item.Title == "Không được tạo"));
     }
 
     [Fact]
