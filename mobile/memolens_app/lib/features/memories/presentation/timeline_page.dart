@@ -53,11 +53,6 @@ class _TimelinePageState extends ConsumerState<TimelinePage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.push('/memories/create'),
-        icon: const Icon(Icons.add),
-        label: const Text('Tạo kỷ niệm'),
-      ),
       body: PaperPage(
         scrollable: false,
         child: Column(

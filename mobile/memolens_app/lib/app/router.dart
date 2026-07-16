@@ -9,7 +9,7 @@ import '../features/authentication/presentation/email_confirmation_page.dart';
 import '../features/authentication/presentation/login_page.dart';
 import '../features/authentication/presentation/register_page.dart';
 import '../features/memories/presentation/memory_pages.dart';
-import '../features/memories/presentation/timeline_page.dart';
+import '../features/home/presentation/authenticated_shell.dart';
 import '../features/splash/presentation/splash_page.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -50,7 +50,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/confirm-email',
         builder: (context, state) => const EmailConfirmationPage(),
       ),
-      GoRoute(path: '/home', builder: (context, state) => const TimelinePage()),
+      GoRoute(
+        path: '/home',
+        builder: (context, state) => const AuthenticatedShell(),
+      ),
       GoRoute(
         path: '/memories/create',
         builder: (context, state) => const CreateMemoryPage(),
