@@ -444,6 +444,74 @@ public sealed class AlbumsController : ControllerBase
         });
     }
 
+    [HttpPost("/api/v1/memories/{memoryId:int}/albums")]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiValidationErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<ApiResponse>> AddMemoryToAlbums(
+        int memoryId,
+        [FromBody] AddMemoryAlbumsRequest request)
+    {
+        var userId = GetCurrentUserId();
+        if (userId is null)
+        {
+            return InvalidBearerToken();
+        }
+
+        var albumIds = request.AlbumIds?.Distinct().ToList() ?? [];
+        if (albumIds.Count == 0)
+        {
+            return ValidationFailure(new Dictionary<string, string[]>
+            {
+                ["albumIds"] = ["Vui lòng chọn ít nhất một bộ sưu tập."]
+            });
+        }
+
+        var memory = await _context.Memories
+            .FirstOrDefaultAsync(item => item.Id == memoryId && item.UserId == userId && !item.IsDeleted);
+        if (memory is null || albumIds.Any(id => id <= 0))
+        {
+            return MemoryNotFound();
+        }
+
+        var validAlbumIds = await _context.Albums
+            .AsNoTracking()
+            .Where(item => albumIds.Contains(item.Id) && item.UserId == userId && !item.IsDeleted)
+            .Select(item => item.Id)
+            .ToListAsync();
+        if (validAlbumIds.Count != albumIds.Count)
+        {
+            return AlbumNotFound();
+        }
+
+        var existingIds = await _context.AlbumMemories
+            .AsNoTracking()
+            .Where(item => item.MemoryId == memoryId && albumIds.Contains(item.AlbumId))
+            .Select(item => item.AlbumId)
+            .ToListAsync();
+        var newIds = albumIds.Except(existingIds).ToList();
+        if (newIds.Count > 0)
+        {
+            var now = DateTime.UtcNow;
+            _context.AlbumMemories.AddRange(newIds.Select(albumId => new AlbumMemory
+            {
+                AlbumId = albumId,
+                MemoryId = memoryId,
+                AddedAt = now
+            }));
+            await _context.SaveChangesAsync();
+        }
+
+        return Ok(new ApiResponse
+        {
+            Success = true,
+            Message = newIds.Count == 0
+                ? "Kỷ niệm đã có trong các bộ sưu tập đã chọn."
+                : "Đã thêm kỷ niệm vào bộ sưu tập."
+        });
+    }
+
     [HttpDelete("{id:int}/memories/{memoryId:int}")]
     [ProducesResponseType(typeof(ApiResponse<AlbumDetailsResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]

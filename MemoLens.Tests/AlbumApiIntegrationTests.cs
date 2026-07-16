@@ -43,6 +43,7 @@ public sealed class AlbumApiIntegrationTests : IClassFixture<CustomWebApplicatio
     [InlineData("DELETE", "/api/v1/albums/999999")]
     [InlineData("POST", "/api/v1/albums/999999/restore")]
     [InlineData("POST", "/api/v1/albums/999999/memories")]
+    [InlineData("POST", "/api/v1/memories/999999/albums")]
     [InlineData("DELETE", "/api/v1/albums/999999/memories/999999")]
     [InlineData("PUT", "/api/v1/albums/999999/cover")]
     [InlineData("DELETE", "/api/v1/albums/999999/cover")]
@@ -56,6 +57,8 @@ public sealed class AlbumApiIntegrationTests : IClassFixture<CustomWebApplicatio
                 "PUT" => JsonContent.Create(new { title = "Bộ sưu tập" }),
                 "POST" when path.EndsWith("/memories", StringComparison.Ordinal) =>
                     JsonContent.Create(new { memoryIds = new[] { 1 } }),
+                "POST" when path.EndsWith("/albums", StringComparison.Ordinal) && path.Contains("/memories/", StringComparison.Ordinal) =>
+                    JsonContent.Create(new { albumIds = new[] { 1 } }),
                 "POST" when path == "/api/v1/albums" => JsonContent.Create(new { title = "Bộ sưu tập" }),
                 _ => null
             }
@@ -324,6 +327,77 @@ public sealed class AlbumApiIntegrationTests : IClassFixture<CustomWebApplicatio
         using var scope = _factory.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         Assert.False(await dbContext.AlbumMemories.AnyAsync(item => item.AlbumId == album.Id));
+    }
+
+    [Fact]
+    public async Task AddMemoryToAlbums_IsAtomicDeduplicatedAndOwnerScoped()
+    {
+        var owner = await CreateUserAsync("Owner");
+        var other = await CreateUserAsync("Other");
+        var memory = await CreateMemoryAsync(owner, "Kỷ niệm", DateTime.UtcNow.Date);
+        var first = await CreateAlbumAsync(owner, "Một");
+        var second = await CreateAlbumAsync(owner, "Hai");
+        var foreign = await CreateAlbumAsync(other, "Riêng tư");
+        using var client = await CreateBearerClientAsync(owner);
+
+        using var success = await client.PostAsJsonAsync($"/api/v1/memories/{memory.Id}/albums", new
+        {
+            albumIds = new[] { first.Id, first.Id, second.Id }
+        });
+        using var invalid = await client.PostAsJsonAsync($"/api/v1/memories/{memory.Id}/albums", new
+        {
+            albumIds = new[] { first.Id, foreign.Id }
+        });
+
+        Assert.Equal(HttpStatusCode.OK, success.StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, invalid.StatusCode);
+        using var scope = _factory.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        Assert.Equal(2, await dbContext.AlbumMemories.CountAsync(item => item.MemoryId == memory.Id));
+        Assert.False(await dbContext.AlbumMemories.AnyAsync(item => item.AlbumId == foreign.Id && item.MemoryId == memory.Id));
+    }
+
+    [Fact]
+    public async Task AddMemoryToAlbums_RejectsInvalidPrivateOrDeletedResourcesWithoutPartialMemberships()
+    {
+        var owner = await CreateUserAsync("Owner");
+        var other = await CreateUserAsync("Other");
+        var admin = await CreateUserAsync("Admin", addAdminRole: true);
+        var memory = await CreateMemoryAsync(owner, "Kỷ niệm hợp lệ", DateTime.UtcNow.Date);
+        var deletedMemory = await CreateMemoryAsync(owner, "Kỷ niệm đã xóa", DateTime.UtcNow.Date);
+        var foreignMemory = await CreateMemoryAsync(other, "Kỷ niệm riêng", DateTime.UtcNow.Date);
+        var validAlbum = await CreateAlbumAsync(owner, "Hợp lệ");
+        var deletedAlbum = await CreateAlbumAsync(owner, "Đã xóa");
+        var foreignAlbum = await CreateAlbumAsync(other, "Riêng tư");
+        await MarkMemoryDeletedAsync(deletedMemory.Id);
+
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var album = await dbContext.Albums.SingleAsync(item => item.Id == deletedAlbum.Id);
+            album.IsDeleted = true;
+            album.DeletedAt = DateTime.UtcNow;
+            await dbContext.SaveChangesAsync();
+        }
+
+        using var ownerClient = await CreateBearerClientAsync(owner);
+        using var empty = await ownerClient.PostAsJsonAsync($"/api/v1/memories/{memory.Id}/albums", new { albumIds = Array.Empty<int>() });
+        using var deletedAlbumResponse = await ownerClient.PostAsJsonAsync($"/api/v1/memories/{memory.Id}/albums", new { albumIds = new[] { validAlbum.Id, deletedAlbum.Id } });
+        using var foreignAlbumResponse = await ownerClient.PostAsJsonAsync($"/api/v1/memories/{memory.Id}/albums", new { albumIds = new[] { validAlbum.Id, foreignAlbum.Id } });
+        using var deletedMemoryResponse = await ownerClient.PostAsJsonAsync($"/api/v1/memories/{deletedMemory.Id}/albums", new { albumIds = new[] { validAlbum.Id } });
+        using var foreignMemoryResponse = await ownerClient.PostAsJsonAsync($"/api/v1/memories/{foreignMemory.Id}/albums", new { albumIds = new[] { validAlbum.Id } });
+        using var adminClient = await CreateBearerClientAsync(admin);
+        using var adminResponse = await adminClient.PostAsJsonAsync($"/api/v1/memories/{memory.Id}/albums", new { albumIds = new[] { validAlbum.Id } });
+
+        Assert.Equal(HttpStatusCode.BadRequest, empty.StatusCode);
+        Assert.All(new[] { deletedAlbumResponse, foreignAlbumResponse, deletedMemoryResponse, foreignMemoryResponse, adminResponse }, response =>
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode));
+
+        using var verificationScope = _factory.Services.CreateScope();
+        var verificationContext = verificationScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        Assert.False(await verificationContext.AlbumMemories.AnyAsync(item => item.MemoryId == memory.Id));
+        Assert.False(await verificationContext.AlbumMemories.AnyAsync(item => item.MemoryId == deletedMemory.Id));
+        Assert.False(await verificationContext.AlbumMemories.AnyAsync(item => item.MemoryId == foreignMemory.Id));
     }
 
     [Fact]

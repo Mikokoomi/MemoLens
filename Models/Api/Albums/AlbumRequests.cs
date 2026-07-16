@@ -42,3 +42,9 @@ public sealed class AddAlbumMemoriesRequest
     [Required(ErrorMessage = "Danh sách kỷ niệm là bắt buộc.")]
     public IReadOnlyList<int>? MemoryIds { get; init; }
 }
+
+public sealed class AddMemoryAlbumsRequest
+{
+    [Required(ErrorMessage = "Danh sách bộ sưu tập là bắt buộc.")]
+    public IReadOnlyList<int>? AlbumIds { get; init; }
+}
