@@ -72,9 +72,7 @@ void main() {
     },
   );
 
-  testWidgets('deferred Album actions do not open unfinished workflows', (
-    tester,
-  ) async {
+  testWidgets('Album create action opens the implemented flow', (tester) async {
     await _pump(
       tester,
       albums: FakeAlbumRepository(),
@@ -83,13 +81,9 @@ void main() {
     await tester.pump();
 
     await tester.tap(find.byTooltip('Tạo Album'));
-    await tester.pump();
-    expect(find.textContaining('Checkpoint 2C'), findsOneWidget);
-    expect(find.byType(TextFormField), findsNothing);
-
-    await tester.tap(find.text('Mua he rieng tu'));
-    await tester.pump();
-    expect(find.textContaining('Checkpoint 2C'), findsOneWidget);
+    await tester.pumpAndSettle();
+    expect(find.text('Tạo Album'), findsOneWidget);
+    expect(find.byType(TextFormField), findsNWidgets(2));
   });
 }
 

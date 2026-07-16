@@ -28,20 +28,26 @@ class AlbumMemoryItem {
     required this.id,
     required this.title,
     required this.memoryDate,
+    required this.feeling,
     required this.imageCount,
+    this.location,
     this.coverImageId,
   });
   final int id;
   final String title;
   final DateTime memoryDate;
+  final String feeling;
   final int imageCount;
+  final String? location;
   final int? coverImageId;
   factory AlbumMemoryItem.fromJson(Map<String, dynamic> json) =>
       AlbumMemoryItem(
         id: json['id'] as int,
         title: json['title'] as String,
         memoryDate: DateTime.parse(json['memoryDate'] as String),
+        feeling: json['feeling'] as String? ?? '',
         imageCount: json['imageCount'] as int? ?? 0,
+        location: json['location'] as String?,
         coverImageId: json['effectiveCoverImageId'] as int?,
       );
 }
@@ -54,9 +60,11 @@ class AlbumDetails extends AlbumListItem {
     required super.memoryCount,
     super.effectiveCoverImageId,
     required super.createdAt,
+    required this.updatedAt,
     required this.memories,
   });
   final List<AlbumMemoryItem> memories;
+  final DateTime updatedAt;
   factory AlbumDetails.fromJson(Map<String, dynamic> json) => AlbumDetails(
     id: json['id'] as int,
     title: json['title'] as String,
@@ -64,6 +72,7 @@ class AlbumDetails extends AlbumListItem {
     memoryCount: json['memoryCount'] as int? ?? 0,
     effectiveCoverImageId: json['effectiveCoverImageId'] as int?,
     createdAt: DateTime.parse(json['createdAt'] as String),
+    updatedAt: DateTime.parse(json['updatedAt'] as String),
     memories: ((json['memories'] as Map?)?['items'] as List? ?? const [])
         .map(
           (item) =>

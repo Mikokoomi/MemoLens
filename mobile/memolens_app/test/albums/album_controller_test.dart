@@ -94,6 +94,56 @@ void main() {
     await userALoad;
     expect(harness.state.items, isEmpty);
   });
+
+  test(
+    'Album form trims data and submits selected Memories atomically',
+    () async {
+      final harness = _Harness();
+      addTearDown(harness.dispose);
+      final form = harness.container.read(albumFormControllerProvider.notifier);
+      form.setInfo(title: '  Album mùa hè  ', description: '  Riêng tư  ');
+      form.setMemorySelected(7, true);
+      form.setMemorySelected(8, true);
+
+      final created = await form.save();
+      expect(created, isNotNull);
+      expect(harness.albums.createDraft?.title, 'Album mùa hè');
+      expect(harness.albums.createDraft?.description, 'Riêng tư');
+      expect(harness.albums.createDraft?.memoryIds, unorderedEquals([7, 8]));
+      expect(
+        harness.container.read(albumFormControllerProvider).memoryIds,
+        isEmpty,
+      );
+    },
+  );
+
+  test(
+    'Album form supports an empty Album and prevents duplicate save',
+    () async {
+      final harness = _Harness();
+      addTearDown(harness.dispose);
+      final form = harness.container.read(albumFormControllerProvider.notifier);
+      form.setInfo(title: 'Album trống', description: '');
+      await Future.wait([form.save(), form.save()]);
+      expect(harness.albums.createDraft?.memoryIds, isEmpty);
+    },
+  );
+
+  test('logout and account switch clear Album draft', () async {
+    final harness = _Harness();
+    addTearDown(harness.dispose);
+    final form = harness.container.read(albumFormControllerProvider.notifier);
+    await harness.login('a@example.test');
+    form.setInfo(title: 'A', description: '');
+    form.setMemorySelected(7, true);
+    await harness.container.read(authControllerProvider.notifier).logout();
+    expect(harness.container.read(albumFormControllerProvider).title, isEmpty);
+    await harness.login('b@example.test');
+    expect(
+      harness.container.read(albumFormControllerProvider).memoryIds,
+      isEmpty,
+    );
+  });
 }
 
 class _Harness {

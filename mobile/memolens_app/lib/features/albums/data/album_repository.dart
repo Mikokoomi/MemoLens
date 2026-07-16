@@ -101,9 +101,20 @@ class ApiAlbumRepository implements AlbumRepository {
     final body = error.response?.data is Map
         ? Map<String, dynamic>.from(error.response!.data as Map)
         : const <String, dynamic>{};
+    final validation = body['errors'] is Map
+        ? Map<String, List<String>>.fromEntries(
+            (body['errors'] as Map).entries.map(
+              (entry) => MapEntry(
+                entry.key.toString(),
+                List<String>.from(entry.value as List),
+              ),
+            ),
+          )
+        : const <String, List<String>>{};
     return MemoryRequestException(
       ApiException.fromStatusCode(error.response?.statusCode),
       message: body['message'] as String?,
+      validationErrors: validation,
     );
   }
 }

@@ -1,5 +1,11 @@
 # Album Flutter
 
+## Phase 19E - Checkpoint 2C
+
+Checkpoint 2C implements a real three-step Create Album flow: information, optional active-memory selection, and confirmation. It sends exactly one atomic `POST /api/v1/albums` with optional `memoryIds`; an empty Album is supported and no follow-up membership request is made. Name and description are trimmed, backend length limits are respected, and a duplicate-name warning does not block saving.
+
+Album Details now displays authenticated private covers, details and active related Memories. Edit Album changes only name and description. Draft, selection, picker and details state clear when the session changes. Membership management after create, delete/Undo, cover management, Trash and advanced presentation remain deferred to Checkpoint 2D or Checkpoint 3. Android Album smoke remains unclaimed because of the known native splash/black-screen emulator blocker.
+
 ## Phase 19E - Checkpoint 2B và 2B.1
 
 Checkpoint 2B được khóa tại commit `b516dcc`. Shell đã đăng nhập có ba destination: Timeline, Album và Cài đặt. Nút `+` trung tâm luôn mở Create Memory. Cài đặt hiện chỉ là placeholder Phase 19G.

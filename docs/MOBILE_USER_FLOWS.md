@@ -1,5 +1,9 @@
 # Luồng người dùng Mobile
 
+## Phase 19E Checkpoint 2C
+
+Album flow is Information -> optional Memory selection -> Confirmation -> one atomic `POST /api/v1/albums`. Details can open an included Memory and Edit changes only name/description. Membership actions after creation and delete/Undo remain deferred.
+
 ## First launch, đăng ký và xác nhận
 
 ```mermaid

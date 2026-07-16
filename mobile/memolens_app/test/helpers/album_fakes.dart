@@ -19,6 +19,21 @@ class FakeAlbumRepository implements AlbumRepository {
   Object? listError;
   Completer<AlbumPage>? listCompleter;
   int listCalls = 0;
+  AlbumDraft? createDraft;
+  AlbumDraft? updateDraft;
+  Object? saveError;
+  Object? detailsError;
+  int detailsCalls = 0;
+  AlbumDetails detailsResult = AlbumDetails(
+    id: 41,
+    title: 'Mua he rieng tu',
+    description: 'Nhung ky niem chi cua minh.',
+    memoryCount: 3,
+    effectiveCoverImageId: 91,
+    createdAt: DateTime.utc(2026, 7, 16),
+    updatedAt: DateTime.utc(2026, 7, 16),
+    memories: const [],
+  );
 
   @override
   Future<AlbumPage> list() async {
@@ -29,12 +44,35 @@ class FakeAlbumRepository implements AlbumRepository {
   }
 
   @override
-  Future<AlbumDetails> details(int id) => throw UnimplementedError();
+  Future<AlbumDetails> details(int id) async {
+    detailsCalls++;
+    if (detailsError case final error?) throw error;
+    return detailsResult;
+  }
+
   @override
-  Future<AlbumDetails> create(AlbumDraft draft) => throw UnimplementedError();
+  Future<AlbumDetails> create(AlbumDraft draft) async {
+    createDraft = draft;
+    if (saveError case final error?) throw error;
+    return detailsResult;
+  }
+
   @override
-  Future<AlbumDetails> update(int id, AlbumDraft draft) =>
-      throw UnimplementedError();
+  Future<AlbumDetails> update(int id, AlbumDraft draft) async {
+    updateDraft = draft;
+    if (saveError case final error?) throw error;
+    return AlbumDetails(
+      id: id,
+      title: draft.title.trim(),
+      description: draft.description,
+      memoryCount: detailsResult.memoryCount,
+      effectiveCoverImageId: detailsResult.effectiveCoverImageId,
+      createdAt: detailsResult.createdAt,
+      updatedAt: DateTime.utc(2026, 7, 16, 1),
+      memories: detailsResult.memories,
+    );
+  }
+
   @override
   Future<void> delete(int id) => throw UnimplementedError();
   @override

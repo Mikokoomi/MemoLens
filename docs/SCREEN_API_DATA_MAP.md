@@ -1,5 +1,13 @@
 # Screen - API - Data Map
 
+## Album screens (Phase 19E Checkpoint 2C)
+
+| Screen | Status | API | Private-data rule |
+| --- | --- | --- | --- |
+| Create Album | Implemented | `POST /api/v1/albums` with optional `memoryIds` | Active owner-only Memories are selected locally; one atomic request only |
+| Album Details | Implemented | `GET /api/v1/albums/{id}` | Cover and related Memory covers use authenticated bytes |
+| Edit Album | Implemented | `PUT /api/v1/albums/{id}` | Name/description only; no relationship or cover management |
+
 | Screen | Status | Flutter route | Web route | API endpoint | Entity/Table | Auth | Privacy notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Splash/session | Implemented | `/` | N/A | `GET /api/v1/account/me`, refresh | ApplicationUser, UserRefreshToken | JWT | Không hiển thị token |

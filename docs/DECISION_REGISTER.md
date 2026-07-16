@@ -1,5 +1,8 @@
 # Decision Register
 
+| D-27 | Initial Album membership | Optional `memoryIds` in one create request | Prevents partial Album relationships | Privacy/data integrity | Phase 19E Checkpoint 2C | APPROVED | Atomic backend contract |
+| D-28 | Album editing scope | Name and optional description only | Keep relationship/delete decisions for Checkpoint 2D | Product sequencing | Phase 19E Checkpoint 2C | APPROVED | Implemented |
+
 Mọi dòng dưới đây chưa được phê duyệt bởi chủ sở hữu dự án. Recommendation chỉ để chuẩn bị thảo luận, không phải quyết định triển khai.
 
 | ID | Topic | Current state / options | Recommendation | Impact | Required before phase | Status | User decision |

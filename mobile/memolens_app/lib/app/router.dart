@@ -9,6 +9,7 @@ import '../features/authentication/presentation/email_confirmation_page.dart';
 import '../features/authentication/presentation/login_page.dart';
 import '../features/authentication/presentation/register_page.dart';
 import '../features/memories/presentation/memory_pages.dart';
+import '../features/albums/presentation/album_pages.dart';
 import '../features/home/presentation/authenticated_shell.dart';
 import '../features/splash/presentation/splash_page.dart';
 
@@ -57,6 +58,26 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/memories/create',
         builder: (context, state) => const CreateMemoryPage(),
+      ),
+      GoRoute(
+        path: '/albums/create',
+        builder: (context, state) => const CreateAlbumPage(),
+      ),
+      GoRoute(
+        path: '/albums/:id',
+        builder: (context, state) {
+          final id = int.tryParse(state.pathParameters['id'] ?? '');
+          return id == null
+              ? Scaffold(
+                  body: ErrorView(
+                    title: 'Album khÃ´ng há»£p lá»‡',
+                    message: 'LiÃªn káº¿t Album khÃ´ng há»£p lá»‡.',
+                    actionLabel: 'Vá» Album',
+                    onAction: () => context.go('/home'),
+                  ),
+                )
+              : AlbumDetailsPage(id: id);
+        },
       ),
       GoRoute(
         path: '/memories/:id/edit',

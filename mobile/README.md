@@ -1,5 +1,9 @@
 # MemoLens Flutter Mobile
 
+## Phase 19E Checkpoint 2C
+
+Flutter now supports atomic Create Album with optional initial Memories, basic Album Details, and name/description-only Edit Album. Adding/removing relationships after creation, delete/Undo, Trash and advanced presentation are not implemented yet. Phase 19E remains incomplete.
+
 Ứng dụng Flutter cho MemoLens, một nhật ký ảnh riêng tư. Đây không phải mạng xã hội: không có feed công khai, likes, comments, followers, public profiles hay chia sẻ công khai.
 
 ## Trạng thái Phase 19B

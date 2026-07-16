@@ -4,6 +4,14 @@
 
 MemoLens
 
+## Phase 19E Checkpoint 2C
+
+- Checkpoint 2B is frozen at `c521c2e`.
+- Flutter implements three-step Create Album, optional atomic initial Memory selection, empty Albums, basic Album Details and name/description-only Edit Album.
+- Private covers use authenticated bytes; Album draft, picker, details and edit state clear on logout/account switch.
+- Membership add/remove after creation, delete/Undo, Trash, manual cover UI and advanced presentation remain deferred to Checkpoint 2D or Checkpoint 3.
+- Phase 19E remains incomplete. Android Album smoke is not claimed because of the known emulator splash/black-screen blocker.
+
 ## 2. Định hướng sản phẩm
 
 MemoLens là một ứng dụng nhật ký ảnh cá nhân và kể chuyện ký ức riêng tư.

@@ -1,5 +1,11 @@
 # MemoLens - Flutter Roadmap
 
+## Phase 19E Checkpoint 2C
+
+- The real Create Album route implements information, optional active-Memory selection and confirmation, then sends one atomic create request with optional `memoryIds`.
+- Album Details and Edit Album (name/description only) are implemented with authenticated private cover loading and account-scoped state cleanup.
+- Relationship management after creation, delete/Undo, Trash, manual covers, search/sort and final visual refinement remain deferred. Phase 19E is still incomplete; Checkpoint 2D and Checkpoint 3 are not started.
+
 ## Mục đích
 
 Flutter là mobile client riêng cho MemoLens. Client này dùng JWT API đã được QA ở backend commit `5e28d36`; không thay thế MVC web app và không thay đổi product direction private-first.

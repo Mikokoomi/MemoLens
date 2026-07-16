@@ -1,5 +1,9 @@
 # Mobile Sitemap
 
+## Phase 19E Checkpoint 2C
+
+Album list opens a real Create Album flow and Album Details. The flow is Information -> optional active Memories -> Confirmation. Edit Album is reachable from Album Details and edits only name and description. No post-create relationship actions, delete, Trash, search, sort or manual cover entry is present.
+
 Legend: **Implemented** = có Flutter route/screen; **Planned** = backend hoặc roadmap đã có nhưng Flutter chưa làm; **Proposed** = wireframe/định hướng chưa phê duyệt; **Open decision** = cần chủ sở hữu dự án chốt.
 
 ## Routes hiện có
