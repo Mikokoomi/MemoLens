@@ -1,7 +1,15 @@
 # Album Flutter
 
-Checkpoint 2B cung cấp shell đã đăng nhập với Timeline, Album và Cài đặt; Album dùng ListView tạm thời, lấy danh sách owner-only từ API qua Dio đã xác thực và tải ảnh bìa bằng byte loader riêng tư.
+## Phase 19E - Checkpoint 2B và 2B.1
 
-Commit backend liên quan: `8134a24` (gán một kỷ niệm vào nhiều Album theo cách nguyên tử).
+Checkpoint 2B được khóa tại commit `b516dcc`. Shell đã đăng nhập có ba destination: Timeline, Album và Cài đặt. Nút `+` trung tâm luôn mở Create Memory. Cài đặt hiện chỉ là placeholder Phase 19G.
 
-Tạo Album, xem chi tiết, chỉnh sửa, quan hệ kỷ niệm, xóa/khôi phục được để lại cho Checkpoint 2C trở đi. Cài đặt chỉ là placeholder cho Phase 19G.
+Album dùng ListView tạm thời, lấy danh sách owner-only qua Dio đã xác thực và tải ảnh bìa hiệu lực bằng private image byte loader. List có loading, empty, safe error/retry và success state. Khi logout hoặc đổi tài khoản, state Album và private-cover state của user trước được xóa.
+
+Checkpoint 2B.1 bổ sung regression coverage cho shell navigation, state controller, Album list widget và private-cover isolation. Không có route Album chưa hoàn chỉnh nào được mở cho người dùng.
+
+Commit backend liên quan: `8134a24` (gán một kỷ niệm vào nhiều Album theo cách nguyên tử). Checkpoint 2A atomic Album create được khóa tại `19e0b31`.
+
+Tạo Album, xem chi tiết, chỉnh sửa, quan hệ kỷ niệm, xóa/khôi phục được để lại cho Checkpoint 2C trở đi. Không có search, sort, grid/list toggle, Trash UI hoặc manual cover UI trong Checkpoint 2B.
+
+Android smoke riêng cho Album navigation chưa được ghi nhận trong 2B.1; Android emulator vẫn có native splash/black-screen blocker đã biết ở các QA trước. Checkpoint 2 vẫn chưa hoàn tất, Checkpoint 2C và Checkpoint 3 chưa bắt đầu.

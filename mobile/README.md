@@ -121,3 +121,11 @@ Flutter uses `image_picker` for gallery selection and the existing authenticated
 ## Phase 19D.1 Android image QA
 
 Android API 36 E2E verified the system picker, real create-then-upload, authenticated private byte loading, image deletion, session restoration and User A/User B isolation. The Flutter suite has focused image-boundary and private-image refresh coverage. See [MEMORY_IMAGES.md](memolens_app/docs/MEMORY_IMAGES.md) for verified scope and the remaining deterministic offline-upload handoff check.
+
+## Phase 19E Checkpoint 2B
+
+- Commit `b516dcc` adds the authenticated Timeline / Album / Settings shell and a central `+` action that always opens Create Memory.
+- Album is a temporary private ListView with loading, empty, error/retry and success states. Effective covers use the existing authenticated byte loader; there are no public image URLs.
+- Settings is only a Phase 19G placeholder. Create Album, Album Details, edit, membership, delete/undo, Trash, search, sort and grid/list switching are intentionally deferred to Checkpoint 2C or later.
+- Checkpoint 2B.1 adds focused navigation, Album controller, Album list and account-switch/private-cover regression tests. Android Album smoke is not claimed because the known emulator native splash/black-screen blocker remains.
+- See [ALBUMS.md](memolens_app/docs/ALBUMS.md). Phase 19E remains incomplete.

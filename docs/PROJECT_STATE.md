@@ -1102,3 +1102,13 @@ Phase 19C co the freeze sau patch nay. Phase tiep theo de xuat: **Phase 19D - Pr
 - `AlbumMemory.AddedAt` là timestamp liên kết đáng tin cậy. Album automatic cover duyệt timestamp này mới nhất trước rồi dùng effective Memory cover.
 - API thêm `manualCoverImageId` và `effectiveCoverImageId`, cùng route owner-only để set/reset cover.
 - Checkpoint 2 (Flutter Album UI/navigation) chưa bắt đầu.
+
+## 64. Cập nhật Phase 19E - Checkpoint 2B.1: Flutter Album navigation regression coverage
+
+- Checkpoint 2A atomic Album create được khóa tại `19e0b31`; atomic gán một Memory vào nhiều Album được khóa tại `8134a24`.
+- Checkpoint 2B implementation được khóa tại `b516dcc`: authenticated shell có Timeline, Album, Cài đặt và nút `+` trung tâm luôn mở Create Memory.
+- Album list là ListView tạm thời owner-only, có loading, empty, safe error/retry, success và effective cover qua authenticated private-image byte loader.
+- Cài đặt chỉ là placeholder Phase 19G. Không có route Create Album, Album Details/Edit, membership action, delete/undo, Trash, search/sort, grid/list hay manual cover UI được mở.
+- Checkpoint 2B.1 bổ sung test Flutter cho shell navigation, central create, one-shell tab switching, Album controller states/retry/account switch/stale response, Album list states/deferred action và private-cover isolation sau logout/account switch.
+- Android Album smoke chưa được ghi nhận vì native splash/black-screen emulator blocker còn tồn tại. Flutter test baseline trước 2B.1 là 68; kết quả cuối được xác nhận trong commit phase này.
+- Không thay đổi backend production code, API contract, schema hoặc migration. Checkpoint 2 vẫn chưa hoàn tất; Checkpoint 2C và Checkpoint 3 chưa bắt đầu.

@@ -16,9 +16,10 @@ Legend: **Implemented** = có Flutter route/screen; **Planned** = backend hoặc
 | Edit Memory | Implemented | `/memories/:id/edit` | Details -> details | JWT | `PUT /api/v1/memories/{id}` | Validation/partial image retry |
 | Private image gallery | Implemented trong details/form | Không có route riêng | Details/form | JWT | image content/delete endpoints | Byte memory only; owner only |
 | Soft delete / restore Memory | Implemented qua actions | Không có route riêng | Details/Timeline | JWT | `DELETE /api/v1/memories/{id}`, `POST .../restore` | Deleted item không xuất hiện normal API |
-| Albums list/details/create/edit | Planned Flutter | No confirmed route | Navigation decision | JWT | API Album đã có | Empty/loading/error cần thiết; owner only |
+| Album list | Implemented | tab trong `/home` | authenticated shell -> Album | JWT | `GET /api/v1/albums` | Owner-only, loading/empty/error/retry; effective cover dùng private bytes |
+| Album details/create/edit | Planned Flutter | Không có route | Checkpoint 2C | JWT | API Album đã có | Không có workflow chưa hoàn chỉnh được mở |
 | Trash / restore | Planned Flutter | No confirmed route | Navigation decision | JWT | No confirmed mobile Trash endpoint | API Memory/Album restore có; danh sách Trash API chưa xác nhận |
-| Settings/Profile/logout | Logout implemented; screen Planned | No confirmed route | menu/root nav | JWT | logout API; account/me | Account/security screen chưa làm |
+| Settings placeholder | Implemented placeholder | tab trong `/home` | authenticated shell -> Cài đặt | JWT | Không gọi settings API | Chỉ báo Phase 19G; không có profile, Trash hay fake security controls |
 | Forgot/reset password | Planned Flutter | No confirmed route | Login | Guest | Backend auth endpoints đã có | Không có Flutter UI/deep link flow |
 | Session expired | Implemented behavior | Redirect to `/login` | protected request/session restore | JWT | refresh/logout | Xoá token và báo state an toàn |
 
@@ -30,7 +31,7 @@ Legend: **Implemented** = có Flutter route/screen; **Planned** = backend hoặc
 | B | Timeline / Albums / Create action / Trash / Settings | Create luôn dễ chạm | 5 mục chật trên màn nhỏ, create không phải destination thường | Cần prototype/accessibility QA |
 | C | Timeline root; Albums/Trash/Settings qua menu phụ | Tập trung nhật ký, ít chrome | Cần thêm thao tác để vào chức năng phụ | Phù hợp private journal MVP |
 
-Không chọn option nào trong phase này. Bottom navigation và placement Albums/Trash/Settings vẫn là **Open decision**.
+Checkpoint 2B đã chọn navigation tối thiểu: Timeline / Album / Cài đặt trong authenticated shell và nút `+` trung tâm luôn tạo Memory. Trash không có tab; Cài đặt chỉ là placeholder Phase 19G. Checkpoint 2C chưa bắt đầu.
 
 ## Quy tắc trạng thái chung
 

@@ -77,3 +77,11 @@ Flutter là mobile client riêng cho MemoLens. Client này dùng JWT API đã đ
 ## Phase 19E Checkpoint 1
 
 Backend now exposes nullable `manualCoverImageId` and `effectiveCoverImageId` for Memory and Album. No Flutter Album screen, navigation, grid/list, search/sort, or cover-selection UI has started; those remain Checkpoint 2 or later.
+
+## Phase 19E Checkpoint 2A, 2B và 2B.1
+
+- Checkpoint 2A: backend atomic Album creation (`19e0b31`) and atomic add-Memory-to-Albums (`8134a24`) are locked and covered by backend regression tests.
+- Checkpoint 2B: commit `b516dcc` adds an authenticated shell with Timeline, Album and Settings plus a central `+` that always creates a Memory. Album list is a temporary owner-only ListView with loading, empty, error/retry and success states; effective covers are JWT-authenticated private bytes.
+- Settings is a Phase 19G placeholder. Create Album, Details, Edit, membership actions, delete/undo, Trash, search/sort, grid/list switching and manual cover UI are deliberately deferred to Checkpoint 2C or later.
+- Checkpoint 2B.1 adds Flutter regression coverage for shell navigation, central create navigation, account-switch cleanup, Album controller state/race protection, Album list states and private cover isolation.
+- Android Album smoke is not yet claimed due the existing emulator native splash/black-screen blocker. Checkpoint 2 remains incomplete; Checkpoint 2C and Checkpoint 3 have not started.

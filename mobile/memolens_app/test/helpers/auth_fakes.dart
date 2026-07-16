@@ -23,6 +23,22 @@ const testTokens = AuthTokens(
   user: testUser,
 );
 
+AuthTokens testTokensFor(String email) {
+  final id = email.startsWith('b@') ? 'user-b' : 'user-a';
+  return AuthTokens(
+    accessToken: 'access-$id',
+    refreshToken: 'refresh-$id',
+    expiresInSeconds: 900,
+    tokenType: 'Bearer',
+    user: AuthenticatedUser(
+      id: id,
+      email: email,
+      displayName: 'Nguoi dung $id',
+      roles: const ['User'],
+    ),
+  );
+}
+
 class FakeTokenStorage implements TokenStorage {
   String? accessToken;
   String? refreshToken;
