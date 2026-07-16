@@ -1,6 +1,7 @@
 using MemoLens.Data;
 using MemoLens.Models;
 using MemoLens.Models.Trash;
+using MemoLens.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,16 @@ public class TrashController : Controller
 {
     private readonly ApplicationDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly ICoverResolutionService _coverResolutionService;
 
-    public TrashController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+    public TrashController(
+        ApplicationDbContext context,
+        UserManager<ApplicationUser> userManager,
+        ICoverResolutionService coverResolutionService)
     {
         _context = context;
         _userManager = userManager;
+        _coverResolutionService = coverResolutionService;
     }
 
     public async Task<IActionResult> Index()
@@ -79,6 +85,7 @@ public class TrashController : Controller
         }
 
         var memory = await _context.Memories
+            .Include(item => item.Images)
             .FirstOrDefaultAsync(item => item.Id == id && item.UserId == userId && item.IsDeleted);
 
         if (memory is null)
@@ -90,6 +97,7 @@ public class TrashController : Controller
         memory.IsDeleted = false;
         memory.DeletedAt = null;
         memory.UpdatedAt = DateTime.UtcNow;
+        _coverResolutionService.ClearInvalidMemoryManualCover(memory);
 
         await _context.SaveChangesAsync();
 
@@ -110,6 +118,9 @@ public class TrashController : Controller
         }
 
         var album = await _context.Albums
+            .Include(item => item.AlbumMemories)
+                .ThenInclude(item => item.Memory)
+                    .ThenInclude(item => item.Images)
             .FirstOrDefaultAsync(item => item.Id == id && item.UserId == userId && item.IsDeleted);
 
         if (album is null)
@@ -121,6 +132,7 @@ public class TrashController : Controller
         album.IsDeleted = false;
         album.DeletedAt = null;
         album.UpdatedAt = DateTime.UtcNow;
+        _coverResolutionService.ClearInvalidAlbumManualCover(album);
 
         await _context.SaveChangesAsync();
 

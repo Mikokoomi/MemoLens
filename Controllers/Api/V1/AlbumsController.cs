@@ -3,6 +3,7 @@ using MemoLens.Data;
 using MemoLens.Models;
 using MemoLens.Models.Api;
 using MemoLens.Models.Api.Albums;
+using MemoLens.Models.Api.Covers;
 using MemoLens.Models.Api.Images;
 using MemoLens.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -22,12 +23,12 @@ public sealed class AlbumsController : ControllerBase
     private const int StoryPreviewLength = 240;
 
     private readonly ApplicationDbContext _context;
-    private readonly IImageStorageService _imageStorageService;
+    private readonly ICoverResolutionService _coverResolutionService;
 
-    public AlbumsController(ApplicationDbContext context, IImageStorageService imageStorageService)
+    public AlbumsController(ApplicationDbContext context, ICoverResolutionService coverResolutionService)
     {
         _context = context;
-        _imageStorageService = imageStorageService;
+        _coverResolutionService = coverResolutionService;
     }
 
     [HttpGet]
@@ -76,45 +77,27 @@ public sealed class AlbumsController : ControllerBase
         var rows = await albums
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .Select(album => new AlbumListRow
+            .Include(album => album.AlbumMemories)
+                .ThenInclude(albumMemory => albumMemory.Memory)
+                    .ThenInclude(memory => memory.Images)
+            .ToListAsync();
+
+        var items = rows.Select(album =>
+        {
+            var effectiveCoverImageId = _coverResolutionService.ResolveEffectiveAlbumCoverImageId(album);
+            return new AlbumListItemResponse
             {
                 Id = album.Id,
                 Title = album.Title,
                 Description = album.Description,
                 MemoryCount = album.AlbumMemories.Count(albumMemory =>
                     albumMemory.Memory.UserId == userId && !albumMemory.Memory.IsDeleted),
-                CoverCandidates = album.AlbumMemories
-                    .Where(albumMemory => albumMemory.Memory.UserId == userId && !albumMemory.Memory.IsDeleted)
-                    .OrderBy(albumMemory => albumMemory.AddedAt)
-                    .ThenBy(albumMemory => albumMemory.MemoryId)
-                    .SelectMany(albumMemory => albumMemory.Memory.Images
-                        .OrderBy(image => image.UploadedAt)
-                        .ThenBy(image => image.Id))
-                    .Take(10)
-                    .Select(image => new ImageCandidate
-                    {
-                        Id = image.Id,
-                        ImagePath = image.ImagePath
-                    })
-                    .ToList(),
+                CoverImageId = effectiveCoverImageId,
+                ManualCoverImageId = album.CoverImageId,
+                EffectiveCoverImageId = effectiveCoverImageId,
+                CoverImageUrl = effectiveCoverImageId is null ? null : MemoryImageApiRoutes.Content(effectiveCoverImageId.Value),
                 CreatedAt = album.CreatedAt,
                 UpdatedAt = album.UpdatedAt
-            })
-            .ToListAsync();
-
-        var items = rows.Select(row =>
-        {
-            var cover = FindFirstAccessibleImage(row.CoverCandidates);
-            return new AlbumListItemResponse
-            {
-                Id = row.Id,
-                Title = row.Title,
-                Description = row.Description,
-                MemoryCount = row.MemoryCount,
-                CoverImageId = cover?.Id,
-                CoverImageUrl = cover is null ? null : MemoryImageApiRoutes.Content(cover.Id),
-                CreatedAt = row.CreatedAt,
-                UpdatedAt = row.UpdatedAt
             };
         }).ToList();
 
@@ -234,6 +217,71 @@ public sealed class AlbumsController : ControllerBase
         });
     }
 
+    [HttpPut("{id:int}/cover")]
+    [ProducesResponseType(typeof(ApiResponse<AlbumDetailsResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiValidationErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<ApiResponse<AlbumDetailsResponse>>> SetCover(
+        int id,
+        [FromBody] SetCoverImageRequest request)
+    {
+        var album = await FindOwnedAlbumWithMemoriesAsync(id, includeDeleted: false);
+        if (album is null)
+        {
+            return AlbumNotFound();
+        }
+
+        var isOwnedAlbumImage = album.AlbumMemories
+            .Where(membership => !membership.Memory.IsDeleted)
+            .SelectMany(membership => membership.Memory.Images)
+            .Any(image => image.Id == request.ImageId);
+        if (!isOwnedAlbumImage)
+        {
+            return ImageNotFound();
+        }
+
+        album.CoverImageId = request.ImageId;
+        if (_coverResolutionService.ClearInvalidAlbumManualCover(album))
+        {
+            return ImageNotFound();
+        }
+
+        album.UpdatedAt = DateTime.UtcNow;
+        await _context.SaveChangesAsync();
+        var details = await BuildDetailsResponseAsync(album.Id, album.UserId, 1, DefaultPageSize);
+        return Ok(new ApiResponse<AlbumDetailsResponse>
+        {
+            Success = true,
+            Message = "Đã chọn ảnh bìa bộ sưu tập.",
+            Data = details
+        });
+    }
+
+    [HttpDelete("{id:int}/cover")]
+    [ProducesResponseType(typeof(ApiResponse<AlbumDetailsResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<ApiResponse<AlbumDetailsResponse>>> ResetCover(int id)
+    {
+        var album = await FindOwnedAlbumAsync(id, includeDeleted: false);
+        if (album is null)
+        {
+            return AlbumNotFound();
+        }
+
+        album.CoverImageId = null;
+        album.UpdatedAt = DateTime.UtcNow;
+        await _context.SaveChangesAsync();
+        var details = await BuildDetailsResponseAsync(album.Id, album.UserId, 1, DefaultPageSize);
+        return Ok(new ApiResponse<AlbumDetailsResponse>
+        {
+            Success = true,
+            Message = "Đã chuyển sang ảnh bìa tự động.",
+            Data = details
+        });
+    }
+
     [HttpDelete("{id:int}")]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
@@ -265,7 +313,7 @@ public sealed class AlbumsController : ControllerBase
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ApiResponse<AlbumDetailsResponse>>> Restore(int id)
     {
-        var album = await FindOwnedAlbumAsync(id, includeDeleted: true);
+        var album = await FindOwnedAlbumWithMemoriesAsync(id, includeDeleted: true);
         if (album is null || !album.IsDeleted)
         {
             return AlbumNotFound();
@@ -274,6 +322,7 @@ public sealed class AlbumsController : ControllerBase
         album.IsDeleted = false;
         album.DeletedAt = null;
         album.UpdatedAt = DateTime.UtcNow;
+        _coverResolutionService.ClearInvalidAlbumManualCover(album);
         await _context.SaveChangesAsync();
 
         var details = await BuildDetailsResponseAsync(album.Id, album.UserId, 1, DefaultPageSize);
@@ -395,6 +444,7 @@ public sealed class AlbumsController : ControllerBase
             return MemoryNotFound();
         }
 
+        await _coverResolutionService.ClearAlbumCoverReferenceForRemovedMemoryAsync(album.Id, memoryId);
         _context.AlbumMemories.Remove(membership);
         album.UpdatedAt = DateTime.UtcNow;
         await _context.SaveChangesAsync();
@@ -425,6 +475,27 @@ public sealed class AlbumsController : ControllerBase
         return await query.FirstOrDefaultAsync();
     }
 
+    private async Task<Album?> FindOwnedAlbumWithMemoriesAsync(int id, bool includeDeleted)
+    {
+        var userId = GetCurrentUserId();
+        if (userId is null)
+        {
+            return null;
+        }
+
+        var query = _context.Albums
+            .Include(album => album.AlbumMemories)
+                .ThenInclude(albumMemory => albumMemory.Memory)
+                    .ThenInclude(memory => memory.Images)
+            .Where(album => album.Id == id && album.UserId == userId);
+        if (!includeDeleted)
+        {
+            query = query.Where(album => !album.IsDeleted);
+        }
+
+        return await query.FirstOrDefaultAsync();
+    }
+
     private async Task<AlbumDetailsResponse?> BuildDetailsResponseAsync(
         int albumId,
         string userId,
@@ -433,95 +504,56 @@ public sealed class AlbumsController : ControllerBase
     {
         var album = await _context.Albums
             .AsNoTracking()
+            .Include(item => item.AlbumMemories)
+                .ThenInclude(albumMemory => albumMemory.Memory)
+                    .ThenInclude(memory => memory.Images)
+            .Include(item => item.AlbumMemories)
+                .ThenInclude(albumMemory => albumMemory.Memory)
+                    .ThenInclude(memory => memory.MemoryTags)
+                        .ThenInclude(memoryTag => memoryTag.Tag)
             .Where(item => item.Id == albumId && item.UserId == userId && !item.IsDeleted)
-            .Select(item => new AlbumDetailsRow
-            {
-                Id = item.Id,
-                Title = item.Title,
-                Description = item.Description,
-                CreatedAt = item.CreatedAt,
-                UpdatedAt = item.UpdatedAt
-            })
             .FirstOrDefaultAsync();
         if (album is null)
         {
             return null;
         }
 
-        var memberships = _context.AlbumMemories
-            .AsNoTracking()
-            .Where(item =>
-                item.AlbumId == albumId &&
-                item.Memory.UserId == userId &&
-                !item.Memory.IsDeleted);
-
-        var totalItems = await memberships.CountAsync();
-        var totalPages = CalculateTotalPages(totalItems, pageSize);
-        var rows = await memberships
+        var memberships = album.AlbumMemories
+            .Where(item => item.Memory.UserId == userId && !item.Memory.IsDeleted)
             .OrderByDescending(item => item.Memory.MemoryDate)
             .ThenByDescending(item => item.Memory.CreatedAt)
             .ThenByDescending(item => item.MemoryId)
+            .ToList();
+
+        var totalItems = memberships.Count;
+        var totalPages = CalculateTotalPages(totalItems, pageSize);
+        var memories = memberships
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .Select(item => new AlbumMemoryRow
+            .Select(membership =>
             {
-                Id = item.Memory.Id,
-                Title = item.Memory.Title,
-                Story = item.Memory.Story,
-                Feeling = item.Memory.Feeling,
-                MemoryDate = item.Memory.MemoryDate,
-                Location = item.Memory.Location,
-                Tags = item.Memory.MemoryTags
-                    .OrderBy(memoryTag => memoryTag.Tag.Name)
-                    .Select(memoryTag => memoryTag.Tag.Name)
-                    .ToList(),
-                ImageCount = item.Memory.Images.Count,
-                CoverCandidates = item.Memory.Images
-                    .OrderBy(image => image.UploadedAt)
-                    .ThenBy(image => image.Id)
-                    .Select(image => new ImageCandidate
-                    {
-                        Id = image.Id,
-                        ImagePath = image.ImagePath
-                    })
-                    .ToList(),
-                AddedAt = item.AddedAt
+                var memory = membership.Memory;
+                var effectiveCoverImageId = _coverResolutionService.ResolveEffectiveMemoryCoverImageId(memory);
+                return new AlbumMemorySummaryResponse
+                {
+                    Id = memory.Id,
+                    Title = memory.Title,
+                    ShortStoryPreview = CreateStoryPreview(memory.Story),
+                    Feeling = memory.Feeling,
+                    MemoryDate = memory.MemoryDate,
+                    Location = memory.Location,
+                    Tags = memory.MemoryTags.OrderBy(memoryTag => memoryTag.Tag.Name).Select(memoryTag => memoryTag.Tag.Name).ToList(),
+                    ImageCount = memory.Images.Count,
+                    CoverImageId = effectiveCoverImageId,
+                    ManualCoverImageId = memory.CoverImageId,
+                    EffectiveCoverImageId = effectiveCoverImageId,
+                    CoverImageUrl = effectiveCoverImageId is null ? null : MemoryImageApiRoutes.Content(effectiveCoverImageId.Value),
+                    AddedAt = membership.AddedAt
+                };
             })
-            .ToListAsync();
+            .ToList();
 
-        var coverCandidates = await memberships
-            .OrderBy(item => item.AddedAt)
-            .ThenBy(item => item.MemoryId)
-            .SelectMany(item => item.Memory.Images
-                .OrderBy(image => image.UploadedAt)
-                .ThenBy(image => image.Id))
-            .Take(10)
-            .Select(image => new ImageCandidate
-            {
-                Id = image.Id,
-                ImagePath = image.ImagePath
-            })
-            .ToListAsync();
-        var albumCover = FindFirstAccessibleImage(coverCandidates);
-
-        var memories = rows.Select(row =>
-        {
-            var cover = FindFirstAccessibleImage(row.CoverCandidates);
-            return new AlbumMemorySummaryResponse
-            {
-                Id = row.Id,
-                Title = row.Title,
-                ShortStoryPreview = CreateStoryPreview(row.Story),
-                Feeling = row.Feeling,
-                MemoryDate = row.MemoryDate,
-                Location = row.Location,
-                Tags = row.Tags,
-                ImageCount = row.ImageCount,
-                CoverImageId = cover?.Id,
-                CoverImageUrl = cover is null ? null : MemoryImageApiRoutes.Content(cover.Id),
-                AddedAt = row.AddedAt
-            };
-        }).ToList();
+        var effectiveAlbumCoverImageId = _coverResolutionService.ResolveEffectiveAlbumCoverImageId(album);
 
         return new AlbumDetailsResponse
         {
@@ -529,21 +561,14 @@ public sealed class AlbumsController : ControllerBase
             Title = album.Title,
             Description = album.Description,
             MemoryCount = totalItems,
-            CoverImageId = albumCover?.Id,
-            CoverImageUrl = albumCover is null ? null : MemoryImageApiRoutes.Content(albumCover.Id),
+            CoverImageId = effectiveAlbumCoverImageId,
+            ManualCoverImageId = album.CoverImageId,
+            EffectiveCoverImageId = effectiveAlbumCoverImageId,
+            CoverImageUrl = effectiveAlbumCoverImageId is null ? null : MemoryImageApiRoutes.Content(effectiveAlbumCoverImageId.Value),
             CreatedAt = album.CreatedAt,
             UpdatedAt = album.UpdatedAt,
             Memories = CreatePage(memories, page, pageSize, totalItems, totalPages)
         };
-    }
-
-    private ImageCandidate? FindFirstAccessibleImage(IEnumerable<ImageCandidate> candidates)
-    {
-        return candidates.FirstOrDefault(candidate =>
-        {
-            var physicalPath = _imageStorageService.ResolveImagePath(candidate.ImagePath);
-            return physicalPath is not null && System.IO.File.Exists(physicalPath);
-        });
     }
 
     private static PagedResponse<T> CreatePage<T>(
@@ -651,43 +676,11 @@ public sealed class AlbumsController : ControllerBase
             Message = "Không tìm thấy kỷ niệm phù hợp."
         });
 
-    private sealed class AlbumListRow
-    {
-        public int Id { get; init; }
-        public string Title { get; init; } = string.Empty;
-        public string? Description { get; init; }
-        public int MemoryCount { get; init; }
-        public IReadOnlyList<ImageCandidate> CoverCandidates { get; init; } = [];
-        public DateTime CreatedAt { get; init; }
-        public DateTime UpdatedAt { get; init; }
-    }
+    private NotFoundObjectResult ImageNotFound() =>
+        NotFound(new ApiResponse
+        {
+            Success = false,
+            Message = "Không tìm thấy ảnh phù hợp."
+        });
 
-    private sealed class AlbumDetailsRow
-    {
-        public int Id { get; init; }
-        public string Title { get; init; } = string.Empty;
-        public string? Description { get; init; }
-        public DateTime CreatedAt { get; init; }
-        public DateTime UpdatedAt { get; init; }
-    }
-
-    private sealed class AlbumMemoryRow
-    {
-        public int Id { get; init; }
-        public string Title { get; init; } = string.Empty;
-        public string? Story { get; init; }
-        public string Feeling { get; init; } = string.Empty;
-        public DateTime MemoryDate { get; init; }
-        public string? Location { get; init; }
-        public IReadOnlyList<string> Tags { get; init; } = [];
-        public int ImageCount { get; init; }
-        public IReadOnlyList<ImageCandidate> CoverCandidates { get; init; } = [];
-        public DateTime AddedAt { get; init; }
-    }
-
-    private sealed class ImageCandidate
-    {
-        public int Id { get; init; }
-        public string ImagePath { get; init; } = string.Empty;
-    }
 }

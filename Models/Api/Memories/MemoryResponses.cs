@@ -20,6 +20,10 @@ public class MemoryListItemResponse
 
     public int? CoverImageId { get; init; }
 
+    public int? ManualCoverImageId { get; init; }
+
+    public int? EffectiveCoverImageId { get; init; }
+
     public DateTime CreatedAt { get; init; }
 
     public DateTime UpdatedAt { get; init; }
@@ -42,6 +46,10 @@ public class MemoryDetailsResponse
     public IReadOnlyList<string> Tags { get; init; } = [];
 
     public IReadOnlyList<MemoryImageResponse> Images { get; init; } = [];
+
+    public int? ManualCoverImageId { get; init; }
+
+    public int? EffectiveCoverImageId { get; init; }
 
     public DateTime CreatedAt { get; init; }
 

@@ -44,6 +44,8 @@ public sealed class AlbumApiIntegrationTests : IClassFixture<CustomWebApplicatio
     [InlineData("POST", "/api/v1/albums/999999/restore")]
     [InlineData("POST", "/api/v1/albums/999999/memories")]
     [InlineData("DELETE", "/api/v1/albums/999999/memories/999999")]
+    [InlineData("PUT", "/api/v1/albums/999999/cover")]
+    [InlineData("DELETE", "/api/v1/albums/999999/cover")]
     public async Task AllAlbumEndpoints_WithoutBearerToken_ReturnUnauthorized(string method, string path)
     {
         using var client = CreateClient();
@@ -337,6 +339,36 @@ public sealed class AlbumApiIntegrationTests : IClassFixture<CustomWebApplicatio
     }
 
     [Fact]
+    public async Task CoverOverride_UsesLatestAddedMemoryAndCanResetToAutomatic()
+    {
+        var owner = await CreateUserAsync("Owner");
+        var album = await CreateAlbumAsync(owner, "Cover test");
+        var earlierMemory = await CreateMemoryAsync(owner, "Earlier", DateTime.UtcNow.Date.AddDays(-1));
+        var latestMemory = await CreateMemoryAsync(owner, "Latest", DateTime.UtcNow.Date);
+        var earlierImage = await CreateImageAsync(earlierMemory);
+        var latestImage = await CreateImageAsync(latestMemory);
+        await AddMembershipAsync(album, earlierMemory, DateTime.UtcNow.AddMinutes(-2));
+        await AddMembershipAsync(album, latestMemory, DateTime.UtcNow.AddMinutes(-1));
+
+        using var client = await CreateBearerClientAsync(owner);
+        using var automaticResponse = await client.GetAsync($"/api/v1/albums/{album.Id}");
+        using var automaticDocument = JsonDocument.Parse(await automaticResponse.Content.ReadAsStringAsync());
+        Assert.Equal(latestImage.Id, automaticDocument.RootElement.GetProperty("data").GetProperty("effectiveCoverImageId").GetInt32());
+
+        using var setResponse = await client.PutAsJsonAsync($"/api/v1/albums/{album.Id}/cover", new { imageId = earlierImage.Id });
+        using var setDocument = JsonDocument.Parse(await setResponse.Content.ReadAsStringAsync());
+        Assert.Equal(HttpStatusCode.OK, setResponse.StatusCode);
+        Assert.Equal(earlierImage.Id, setDocument.RootElement.GetProperty("data").GetProperty("manualCoverImageId").GetInt32());
+        Assert.Equal(earlierImage.Id, setDocument.RootElement.GetProperty("data").GetProperty("effectiveCoverImageId").GetInt32());
+
+        using var resetResponse = await client.DeleteAsync($"/api/v1/albums/{album.Id}/cover");
+        using var resetDocument = JsonDocument.Parse(await resetResponse.Content.ReadAsStringAsync());
+        Assert.Equal(HttpStatusCode.OK, resetResponse.StatusCode);
+        Assert.Equal(JsonValueKind.Null, resetDocument.RootElement.GetProperty("data").GetProperty("manualCoverImageId").ValueKind);
+        Assert.Equal(latestImage.Id, resetDocument.RootElement.GetProperty("data").GetProperty("effectiveCoverImageId").GetInt32());
+    }
+
+    [Fact]
     public async Task OtherUserAndAdmin_CannotMutatePrivateAlbumOrMembership()
     {
         var owner = await CreateUserAsync("Owner");
@@ -355,8 +387,10 @@ public sealed class AlbumApiIntegrationTests : IClassFixture<CustomWebApplicatio
             using var restore = await client.PostAsync($"/api/v1/albums/{album.Id}/restore", null);
             using var add = await client.PostAsJsonAsync($"/api/v1/albums/{album.Id}/memories", new { memoryIds = new[] { memory.Id } });
             using var remove = await client.DeleteAsync($"/api/v1/albums/{album.Id}/memories/{memory.Id}");
+            using var setCover = await client.PutAsJsonAsync($"/api/v1/albums/{album.Id}/cover", new { imageId = 1 });
+            using var resetCover = await client.DeleteAsync($"/api/v1/albums/{album.Id}/cover");
 
-            Assert.All(new[] { details, update, delete, restore, add, remove }, response =>
+            Assert.All(new[] { details, update, delete, restore, add, remove, setCover, resetCover }, response =>
                 Assert.Equal(HttpStatusCode.NotFound, response.StatusCode));
         }
 

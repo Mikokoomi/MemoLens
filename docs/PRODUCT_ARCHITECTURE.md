@@ -79,3 +79,7 @@ Phase 19D feature complete và automated verified (68 Flutter tests tại baseli
 ## Khu vực Production chưa quyết định
 
 Production database, image storage, hosting, domain/HTTPS, provider email, backup/retention, quota, xử lý EXIF, thumbnails, permanent delete, export, monitoring và CI/CD đều là quyết định mở. Xem `STORAGE_AND_BACKUP_OPTIONS.md` và `DECISION_REGISTER.md`.
+
+## Cover API foundation (Phase 19E Checkpoint 1)
+
+Memory và Album dùng `CoverImageId` nullable làm manual override. `null` chọn automatic cover; ảnh vẫn được đọc qua endpoint JWT private, không có binary hoặc public image URL. Checkpoint này không chọn production storage/database hay triển khai Flutter Album UI.

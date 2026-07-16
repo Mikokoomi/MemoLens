@@ -73,3 +73,7 @@ Flutter là mobile client riêng cho MemoLens. Client này dùng JWT API đã đ
 - Phase 19D is feature complete and automated verified (68 Flutter tests at baseline); the manual Android Photo Picker partial-success/retry smoke remains pending because the API 36 emulator is blocked by native splash/black-screen rendering.
 - Planning package: `docs/PRODUCT_ARCHITECTURE.md`, `MOBILE_SITEMAP.md`, `MOBILE_USER_FLOWS.md`, `MOBILE_WIREFRAMES.md`, `DATA_ARCHITECTURE.md`, storage/lifecycle/map/decision documents and `design/architecture/MemoLens_Product_Architecture.drawio`.
 - Phase 19E has **not** started. A draft future sequence exists only for discussion; navigation, production storage/database, backup and lifecycle decisions require explicit owner approval before implementation.
+
+## Phase 19E Checkpoint 1
+
+Backend now exposes nullable `manualCoverImageId` and `effectiveCoverImageId` for Memory and Album. No Flutter Album screen, navigation, grid/list, search/sort, or cover-selection UI has started; those remain Checkpoint 2 or later.

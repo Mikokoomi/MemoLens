@@ -41,6 +41,8 @@ public class MemoryApiIntegrationTests : IClassFixture<CustomWebApplicationFacto
     [InlineData("GET", "/api/v1/memories/999999")]
     [InlineData("POST", "/api/v1/memories")]
     [InlineData("PUT", "/api/v1/memories/999999")]
+    [InlineData("PUT", "/api/v1/memories/999999/cover")]
+    [InlineData("DELETE", "/api/v1/memories/999999/cover")]
     [InlineData("DELETE", "/api/v1/memories/999999")]
     [InlineData("POST", "/api/v1/memories/999999/restore")]
     public async Task AllMemoryEndpoints_WithoutBearerToken_ReturnUnauthorized(string method, string path)
@@ -55,6 +57,28 @@ public class MemoryApiIntegrationTests : IClassFixture<CustomWebApplicationFacto
 
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         Assert.Contains("success", await response.Content.ReadAsStringAsync(), StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task CoverOverride_UsesManualImageAndResetReturnsUploadOrder()
+    {
+        var owner = await CreateUserAsync("Owner");
+        var memory = await CreateMemoryAsync(owner, "Cover memory", "Bình yên", DateTime.UtcNow.Date, null, []);
+        var firstImage = await CreateImageAsync(memory);
+        var secondImage = await CreateImageAsync(memory);
+        using var client = await CreateBearerClientAsync(owner);
+
+        using var setResponse = await client.PutAsJsonAsync($"/api/v1/memories/{memory.Id}/cover", new { imageId = secondImage.Id });
+        using var setDocument = JsonDocument.Parse(await setResponse.Content.ReadAsStringAsync());
+        Assert.Equal(HttpStatusCode.OK, setResponse.StatusCode);
+        Assert.Equal(secondImage.Id, setDocument.RootElement.GetProperty("data").GetProperty("manualCoverImageId").GetInt32());
+        Assert.Equal(secondImage.Id, setDocument.RootElement.GetProperty("data").GetProperty("effectiveCoverImageId").GetInt32());
+
+        using var resetResponse = await client.DeleteAsync($"/api/v1/memories/{memory.Id}/cover");
+        using var resetDocument = JsonDocument.Parse(await resetResponse.Content.ReadAsStringAsync());
+        Assert.Equal(HttpStatusCode.OK, resetResponse.StatusCode);
+        Assert.Equal(JsonValueKind.Null, resetDocument.RootElement.GetProperty("data").GetProperty("manualCoverImageId").ValueKind);
+        Assert.Equal(firstImage.Id, resetDocument.RootElement.GetProperty("data").GetProperty("effectiveCoverImageId").GetInt32());
     }
 
     [Fact]

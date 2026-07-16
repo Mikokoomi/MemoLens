@@ -123,6 +123,7 @@ else
 }
 
 builder.Services.AddScoped<IImageStorageService, LocalImageStorageService>();
+builder.Services.AddScoped<ICoverResolutionService, CoverResolutionService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IRefreshTokenCleanupService, RefreshTokenCleanupService>();
 builder.Services.AddHostedService<RefreshTokenCleanupHostedService>();

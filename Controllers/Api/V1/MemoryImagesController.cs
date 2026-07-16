@@ -21,15 +21,18 @@ public sealed class MemoryImagesController : ControllerBase
 
     private readonly ApplicationDbContext _context;
     private readonly IImageStorageService _imageStorageService;
+    private readonly ICoverResolutionService _coverResolutionService;
     private readonly ILogger<MemoryImagesController> _logger;
 
     public MemoryImagesController(
         ApplicationDbContext context,
         IImageStorageService imageStorageService,
+        ICoverResolutionService coverResolutionService,
         ILogger<MemoryImagesController> logger)
     {
         _context = context;
         _imageStorageService = imageStorageService;
+        _coverResolutionService = coverResolutionService;
         _logger = logger;
     }
 
@@ -201,6 +204,7 @@ public sealed class MemoryImagesController : ControllerBase
 
         try
         {
+            await _coverResolutionService.ClearCoverReferencesForImageAsync(image.Id);
             _context.MemoryImages.Remove(image);
             await _context.SaveChangesAsync();
             _imageStorageService.DeleteImageFile(image.ImagePath);

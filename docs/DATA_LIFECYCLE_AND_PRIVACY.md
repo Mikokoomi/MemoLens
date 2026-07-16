@@ -24,3 +24,7 @@
 | Inactive account policy | **OPEN — REQUIRES USER APPROVAL.** Chưa có tự động khoá/xoá account. |
 
 Không suy diễn rằng dữ liệu bị xoá vĩnh viễn sau một số ngày; ảnh bị soft-deleted chỉ bị ẩn, không bị xoá file bởi flow hiện tại.
+
+## Cover lifecycle - Phase 19E Checkpoint 1
+
+Xóa ảnh clear manual Memory/Album cover đang trỏ tới ảnh đó trước khi xóa row/file. Gỡ Memory khỏi Album hoặc soft delete Memory clear manual Album cover nếu ảnh nguồn thuộc Memory đó. Restore không khôi phục manual override cũ; automatic mode chỉ xét Memory active và membership active.

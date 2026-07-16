@@ -2,6 +2,7 @@ using System.Security.Claims;
 using MemoLens.Data;
 using MemoLens.Models;
 using MemoLens.Models.Api;
+using MemoLens.Models.Api.Covers;
 using MemoLens.Models.Api.Images;
 using MemoLens.Models.Api.Memories;
 using MemoLens.Models.Memories;
@@ -25,15 +26,18 @@ public class MemoriesController : ControllerBase
 
     private readonly ApplicationDbContext _context;
     private readonly IImageStorageService _imageStorageService;
+    private readonly ICoverResolutionService _coverResolutionService;
     private readonly UserManager<ApplicationUser> _userManager;
 
     public MemoriesController(
         ApplicationDbContext context,
         IImageStorageService imageStorageService,
+        ICoverResolutionService coverResolutionService,
         UserManager<ApplicationUser> userManager)
     {
         _context = context;
         _imageStorageService = imageStorageService;
+        _coverResolutionService = coverResolutionService;
         _userManager = userManager;
     }
 
@@ -133,32 +137,46 @@ public class MemoriesController : ControllerBase
                     .Select(memoryTag => memoryTag.Tag.Name)
                     .ToList(),
                 ImageCount = memory.Images.Count,
-                CoverImageId = memory.Images
+                ManualCoverImageId = memory.CoverImageId,
+                Images = memory.Images
                     .OrderBy(image => image.UploadedAt)
-                    .Select(image => (int?)image.Id)
-                    .FirstOrDefault(),
-                CoverImagePath = memory.Images
-                    .OrderBy(image => image.UploadedAt)
-                    .Select(image => image.ImagePath)
-                    .FirstOrDefault(),
+                    .ThenBy(image => image.Id)
+                    .Select(image => new MemoryImage
+                    {
+                        Id = image.Id,
+                        ImagePath = image.ImagePath,
+                        UploadedAt = image.UploadedAt
+                    })
+                    .ToList(),
                 CreatedAt = memory.CreatedAt,
                 UpdatedAt = memory.UpdatedAt
             })
             .ToListAsync();
 
-        var items = rows.Select(row => new MemoryListItemResponse
+        var items = rows.Select(row =>
         {
-            Id = row.Id,
-            Title = row.Title,
-            ShortStoryPreview = CreateStoryPreview(row.Story),
-            Feeling = row.Feeling,
-            MemoryDate = row.MemoryDate,
-            Location = row.Location,
-            Tags = row.Tags,
-            ImageCount = row.ImageCount,
-            CoverImageId = IsAccessibleImage(row.CoverImagePath) ? row.CoverImageId : null,
-            CreatedAt = row.CreatedAt,
-            UpdatedAt = row.UpdatedAt
+            var effectiveCoverImageId = _coverResolutionService.ResolveEffectiveMemoryCoverImageId(new Memory
+            {
+                CoverImageId = row.ManualCoverImageId,
+                Images = row.Images.ToList()
+            });
+
+            return new MemoryListItemResponse
+            {
+                Id = row.Id,
+                Title = row.Title,
+                ShortStoryPreview = CreateStoryPreview(row.Story),
+                Feeling = row.Feeling,
+                MemoryDate = row.MemoryDate,
+                Location = row.Location,
+                Tags = row.Tags,
+                ImageCount = row.ImageCount,
+                CoverImageId = effectiveCoverImageId,
+                ManualCoverImageId = row.ManualCoverImageId,
+                EffectiveCoverImageId = effectiveCoverImageId,
+                CreatedAt = row.CreatedAt,
+                UpdatedAt = row.UpdatedAt
+            };
         }).ToList();
 
         return Ok(new ApiResponse<PagedResponse<MemoryListItemResponse>>
@@ -280,6 +298,63 @@ public class MemoriesController : ControllerBase
         });
     }
 
+    [HttpPut("{id:int}/cover")]
+    [ProducesResponseType(typeof(ApiResponse<MemoryDetailsResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiValidationErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<ApiResponse<MemoryDetailsResponse>>> SetCover(
+        int id,
+        [FromBody] SetCoverImageRequest request)
+    {
+        var memory = await FindOwnedMemoryAsync(id, includeDeleted: false, asTracking: true);
+        if (memory is null)
+        {
+            return NotFoundResponse();
+        }
+
+        var image = memory.Images.FirstOrDefault(item => item.Id == request.ImageId);
+        if (image is null || !IsAccessibleImage(image))
+        {
+            return ImageNotFoundResponse();
+        }
+
+        memory.CoverImageId = image.Id;
+        memory.UpdatedAt = DateTime.UtcNow;
+        await _context.SaveChangesAsync();
+
+        return Ok(new ApiResponse<MemoryDetailsResponse>
+        {
+            Success = true,
+            Message = "Đã chọn ảnh bìa kỷ niệm.",
+            Data = ToDetailsResponse(memory)
+        });
+    }
+
+    [HttpDelete("{id:int}/cover")]
+    [ProducesResponseType(typeof(ApiResponse<MemoryDetailsResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<ApiResponse<MemoryDetailsResponse>>> ResetCover(int id)
+    {
+        var memory = await FindOwnedMemoryAsync(id, includeDeleted: false, asTracking: true);
+        if (memory is null)
+        {
+            return NotFoundResponse();
+        }
+
+        memory.CoverImageId = null;
+        memory.UpdatedAt = DateTime.UtcNow;
+        await _context.SaveChangesAsync();
+
+        return Ok(new ApiResponse<MemoryDetailsResponse>
+        {
+            Success = true,
+            Message = "Đã chuyển sang ảnh bìa tự động.",
+            Data = ToDetailsResponse(memory)
+        });
+    }
+
     [HttpDelete("{id:int}")]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
@@ -293,6 +368,7 @@ public class MemoriesController : ControllerBase
         }
 
         var now = DateTime.UtcNow;
+        await _coverResolutionService.ClearAlbumCoverReferencesForMemoryAsync(memory.Id);
         memory.IsDeleted = true;
         memory.DeletedAt = now;
         memory.UpdatedAt = now;
@@ -320,6 +396,7 @@ public class MemoriesController : ControllerBase
         memory.IsDeleted = false;
         memory.DeletedAt = null;
         memory.UpdatedAt = DateTime.UtcNow;
+        _coverResolutionService.ClearInvalidMemoryManualCover(memory);
         await _context.SaveChangesAsync();
 
         return Ok(new ApiResponse<MemoryDetailsResponse>
@@ -465,14 +542,23 @@ public class MemoriesController : ControllerBase
         });
     }
 
+    private NotFoundObjectResult ImageNotFoundResponse()
+    {
+        return NotFound(new ApiResponse
+        {
+            Success = false,
+            Message = "Không tìm thấy ảnh."
+        });
+    }
+
     private string? GetCurrentUserId()
     {
         return User.FindFirstValue(ClaimTypes.NameIdentifier);
     }
 
-    private bool IsAccessibleImage(string? imagePath)
+    private bool IsAccessibleImage(MemoryImage image)
     {
-        var filePath = imagePath is null ? null : _imageStorageService.ResolveImagePath(imagePath);
+        var filePath = _imageStorageService.ResolveImagePath(image.ImagePath);
         return filePath is not null && System.IO.File.Exists(filePath);
     }
 
@@ -527,8 +613,9 @@ public class MemoriesController : ControllerBase
         return $"{cleanedStory[..StoryPreviewLength]}...";
     }
 
-    private static MemoryDetailsResponse ToDetailsResponse(Memory memory)
+    private MemoryDetailsResponse ToDetailsResponse(Memory memory)
     {
+        var effectiveCoverImageId = _coverResolutionService.ResolveEffectiveMemoryCoverImageId(memory);
         return new MemoryDetailsResponse
         {
             Id = memory.Id,
@@ -551,6 +638,8 @@ public class MemoriesController : ControllerBase
                     ContentUrl = MemoryImageApiRoutes.Content(image.Id)
                 })
                 .ToList(),
+            ManualCoverImageId = memory.CoverImageId,
+            EffectiveCoverImageId = effectiveCoverImageId,
             CreatedAt = memory.CreatedAt,
             UpdatedAt = memory.UpdatedAt
         };
@@ -566,8 +655,8 @@ public class MemoriesController : ControllerBase
         public string? Location { get; init; }
         public IReadOnlyList<string> Tags { get; init; } = [];
         public int ImageCount { get; init; }
-        public int? CoverImageId { get; init; }
-        public string? CoverImagePath { get; init; }
+        public int? ManualCoverImageId { get; init; }
+        public IReadOnlyList<MemoryImage> Images { get; init; } = [];
         public DateTime CreatedAt { get; init; }
         public DateTime UpdatedAt { get; init; }
     }

@@ -1095,3 +1095,10 @@ Phase 19C co the freeze sau patch nay. Phase tiep theo de xuat: **Phase 19D - Pr
 - **Phase 19P:** tạo gói tài liệu kiến trúc/sitemap/user flows/wireframes/data/storage/decision register tại `docs/` và Draw.io ở `design/architecture/`. Đây chỉ là planning; không có code, API, schema hay migration thay đổi.
 - **Phase 19E chưa bắt đầu.** Albums, Trash, Settings và final Flutter Paper Note UI vẫn là phạm vi tương lai.
 - Mọi production storage/database, hosting, navigation, lifecycle và backup decision lớn phải có approval rõ ràng trước khi triển khai.
+
+## 63. Cập nhật Phase 19E - Checkpoint 1: Cover API foundation
+
+- `Memory.CoverImageId` và `Album.CoverImageId` nullable lưu manual override; null nghĩa là automatic cover.
+- `AlbumMemory.AddedAt` là timestamp liên kết đáng tin cậy. Album automatic cover duyệt timestamp này mới nhất trước rồi dùng effective Memory cover.
+- API thêm `manualCoverImageId` và `effectiveCoverImageId`, cùng route owner-only để set/reset cover.
+- Checkpoint 2 (Flutter Album UI/navigation) chưa bắt đầu.

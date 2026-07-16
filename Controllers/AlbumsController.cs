@@ -1,6 +1,7 @@
 using MemoLens.Data;
 using MemoLens.Models;
 using MemoLens.Models.Albums;
+using MemoLens.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,16 @@ public class AlbumsController : Controller
 {
     private readonly ApplicationDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly ICoverResolutionService _coverResolutionService;
 
-    public AlbumsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+    public AlbumsController(
+        ApplicationDbContext context,
+        UserManager<ApplicationUser> userManager,
+        ICoverResolutionService coverResolutionService)
     {
         _context = context;
         _userManager = userManager;
+        _coverResolutionService = coverResolutionService;
     }
 
     public async Task<IActionResult> Index()
@@ -268,6 +274,7 @@ public class AlbumsController : Controller
             return NotFound();
         }
 
+        await _coverResolutionService.ClearAlbumCoverReferenceForRemovedMemoryAsync(album.Id, memoryId);
         _context.AlbumMemories.Remove(albumMemory);
         album.UpdatedAt = DateTime.UtcNow;
 
@@ -322,7 +329,7 @@ public class AlbumsController : Controller
         };
     }
 
-    private static AlbumListItemViewModel ToListItemViewModel(Album album)
+    private AlbumListItemViewModel ToListItemViewModel(Album album)
     {
         var visibleMemories = GetVisibleAlbumMemories(album, album.UserId).ToList();
 
@@ -331,14 +338,14 @@ public class AlbumsController : Controller
             Id = album.Id,
             Title = album.Title,
             Description = album.Description,
-            CoverImageId = GetAutomaticCoverImageId(visibleMemories),
+            CoverImageId = _coverResolutionService.ResolveEffectiveAlbumCoverImageId(album),
             MemoryCount = visibleMemories.Count,
             CreatedAt = album.CreatedAt,
             UpdatedAt = album.UpdatedAt
         };
     }
 
-    private static AlbumDetailsViewModel ToDetailsViewModel(Album album)
+    private AlbumDetailsViewModel ToDetailsViewModel(Album album)
     {
         var visibleMemories = GetVisibleAlbumMemories(album, album.UserId).ToList();
 
@@ -347,7 +354,7 @@ public class AlbumsController : Controller
             Id = album.Id,
             Title = album.Title,
             Description = album.Description,
-            CoverImageId = GetAutomaticCoverImageId(visibleMemories),
+            CoverImageId = _coverResolutionService.ResolveEffectiveAlbumCoverImageId(album),
             CreatedAt = album.CreatedAt,
             UpdatedAt = album.UpdatedAt,
             Memories = visibleMemories
@@ -364,15 +371,7 @@ public class AlbumsController : Controller
             .ThenBy(albumMemory => albumMemory.Memory.MemoryDate);
     }
 
-    private static int? GetAutomaticCoverImageId(IEnumerable<AlbumMemory> albumMemories)
-    {
-        return albumMemories
-            .SelectMany(albumMemory => albumMemory.Memory.Images.OrderBy(image => image.UploadedAt))
-            .Select(image => (int?)image.Id)
-            .FirstOrDefault();
-    }
-
-    private static AlbumMemoryItemViewModel ToMemoryItemViewModel(Memory memory, DateTime? addedAt = null)
+    private AlbumMemoryItemViewModel ToMemoryItemViewModel(Memory memory, DateTime? addedAt = null)
     {
         return new AlbumMemoryItemViewModel
         {
@@ -382,10 +381,7 @@ public class AlbumsController : Controller
             Feeling = memory.Feeling,
             MemoryDate = memory.MemoryDate,
             Location = memory.Location,
-            CoverImageId = memory.Images
-                .OrderBy(image => image.UploadedAt)
-                .Select(image => (int?)image.Id)
-                .FirstOrDefault(),
+            CoverImageId = _coverResolutionService.ResolveEffectiveMemoryCoverImageId(memory),
             AddedAt = addedAt
         };
     }

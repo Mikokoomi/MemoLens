@@ -114,6 +114,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 .WithMany(user => user.Memories)
                 .HasForeignKey(memory => memory.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(memory => memory.CoverImage)
+                .WithMany()
+                .HasForeignKey(memory => memory.CoverImageId)
+                .OnDelete(DeleteBehavior.NoAction);
         });
 
         builder.Entity<MemoryImage>(entity =>
@@ -192,6 +197,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 .WithMany(user => user.Albums)
                 .HasForeignKey(album => album.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(album => album.CoverImage)
+                .WithMany()
+                .HasForeignKey(album => album.CoverImageId)
+                .OnDelete(DeleteBehavior.NoAction);
         });
 
         builder.Entity<AlbumMemory>(entity =>

@@ -47,3 +47,7 @@ erDiagram
 `MemoryImages` chứa `Id`, `MemoryId`, `ImagePath` (max 500), `OriginalFileName` (max 255), `UploadedAt`, `Caption?` (max 255). File được ghi bởi `LocalImageStorageService` vào `<ContentRoot>/App_Data/uploads/memories/{safeUserId}/{memoryId}/{guid}.{ext}`; `ImagePath` tương đối lưu `uploads/memories/...`. Vì `App_Data` nằm ngoài `wwwroot`, static file middleware không expose ảnh.
 
 MVC gọi `ImagesController.MemoryImage`; Flutter gọi `GET /api/v1/images/{imageId}/content`. Cả hai kiểm tra owner `Memory.UserId == currentUserId` và `!Memory.IsDeleted`; User B và Admin đều không bypass trong MVP, nhận `404` khi không thuộc owner. Xoá individual image xoá row rồi gọi `DeleteImageFile`; Memory soft delete chỉ chặn access, restore mở lại access.
+
+## Cover override data
+
+`Memories.CoverImageId` và `Albums.CoverImageId` là FK nullable tới `MemoryImages.Id`. Null là automatic mode. FK không cascade xóa Memory hoặc Album; trước khi image row/file bị xóa, các manual reference liên quan được clear. Không có binary image data trong database.

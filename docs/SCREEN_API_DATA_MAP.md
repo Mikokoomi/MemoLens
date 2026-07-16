@@ -11,3 +11,7 @@
 | Albums list/details/forms | Planned Flutter | No confirmed route | `/Albums/*` | `/api/v1/albums` family | Album, AlbumMemory | JWT | Existing API owner-only; Flutter not implemented |
 | Trash/restore | Planned Flutter | No confirmed route | `/Trash` | Memory/Album restore endpoints; **No confirmed mobile Trash list endpoint** | Memory, Album | JWT/MVC cookie | Deleted resources remain owner-scoped |
 | Settings/Profile | Planned Flutter except logout | No confirmed route | `/Settings` | account/me, logout; no confirmed full settings API | ApplicationUser, tokens | JWT | No account settings Flutter screen |
+
+## Cover fields (Phase 19E Checkpoint 1)
+
+Memory/Album API response giữ field cũ và cộng thêm `manualCoverImageId` (override nullable) và `effectiveCoverImageId` (ảnh hiển thị nullable). Cover content tiếp tục dùng `GET /api/v1/images/{imageId}/content` với JWT; không trả private path.

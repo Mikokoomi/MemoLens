@@ -125,3 +125,7 @@ dotnet test
 Không có migration hoặc thay đổi schema trong Phase 18C.
 
 Phase đề xuất tiếp theo: **Phase 18D - Private Album CRUD API**.
+
+## Cover references (Phase 19E Checkpoint 1)
+
+Memory cover selection keeps the existing private image endpoint. API responses add `manualCoverImageId` and `effectiveCoverImageId`; no new binary-storage or public image route exists. Deleting an image clears related manual cover references before private file deletion.

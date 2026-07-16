@@ -29,5 +29,10 @@ public class Album
 
     public DateTime? DeletedAt { get; set; }
 
+    // A null value keeps the automatic cover-selection mode.
+    public int? CoverImageId { get; set; }
+
+    public MemoryImage? CoverImage { get; set; }
+
     public ICollection<AlbumMemory> AlbumMemories { get; set; } = new List<AlbumMemory>();
 }

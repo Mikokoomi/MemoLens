@@ -35,6 +35,11 @@ public class Memory
 
     public DateTime? DeletedAt { get; set; }
 
+    // A null value keeps the automatic cover-selection mode.
+    public int? CoverImageId { get; set; }
+
+    public MemoryImage? CoverImage { get; set; }
+
     public ICollection<MemoryImage> Images { get; set; } = new List<MemoryImage>();
 
     public ICollection<MemoryTag> MemoryTags { get; set; } = new List<MemoryTag>();

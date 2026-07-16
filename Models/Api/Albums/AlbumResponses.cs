@@ -12,6 +12,10 @@ public sealed class AlbumListItemResponse
 
     public int? CoverImageId { get; init; }
 
+    public int? ManualCoverImageId { get; init; }
+
+    public int? EffectiveCoverImageId { get; init; }
+
     public string? CoverImageUrl { get; init; }
 
     public DateTime CreatedAt { get; init; }
@@ -30,6 +34,10 @@ public sealed class AlbumDetailsResponse
     public int MemoryCount { get; init; }
 
     public int? CoverImageId { get; init; }
+
+    public int? ManualCoverImageId { get; init; }
+
+    public int? EffectiveCoverImageId { get; init; }
 
     public string? CoverImageUrl { get; init; }
 
@@ -59,6 +67,10 @@ public sealed class AlbumMemorySummaryResponse
     public int ImageCount { get; init; }
 
     public int? CoverImageId { get; init; }
+
+    public int? ManualCoverImageId { get; init; }
+
+    public int? EffectiveCoverImageId { get; init; }
 
     public string? CoverImageUrl { get; init; }
 

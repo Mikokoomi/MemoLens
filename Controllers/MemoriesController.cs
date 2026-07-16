@@ -14,15 +14,18 @@ public class MemoriesController : Controller
 {
     private readonly ApplicationDbContext _context;
     private readonly IImageStorageService _imageStorageService;
+    private readonly ICoverResolutionService _coverResolutionService;
     private readonly UserManager<ApplicationUser> _userManager;
 
     public MemoriesController(
         ApplicationDbContext context,
         IImageStorageService imageStorageService,
+        ICoverResolutionService coverResolutionService,
         UserManager<ApplicationUser> userManager)
     {
         _context = context;
         _imageStorageService = imageStorageService;
+        _coverResolutionService = coverResolutionService;
         _userManager = userManager;
     }
 
@@ -276,6 +279,7 @@ public class MemoriesController : Controller
 
         var imagePath = image.ImagePath;
 
+        await _coverResolutionService.ClearCoverReferencesForImageAsync(image.Id);
         _context.MemoryImages.Remove(image);
         await _context.SaveChangesAsync();
 
@@ -312,6 +316,7 @@ public class MemoriesController : Controller
             return NotFound();
         }
 
+        await _coverResolutionService.ClearAlbumCoverReferencesForMemoryAsync(memory.Id);
         memory.IsDeleted = true;
         memory.DeletedAt = DateTime.UtcNow;
         memory.UpdatedAt = DateTime.UtcNow;
